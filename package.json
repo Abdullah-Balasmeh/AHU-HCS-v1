@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "start:api": "json-server --watch db.json --port 3000",
     "serve:ssr:AHU-HCS": "node dist/ahu-hcs/server/server.mjs"
   },
   "private": true,
