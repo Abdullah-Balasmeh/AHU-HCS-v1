@@ -1,1 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Cairo", sans-serif;
+}
+
+body {
+    background-image: url('./assets/images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ABD9D9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    direction: rtl;
+    user-select: none;
+    overflow-x: hidden; 
+}
+
+
+/* Colors */
+.primaryColor {
+    background-color: #4D95A7;
+}
+
+.secondaryColor {
+    background-color: #ABD9D9;
+}
+
+.whiteColor {
+    background-color: #fafafa;
+}
+
+.shadowColor {
+    box-shadow: 10px 10px 5px #32776D;
+}
+
+.successColor {
+    color: rgb(102, 161, 12);
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.errorColor {
+    color: #D9534F;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.closeColor {
+    background-color: gray;
+    transition: opacity 0.3s ease;
+}
+
+.closeColor:hover {
+    opacity: 0.8;
+}
+
+/* text Style */
+.text-type {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 5px;
+}

@@ -1,0 +1,26 @@
+.logo {
+    position: absolute;
+    display: block;
+    width: 460px;
+    top: 0;
+    right: 0;
+    margin: 5px 3px;
+}
+
+/* Tablet and smaller screens */
+@media (max-width: 768px) {
+    .logo {
+        width: 360px;
+        top: 8px; 
+        right: 8px;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+    .logo {
+        width: 260px;
+        top: 5px;
+        right: 5px;
+    }
+}
