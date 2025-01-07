@@ -10,7 +10,6 @@ import { Patient } from '../../../interfaces/patient.interface';
 export class PatientInfoComponent {
   @Input() patient: Patient | null = null;
   @Output() edit = new EventEmitter<void>();
-
   onEditClick(): void {
     this.edit.emit(); // Emit edit event
   }

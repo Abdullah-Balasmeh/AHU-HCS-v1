@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ElementRef, HostListener } from '@angular/core';
 
 @Component({
     selector: 'app-dropdown-list',
@@ -11,44 +11,35 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class DropdownListComponent {
     @Input() options: string[] = [];
     @Input() placeHolder: string = '';
+    @Input() selectedOptions: string = ''; // Single selection
     @Output() selectedChange = new EventEmitter<string>();
 
-    selectedOptions: string[] = [];
-    filteredOptions: string[] = [];
-    searchTerm: string = '';
     isOpen: boolean = false;
 
-    constructor() {
-        this.filteredOptions = [...this.options]; // Initialize filtered options
-    }
+    constructor(private readonly elementRef: ElementRef) { }
 
     // Toggles the dropdown visibility
     toggleDropdown(): void {
         this.isOpen = !this.isOpen;
-
-        // Reset filtered options when opening
-        if (this.isOpen) {
-            this.filteredOptions = [...this.options];
-        }
     }
 
     // Selects a single option
     toggleOption(option: string): void {
-        this.selectedOptions = [option]; // Allow only one selection
+        this.selectedOptions = option; // Set the single selected option
         this.selectedChange.emit(option); // Emit the selected option
         this.isOpen = false; // Close dropdown after selection
     }
 
-    // Filters options based on the search term
-    filterOptions(): void {
-        const search = this.searchTerm.toLowerCase();
-        this.filteredOptions = this.options.filter((option) =>
-            option.toLowerCase().includes(search)
-        );
+    // Getter for displaying the selected option or placeholder
+    get selectedOption(): string {
+        return this.selectedOptions ? this.selectedOptions : "إختر " + this.placeHolder;
     }
 
-    // Getter for selected option display
-    get selectedOption(): string {
-        return this.selectedOptions.length > 0 ? this.selectedOptions[0] : "إختر " + this.placeHolder;
+    // Close the dropdown when clicking outside
+    @HostListener('document:click', ['$event'])
+    onClickOutside(event: MouseEvent): void {
+        if (!this.elementRef.nativeElement.contains(event.target)) {
+            this.isOpen = false; // Close dropdown if clicked outside
+        }
     }
 }

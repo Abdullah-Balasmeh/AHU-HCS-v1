@@ -6,6 +6,7 @@
             id="bloodTypeDropdown"
             placeHolder="زمرة الدم"
             [options]="['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']"
+            [selectedOptions]="patient?.bloodType || ''"
             (selectedChange)="onBloodTypeChange($event)">
         </app-dropdown-list>
     </div>
@@ -17,28 +18,32 @@
             id="allergyDropdown"
             placeHolder="حساسية"
             [options]="['Dust', 'Pollen', 'Nuts', 'Shellfish', 'Latex']"
+            [selectedOptions]="patient?.allergy || []"
             (selectedChange)="onAllergyChange($event)">
         </app-multi-select-dropdown>
     </div>
 
     <!-- Chronic Diseases -->
     <div id="medicalConditionList">
-        <label for="chronicDiseaseDropdown" class="text-type">الأمراض المزمنة:</label>
+        <label for="chronicDiseaseDropdown" class="text-type">الأمراض
+            المزمنة:</label>
         <app-multi-select-dropdown
             id="chronicDiseaseDropdown"
             placeHolder="مرض"
             [options]="['Diabetes', 'Hypertension', 'Asthma', 'Arthritis']"
+            [selectedOptions]="patient?.chDisease || []"
             (selectedChange)="onChronicDiseasesChange($event)">
         </app-multi-select-dropdown>
     </div>
 
     <!-- Medications -->
     <div id="treatmentList">
-        <label for="medicationsDropdown" class="text-type">العلاج:</label>
+        <label for="medicationsDropdown" class="text-type">الدواء:</label>
         <app-multi-select-dropdown
             id="medicationsDropdown"
-            placeHolder="علاج"
+            placeHolder="دواء"
             [options]="['Insulin', 'Metformin', 'Aspirin', 'Ibuprofen']"
+            [selectedOptions]="patient?.medicine || []"
             (selectedChange)="onMedicationsChange($event)">
         </app-multi-select-dropdown>
     </div>
@@ -52,9 +57,9 @@
                     type="radio"
                     id="vaccineYes"
                     name="hepatitis-vaccine"
-                    [value]="true"
+                    [value]="1"
                     [(ngModel)]="vaccineStatus"
-                    (change)="onVaccineStatusChange($event)">
+                    (change)="onVaccineStatusChange()">
                 <span class="name">نعم</span>
             </label>
             <label class="radio" for="vaccineNo">
@@ -62,30 +67,27 @@
                     type="radio"
                     id="vaccineNo"
                     name="hepatitis-vaccine"
-                    [value]="false"
+                    [value]="0"
                     [(ngModel)]="vaccineStatus"
-                    (change)="onVaccineStatusChange($event)">
+                    (change)="onVaccineStatusChange()">
                 <span class="name">لا</span>
             </label>
         </div>
+    </div>
 
-        <!-- File picker appears only when "Yes" is selected -->
-        <div *ngIf="vaccineStatus =='true'" class="custom-file-picker">
+    <!-- <div *ngIf="vaccineStatus === 1" class="custom-file-picker">
             <label for="file-upload" class="text-type btn primaryColor">
                 قم برفع صورة شهادة المطعوم: <i class="bi bi-upload"></i>
             </label>
-            <input type="file" id="file-upload" (change)="onFileSelected($event)">
-            <span class="file-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
-        </div>
-    </div>
+            <input type="file" id="file-upload"
+                (change)="onFileSelected($event)">
+            <span class="file-name" *ngIf="selectedFileName">{{ selectedFileName
+                }}</span>
+        </div> -->
 </div>
 
 <!-- Save Button -->
 <div class="footer-btn">
-    <button
-        type="button"
-        class="btn primaryColor"
-        (click)="onSubmit()">
-        حفظ
-    </button>
+    <button type="button" class="btn primaryColor"
+        (click)="onSubmit()">حفظ</button>
 </div>

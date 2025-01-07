@@ -323,3 +323,6 @@ td {
     bottom: 0;
     right: 0;
 }
+.ltr-text {
+    direction: ltr;
+}

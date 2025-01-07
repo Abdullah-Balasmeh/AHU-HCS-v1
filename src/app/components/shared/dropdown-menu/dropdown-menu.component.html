@@ -1,7 +1,9 @@
 <div class="dropdown">
     <!-- Dropdown Header -->
     <div class="dropdown-header" (click)="toggleDropdown()" [class.open]="isOpen">
-        <span>{{ selectedOptions.length > 0 ? selectedOptions.join(', ') : "إختر " + placeHolder }}</span>
+        <span>{{ selectedOptions && selectedOptions.length > 0 
+            ? selectedOptions.join(', ') 
+            : "إختر " + placeHolder }}</span>
         <img src="/assets/down-arrow.png" alt="Dropdown Arrow" class="dropdown-arrow" />
     </div>
 

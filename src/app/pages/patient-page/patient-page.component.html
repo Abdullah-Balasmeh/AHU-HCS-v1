@@ -8,6 +8,7 @@
         <!-- Edit Mode -->
         <ng-container *ngIf="globalStateService.isEditing$ | async; else viewMode">
             <app-patient-info-first
+                *ngIf="selectedTab === 'patient-info'"
                 [patient]="patient"
                 (save)="onDataSaved($event)">
             </app-patient-info-first>

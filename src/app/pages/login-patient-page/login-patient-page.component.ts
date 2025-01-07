@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 
 import { PatientService } from '../../services/patient.service';
 import { LoadingImageComponent } from '../../components/shared/loading-image/loading-image.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login-patient-page',
@@ -18,7 +19,7 @@ export class LoginPatientPageComponent {
   isLoading = signal<boolean>(false);
   visible = true;
   changeType = true;
-
+  private readonly destroy$ = new Subject<void>();
   loginPatientForm = new FormGroup({
     patientID: new FormControl('', [
       Validators.required,
@@ -73,7 +74,7 @@ export class LoginPatientPageComponent {
       this.isLoading.set(true);
       const { patientID, password } = this.loginPatientForm.value;
       this.patientService
-        .loginPatient({ id: patientID as string, password: password as string })
+        .loginPatient({ id: patientID as string, password: password as string }).pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
             sessionStorage.setItem('patient', JSON.stringify(response));
@@ -85,6 +86,10 @@ export class LoginPatientPageComponent {
           },
         });
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   
 }

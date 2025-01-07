@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -14,13 +14,13 @@ export class MultiSelectDropdownComponent {
     @Input() placeHolder: string = '';
     @Output() selectedChange = new EventEmitter<string[]>();
 
-    selectedOptions: string[] = [];
+    @Input() selectedOptions: string[] = [];
     customOptions: string[] = [];
     filteredOptions: string[] = [];
     searchTerm: string = '';
     isOpen: boolean = false;
 
-    constructor() {
+    constructor(private readonly elementRef: ElementRef) {
         this.filteredOptions = [...this.options];
     }
 
@@ -72,5 +72,11 @@ export class MultiSelectDropdownComponent {
 
         this.filterOptions();
         this.selectedChange.emit(this.selectedOptions); // Emit the updated options
+    }
+    @HostListener('document:click', ['$event'])
+    onClickOutside(event: MouseEvent): void {
+        if (!this.elementRef.nativeElement.contains(event.target)) {
+            this.isOpen = false; // Close dropdown if clicked outside
+        }
     }
 }

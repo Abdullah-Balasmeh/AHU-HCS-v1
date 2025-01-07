@@ -2,7 +2,9 @@
     position: relative; /* Ensures the dropdown body is relative to this container */
     width: 300px;
 }
-
+span{
+    direction: ltr;
+}
 .dropdown-header {
     border: 1px solid #4d95a7;
     padding: 10px;
