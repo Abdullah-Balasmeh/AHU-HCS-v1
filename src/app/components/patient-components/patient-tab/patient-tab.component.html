@@ -1,0 +1,23 @@
+<div class="nav-box">
+    <h1>{{patient?.patientName}}</h1>
+    <!-- Radio Inputs -->
+    <input
+        type="radio"
+        name="slider"
+        id="tabP-1"
+        (change)="selectTab('patient-info')"
+        checked />
+    <input
+        type="radio"
+        name="slider"
+        id="tabH-2"
+        (change)="selectTab('reports-table')" />
+
+        
+    <!-- Navigation Labels -->
+    <nav>
+        <label for="tabP-1" class="tab-1">المعلومات الطبية</label>
+        <label for="tabH-2" class="tab-2">التقارير الطبية</label>
+        <div class="slider primaryColor"></div>
+    </nav>
+</div>

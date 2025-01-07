@@ -1,0 +1,101 @@
+/* Content styling */
+.content {
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px 10px 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+}
+.infoBox {
+    position: relative; /* Ensures the dropdown body is relative to this container */
+    width: 300px;
+    border: 1px solid #4d95a7;
+    padding: 10px;
+    background-color: #F0F0F0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+
+
+.Box-grid {
+    display: grid;
+    grid-row: 3;
+    grid-column: 2;
+    grid-gap: 10px;
+    margin: 20px 0;
+}
+
+#bloodTypeList {
+    grid-row: 1/2;
+    grid-column: 1/2;
+}
+
+#allergyList {
+    grid-row: 1/2;
+    grid-column: 2/2;
+}
+
+#medicalConditionList {
+    grid-row: 2/3;
+    grid-column: 1/2;
+}
+
+#treatmentList {
+    grid-row: 2/3;
+    grid-column: 2/2;
+}
+
+/* Hide the default input */
+input[type="file"] {
+    display: none;
+}
+
+
+
+/* File name display */
+.file-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    font-style: italic;
+}
+.custom-file-picker{
+    margin-left:8px ;
+}
+.custom-button i {
+    margin-right: 8px;
+    
+}
+.box {
+    width: max-content;
+    height: max-content;
+    border: 1px;
+    border-style: solid;
+    background-color: #F0F0F0;
+    border-color: #4D95A7;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.footer-btn {
+    grid-column: 1 / 3; /* Span the button across both columns */
+    justify-self: center; /* Center horizontally */
+    align-self: end; /* Align at the bottom of the grid */
+    margin-top: auto; /* Push it to the bottom */
+    width: 50%;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}

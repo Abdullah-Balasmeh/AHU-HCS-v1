@@ -1,0 +1,21 @@
+<div class="dropdown">
+    <!-- Dropdown Header -->
+    <div class="dropdown-header" (click)="toggleDropdown()" [class.open]="isOpen">
+        <span>{{ selectedOption }}</span>
+        <img src="/assets/down-arrow.png" alt="Dropdown Arrow" class="dropdown-arrow" />
+    </div>
+
+    <!-- Dropdown Body -->
+    <div class="dropdown-body" *ngIf="isOpen">
+        <!-- Options List -->
+        <ul class="options-list">
+            <li
+                *ngFor="let option of filteredOptions"
+                [class.selected]="selectedOptions.includes(option)"
+                (click)="toggleOption(option)"
+            >
+                <label for="">{{ option }}</label>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -9,7 +9,8 @@
     grid-template-rows: 80px 320px;
     align-items: center;
     justify-content: center;
-    position: relative; /* Allow h1 to center in both dimensions */
+    justify-self: center;
+    align-self: center; 
 }
 
 h1 {
@@ -26,8 +27,6 @@ h1 {
 .card {
     width: 200px;
     height: 200px;
-    background-color: #4D95A7;
-    color: #F0F0F0;
     border-radius: 10px;
     display: flex;
     box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -50,8 +49,8 @@ h1 {
 
 .card h3 {
     white-space: nowrap;
-    font-size: 22px;
     text-align: center;
+    font-size: 24px;
     margin: 0;
 }
 

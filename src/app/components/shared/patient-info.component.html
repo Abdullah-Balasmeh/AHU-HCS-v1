@@ -1,0 +1,73 @@
+<div class="content whiteColor">
+    <form>
+        <div class="Box-grid">
+            <div id="bloodTypeList">
+                <label for="search" class="text-type">زمرة الدم:</label>
+                <app-dropdown-list
+                    placeHolder="زمرة الدم"
+                    [options]="['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']">
+                </app-dropdown-list>
+            </div>
+            <div id="allergyList">
+                <label for="search" class="text-type">حساسية:</label>
+                <app-multi-select-dropdown
+                    placeHolder="حساسية"
+                    [options]="['Australia', 'Bermuda', 'Canada', 'Denmark', 'France']">
+                </app-multi-select-dropdown>
+            </div>
+            <div id="medicalConditionList">
+                <label for="search" class="text-type">الأمراض المزمنة:</label>
+                <app-multi-select-dropdown
+                    placeHolder="مرض"
+                    [options]="['Australia', 'Bermuda', 'Canada', 'Denmark', 'France']">
+                </app-multi-select-dropdown>
+            </div>
+            <div id="treatmentList">
+                <label for="search" class="text-type">العلاج:</label>
+                <app-multi-select-dropdown
+                    placeHolder="علاج"
+                    [options]="['Australia', 'Bermuda', 'Canada', 'Denmark', 'France']">
+                </app-multi-select-dropdown>
+            </div>
+            <div class="box">
+                <h3>هل تم أخذ مطعوم الكبد الوبائي؟</h3>
+                <div class="radio-inputs">
+                    <label class="radio" for="option-1">
+                        <input
+                            type="radio"
+                            id="option-1"
+                            name="hepatitis-vaccine"
+                            value="yes"
+                            [(ngModel)]="vaccineStatus">
+                        <span class="name">نعم</span>
+                    </label>
+                    <label class="radio" for="option-2">
+                        <input
+                            type="radio"
+                            id="option-2"
+                            name="hepatitis-vaccine"
+                            value="no"
+                            [(ngModel)]="vaccineStatus">
+                        <span class="name">لا</span>
+                    </label>
+                </div>
+                
+                <!-- File picker appears only when "Yes" is selected -->
+                <div *ngIf="vaccineStatus === 'yes'" class="custom-file-picker">
+                    <label for="file-upload" class="text-type btn primaryColor">قم برفع صورة شهادة المطعوم:  <i class="bi bi-upload"></i></label>
+                    <input type="file" id="file-upload" (change)="onFileSelected($event)">
+                    <span class="file-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+                </div>
+                
+            </div>
+        </div>
+        <div class="footer-btn">
+            <button
+                type="button"
+                class="btn primaryColor"
+                >
+                حفظ
+            </button>
+        </div>
+    </form>
+</div>

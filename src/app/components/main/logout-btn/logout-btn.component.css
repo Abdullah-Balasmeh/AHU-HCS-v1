@@ -1,0 +1,30 @@
+.logoutBtn{
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: max-content;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    background-color: #e70f0f;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.logoutBtn:focus {
+    outline: 0;
+}
+
+.logoutBtn:active {
+    transform: scale(0.98);
+}
+
+img{
+    align-self: center;
+    justify-self: center;
+}

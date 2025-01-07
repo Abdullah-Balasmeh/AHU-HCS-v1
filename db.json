@@ -1,0 +1,179 @@
+{
+  "roles": [
+    {
+      "roleID": "1",
+      "roleName": "Admin",
+      "id": "e296"
+    },
+    {
+      "roleID": "2",
+      "roleName": "Manager",
+      "id": "e4ad"
+    },
+    {
+      "roleID": "3",
+      "roleName": "Receptionist",
+      "id": "31d6"
+    },
+    {
+      "roleID": "4",
+      "roleName": "Doctor",
+      "id": "763e"
+    },
+    {
+      "roleID": "5",
+      "roleName": "NurseM",
+      "id": "fe40"
+    },
+    {
+      "roleID": "6",
+      "roleName": "NurseF",
+      "id": "3378"
+    },
+    {
+      "roleID": "7",
+      "roleName": "Pharmacist",
+      "id": "efc4"
+    }
+  ],
+  "users": [
+    {
+      "id": "11",
+      "name": "Abdullah",
+      "password": "1234",
+      "roleID": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "id": "22",
+      "name": "Yazeed",
+      "password": "1234",
+      "roleID": [
+        "1"
+      ]
+    },
+    {
+      "id": "33",
+      "name": "Yousef",
+      "password": "1234",
+      "roleID": [
+        "2"
+      ]
+    },
+    {
+      "id": "44",
+      "name": "Khalid",
+      "password": "1234",
+      "roleID": [
+        "2",
+        "4"
+      ]
+    },
+    {
+      "id": "55",
+      "name": "Lith",
+      "password": "1234",
+      "roleID": [
+        "5"
+      ]
+    },
+    {
+      "id": "66",
+      "name": "Ahmad",
+      "password": "1234",
+      "roleID": [
+        "6"
+      ]
+    }
+  ],
+  "students": [
+    {
+      "id": "120200612056",
+      "name": "عبدالله عدنان عبداللطيف بلاسمه",
+      "gender": "Male",
+      "status": "1"
+    },
+    {
+      "id": "120210622086",
+      "name": "يزيد عمر عبدالله سمرين",
+      "gender": "Male",
+      "status": "1"
+    },
+    {
+      "id": "120210622091",
+      "name": "خالد حسين علي الصمادي",
+      "gender": "Male",
+      "status": "1"
+    },
+    {
+      "id": "120210622092",
+      "name": "يوسف عبدالله عثمان محمود",
+      "gender": "Male",
+      "status": "0"
+    },
+    {
+      "id": "120200612066",
+      "name": "اعتماد فرحان نزال الجازي",
+      "gender": "Female",
+      "status": "1"
+    },
+    {
+      "id": "120210612005",
+      "name": "حنين راجح سعيد الزكارنة",
+      "gender": "Female",
+      "status": "1"
+    }
+  ],
+  "employees": [
+    {
+      "id": "120200612001",
+      "name": "محمد أحمد علي",
+      "gender": "Male",
+      "status": "1"
+    },
+    {
+      "id": "120210622002",
+      "name": "فاطمة عبد الله حسين",
+      "gender": "Female",
+      "status": "1"
+    },
+    {
+      "id": "120210622003",
+      "name": "علي خالد محمود",
+      "gender": "Male",
+      "status": "0"
+    },
+    {
+      "id": "120200612004",
+      "name": "سارة عمر يوسف",
+      "gender": "Female",
+      "status": "1"
+    },
+    {
+      "id": "120210612005",
+      "name": "أحمد سعيد محمد",
+      "gender": "Male",
+      "status": "1"
+    },
+    {
+      "id": "120210612006",
+      "name": "نور خالد أحمد",
+      "gender": "Female",
+      "status": "1"
+    }
+  ],
+  "patients": [
+    {
+      "name": "عبدالله عدنان عبداللطيف بلاسمه",
+      "id":"120200612056",
+      "password":"1234"
+    }
+  ]
+}

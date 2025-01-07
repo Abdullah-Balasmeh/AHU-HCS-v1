@@ -1,0 +1,38 @@
+<div class="content whiteColor">
+    <form>
+        <div class="Box-grid">
+            <div id="bloodTypeList">
+                <label for="search" class="text-type">زمرة الدم:</label>
+                <div class="infoBox">
+                    <span>{{patient?.bloodType}}</span>
+                </div>
+            </div>
+            <div id="allergyList">
+                <label for="search" class="text-type">حساسية:</label>
+                <div class="infoBox">
+                    <span>{{patient?.allergy}}</span>
+                </div>
+            </div>
+            <div id="medicalConditionList">
+                <label for="search" class="text-type">الأمراض المزمنة:</label>
+                <div class="infoBox">
+                    <span>{{patient?.chDisease}}</span>
+                </div>
+            </div>
+            <div id="treatmentList">
+                <label for="search" class="text-type">العلاج:</label>
+                <div class="infoBox">
+                    <span>{{patient?.medicine}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-btn">
+            <button
+                type="button"
+                class="btn primaryColor"
+                (click)="onEditClick()">
+                تعديل
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,56 @@
+<div class="parent">
+    <div class="login-card shadowColor whiteColor">
+        <img class="HCS-logo" src="assets/images/HCSlogo.png"
+            alt="Health Center System Logo">
+        <h1>نظام المركز الصحي</h1>
+        <form [formGroup]="loginPatientForm" (ngSubmit)="onSubmit()" ngNativeValidate>
+            <div class="input-box">
+                <input
+                    type="text"
+                    placeholder="رقم المستخدم"
+                    formControlName="patientID"
+                    required
+                    maxlength="12"
+                    minlength="2"
+                    (input)="validateFieldID($event)"
+                    (invalid)="validateFieldID($event)"/>
+                <i class="bx bxs-user"></i>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-box">
+                <span (click)="togglePasswordVisibility()">
+                    <i
+                        [ngClass]="visible ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"
+                        id="togglePassword"></i>
+                </span>
+                <input
+                    [type]="changeType ? 'password' : 'text'"
+                    id="password"
+                    placeholder="كلمة المرور"
+                    formControlName="password"
+                    minlength="4"
+                    maxlength="26"
+                    required
+                    (input)="validateFieldPassword($event)"
+                    (invalid)="validateFieldPassword($event)"/>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+
+            <!-- Error Message -->
+            <p class="In-valid" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+            <!-- Submit Button -->
+            <div>
+                <ng-container *ngIf="isLoading(); else notLoading">
+                    <div
+                        class="btn primaryColor"><app-loading-image></app-loading-image></div>
+                </ng-container>
+                <ng-template #notLoading>
+                    <button type="submit" class="btn primaryColor">تسجيل
+                        الدخول</button>
+                </ng-template>
+            </div>
+        </form>
+    </div>
+</div>

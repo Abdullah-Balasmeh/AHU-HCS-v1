@@ -1,0 +1,64 @@
+<div class="navbar">
+        <nav>
+            <ul>
+                @if(roles().includes('1')){
+                    <li>
+                            <a [routerLink]="['admin']"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            >Admin</a>
+                    </li>
+                }
+                @if(roles().includes('2')){
+                    <li>
+                            <a [routerLink]="['manager']"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            >الإدارة</a>
+                    </li>
+                }
+                @if(roles().includes('3')){
+                    <li>
+                            <a [routerLink]="['reception']"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            >الإستقبال</a>
+                    </li>
+                }
+                @if(roles().includes('4')){
+                    <li>
+                            <a [routerLink]="['clinic']"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            >العيادة</a>
+                    </li>
+                }
+                @if(roles().includes('5')){
+                    <li>
+                            <a [routerLink]="['emergency-male']"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            >الطوارئ الذكور</a>
+                    </li>
+                }
+                @if(roles().includes('6')){
+                    <li>
+                            <a [routerLink]="['emergency-female']"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            >الطوارئ الإناث</a>
+                    </li>
+                }
+                @if(roles().includes('7')){
+                    <li>
+                            <a [routerLink]="['pharmacy']"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            >الصيدلية</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+

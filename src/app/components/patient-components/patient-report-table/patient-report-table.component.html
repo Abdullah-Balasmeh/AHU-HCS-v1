@@ -1,0 +1,30 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>نوع التقرير</th>
+            <th>التاريخ</th>
+            <th>اليوم</th>
+            <th>الوقت</th>
+            <th>تحميل</th>
+        </tr>
+    </thead>
+    <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+    <tbody>
+        <!-- <tr *ngFor="let patient of filteredPatients; let index = index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.state }}</td>
+            <td>{{ patient.type }}</td>
+            <td>
+                <button
+                    class="table-btn"
+                    id="icon-edit"
+                    (click)="downloadReport(patient)">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </td>
+        </tr> -->
+    </tbody>
+</table>

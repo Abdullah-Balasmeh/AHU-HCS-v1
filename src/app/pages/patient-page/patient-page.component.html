@@ -1,0 +1,35 @@
+<div class="container">
+    <app-patient-tab
+        [patient]="patient"
+        (tabChange)="selectedTab = $event">
+    </app-patient-tab>
+
+    <div>
+        <!-- Edit Mode -->
+        <ng-container *ngIf="globalStateService.isEditing$ | async; else viewMode">
+            <app-patient-info-first
+                [patient]="patient"
+                (save)="onDataSaved($event)">
+            </app-patient-info-first>
+        </ng-container>
+
+        <!-- View Mode -->
+        <ng-template #viewMode>
+            <app-patient-info
+                *ngIf="selectedTab === 'patient-info'"
+                [patient]="patient"
+                (edit)="onEdit()">
+            </app-patient-info>
+        </ng-template>
+
+        <app-patient-report-table
+            *ngIf="selectedTab === 'reports-table'"
+            [patient]="patient">
+        </app-patient-report-table>
+    </div>
+</div>
+<footer>
+    <div class="logout-footer" (click)="onLogout()">
+        <app-logout-btn></app-logout-btn>
+    </div>
+</footer>

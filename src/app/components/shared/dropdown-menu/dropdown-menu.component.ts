@@ -1,0 +1,76 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+    selector: 'app-multi-select-dropdown',
+    standalone: true,
+    imports: [FormsModule, CommonModule],
+    templateUrl: './dropdown-menu.component.html',
+    styleUrls: ['./dropdown-menu.component.css'],
+})
+export class MultiSelectDropdownComponent {
+    @Input() options: string[] = [];
+    @Input() placeHolder: string = '';
+    @Output() selectedChange = new EventEmitter<string[]>();
+
+    selectedOptions: string[] = [];
+    customOptions: string[] = [];
+    filteredOptions: string[] = [];
+    searchTerm: string = '';
+    isOpen: boolean = false;
+
+    constructor() {
+        this.filteredOptions = [...this.options];
+    }
+
+    toggleDropdown(): void {
+        this.isOpen = !this.isOpen;
+        if (this.isOpen) {
+            this.filteredOptions = [...this.customOptions, ...this.options];
+        }
+    }
+
+    toggleOption(option: string): void {
+        const index = this.selectedOptions.indexOf(option);
+        if (index >= 0) {
+            this.selectedOptions.splice(index, 1);
+        } else {
+            this.selectedOptions.push(option);
+        }
+
+        this.selectedChange.emit(this.selectedOptions); // Emit the updated options
+    }
+
+    filterOptions(): void {
+        const search = this.searchTerm.toLowerCase();
+        this.filteredOptions = [...this.customOptions, ...this.options].filter((option) =>
+            option.toLowerCase().includes(search)
+        );
+    }
+
+    addCustomOption(): void {
+        const customOption = this.searchTerm.trim();
+        if (customOption && !this.selectedOptions.includes(customOption)) {
+            this.selectedOptions.push(customOption);
+            if (!this.options.includes(customOption)) {
+                this.customOptions.push(customOption);
+            }
+        }
+        this.searchTerm = '';
+        this.filterOptions();
+        this.selectedChange.emit(this.selectedOptions); // Emit the updated options
+    }
+
+    removeOption(option: string, event: MouseEvent): void {
+        event.stopPropagation();
+        this.selectedOptions = this.selectedOptions.filter((selected) => selected !== option);
+
+        if (this.customOptions.includes(option)) {
+            this.customOptions = this.customOptions.filter((custom) => custom !== option);
+        }
+
+        this.filterOptions();
+        this.selectedChange.emit(this.selectedOptions); // Emit the updated options
+    }
+}

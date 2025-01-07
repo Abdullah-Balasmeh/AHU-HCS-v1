@@ -1,0 +1,127 @@
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 420px;
+    height: 100vh; 
+    margin: auto; 
+    text-align: center;
+}
+.login-card {
+    min-width: 360px;
+    width: 100%;
+    border-radius: 15px;
+    padding: 30px 40px;
+}
+
+.login-card .HCS-logo {
+    width: 25%;
+    margin:0; 
+}
+
+.login-card h1 {
+    color: black;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-card .input-box {
+    position: relative;
+    margin: 20px 0 40px;
+    width: 100%;
+}
+
+
+.input-box input {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 3px black solid;
+    display: block;
+    width: 100%;
+    padding: 15px 40px 15px 0; 
+    font-size: 18px;
+    color: black;
+    position: relative;
+    z-index: 100;
+    text-align: right;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+    outline: 0;
+    border-bottom-color: #4D95A7;
+}
+
+
+.input-box i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    z-index: 101;
+    color: black;
+    cursor: pointer;
+}
+#togglePassword {
+    position: absolute;
+    right: 93%; 
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    z-index: 101;
+    color: black;
+    cursor: pointer;
+}
+
+
+.input-box input::placeholder {
+    color: black;
+    text-align: right;
+    padding-right: 3px;
+}
+
+
+
+.btn:focus {
+    outline: 0;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.text {
+    margin-top: 30px;
+}
+@media (max-width: 768px) {
+    .login-card {
+        width: 90%;
+        padding: 20px 30px;
+    }
+
+    .login-card h1 {
+        font-size: 24px;
+    }
+
+    .input-box input {
+        font-size: 16px;
+        padding: 12px 35px 12px 0;
+    }
+
+    .login-card .HCS-logo {
+        width: 120px;
+    }
+
+    .login-card .btn {
+        padding: 12px;
+        font-size: 18px;
+    }
+}
+
+p{
+    color: red;
+    margin-top: -20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}

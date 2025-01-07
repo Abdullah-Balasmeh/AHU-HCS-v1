@@ -1,0 +1,91 @@
+.dropdown {
+    position: relative; /* Ensures the dropdown body is relative to this container */
+    width: 300px;
+}
+
+.dropdown-header {
+    border: 1px solid #4d95a7;
+    padding: 10px;
+    background-color: #F0F0F0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.dropdown-body {
+    position: relative; /* Changed from absolute to relative */
+    margin-top: 5px; /* Added margin to separate from header */
+    width: 100%;
+    background: #F0F0F0;
+    border: 1px solid #4d95a7;
+    max-height: 140px;
+    overflow-y: auto;
+    z-index: 1000;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid #4d95a7;
+    box-sizing: border-box;
+    background-color: #f0f0f0; /* Ensure consistent background color */
+    outline: none; /* Remove default focus outline */
+}
+
+.search-input:focus {
+    outline: none; /* Prevent the default focus outline */
+    border-bottom: 1px solid #4d95a7; /* Keep consistent border color */
+    background-color: #f0f0f0; /* Ensure the background doesn't change */
+}
+
+
+.options-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.options-list li {
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0; /* Added subtle separation */
+}
+
+.options-list li:hover {
+    background-color: #4d95a7b6;
+}
+
+.options-list li.selected {
+    background-color: #4d95a7;
+    color: white;
+}
+
+.delete-btn {
+    margin-left: 10px;
+    color: white;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.dropdown-arrow {
+    width: 24px;
+    height: 24px;
+    margin-left: 0;
+    cursor: pointer;
+    transform: rotate(0); /* Default arrow pointing down */
+    transition: transform 0.2s ease; /* Smooth transition for rotation */
+}
+
+.dropdown-header.open .dropdown-arrow {
+    transform: rotate(180deg); /* Rotate arrow when dropdown is open */
+}

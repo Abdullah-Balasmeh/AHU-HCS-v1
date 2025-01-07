@@ -1,0 +1,39 @@
+<div class="dropdown">
+    <!-- Dropdown Header -->
+    <div class="dropdown-header" (click)="toggleDropdown()" [class.open]="isOpen">
+        <span>{{ selectedOptions.length > 0 ? selectedOptions.join(', ') : "إختر " + placeHolder }}</span>
+        <img src="/assets/down-arrow.png" alt="Dropdown Arrow" class="dropdown-arrow" />
+    </div>
+
+    <!-- Dropdown Body -->
+    <div class="dropdown-body" *ngIf="isOpen">
+        <!-- Search Input -->
+        <input
+            type="text"
+            class="search-input"
+            placeholder="إبحث عن أو أضف {{placeHolder}} "
+            [(ngModel)]="searchTerm"
+            (keyup)="filterOptions()"
+            (keydown.enter)="addCustomOption()"
+        />
+
+        <!-- Options List -->
+        <ul class="options-list">
+            <li
+                *ngFor="let option of filteredOptions"
+                [class.selected]="selectedOptions.includes(option)"
+                (click)="toggleOption(option)"
+            >
+                <label for="">{{ option }}</label>
+                <!-- Show the delete button only for selected options -->
+                <span
+                    *ngIf="selectedOptions.includes(option)"
+                    class="delete-btn"
+                    (click)="removeOption(option, $event)"
+                >
+                    &#x2715;
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>
