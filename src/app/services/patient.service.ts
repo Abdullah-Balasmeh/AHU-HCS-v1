@@ -42,12 +42,10 @@ export class PatientService {
   
     // Logout functionality
     logoutPatient(): void {
-      if (this.isBrowser()) {
-        sessionStorage.removeItem('patient'); // Clear session data
-        localStorage.removeItem('patientToken'); // Clear token if used
-      }
-      this.setLoggedIn(false); // Update login state
+      sessionStorage.removeItem('patient');
+      localStorage.removeItem('activePatientSession');
     }
+    
   
     // Check login status from session storage
     checkLoginStatus(): void {

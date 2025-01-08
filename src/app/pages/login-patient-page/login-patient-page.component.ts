@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 import { PatientService } from '../../services/patient.service';
 import { LoadingImageComponent } from '../../components/shared/loading-image/loading-image.component';
 import { Subject, takeUntil } from 'rxjs';
@@ -20,6 +19,7 @@ export class LoginPatientPageComponent {
   visible = true;
   changeType = true;
   private readonly destroy$ = new Subject<void>();
+
   loginPatientForm = new FormGroup({
     patientID: new FormControl('', [
       Validators.required,
@@ -32,10 +32,7 @@ export class LoginPatientPageComponent {
       Validators.maxLength(26),
     ]),
   });
-
-  private readonly patientService = inject(PatientService);
-  private readonly router = inject(Router);
-  // Validate user ID field
+ // Validate patient ID field
   validateFieldID(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const value = inputElement.value.trim();
@@ -68,28 +65,47 @@ export class LoginPatientPageComponent {
     this.visible = !this.visible;
     this.changeType = !this.changeType;
   }
+  private readonly patientService = inject(PatientService);
+  private readonly router = inject(Router);
+
 
   onSubmit(): void {
     if (this.loginPatientForm.valid) {
       this.isLoading.set(true);
       const { patientID, password } = this.loginPatientForm.value;
+
+      // Check for existing active session
+      if (localStorage.getItem('activePatientSession')) {
+        alert('You are already logged in on another tab.');
+        this.isLoading.set(false);
+        return;
+      }
+
       this.patientService
-        .loginPatient({ id: patientID as string, password: password as string }).pipe(takeUntil(this.destroy$))
+        .loginPatient({ id: patientID as string, password: password as string })
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
+            const sessionToken = this.generateSessionToken();
+            localStorage.setItem('activePatientSession', sessionToken);
+            sessionStorage.setItem('sessionToken', sessionToken);
             sessionStorage.setItem('patient', JSON.stringify(response));
-            this.router.navigate(['/patient-page']); // Navigate to patient page on success
+            this.router.navigateByUrl('/patient-page');
           },
-          error: (err) => {
-            this.errorMessage.set('يرجى تأكد من رقم المستخدم أو كلمة المرور') ;
+          error: () => {
+            this.errorMessage.set('Invalid credentials');
             this.isLoading.set(false);
           },
         });
     }
   }
+
+  private generateSessionToken(): string {
+    return `${Date.now()}-${Math.random()}`;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-  
 }

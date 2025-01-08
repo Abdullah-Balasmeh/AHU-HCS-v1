@@ -1,64 +1,32 @@
-<div class="navbar">
-        <nav>
-            <ul>
-                @if(roles().includes('1')){
-                    <li>
-                            <a [routerLink]="['admin']"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            >Admin</a>
-                    </li>
-                }
-                @if(roles().includes('2')){
-                    <li>
-                            <a [routerLink]="['manager']"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            >الإدارة</a>
-                    </li>
-                }
-                @if(roles().includes('3')){
-                    <li>
-                            <a [routerLink]="['reception']"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            >الإستقبال</a>
-                    </li>
-                }
-                @if(roles().includes('4')){
-                    <li>
-                            <a [routerLink]="['clinic']"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            >العيادة</a>
-                    </li>
-                }
-                @if(roles().includes('5')){
-                    <li>
-                            <a [routerLink]="['emergency-male']"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            >الطوارئ الذكور</a>
-                    </li>
-                }
-                @if(roles().includes('6')){
-                    <li>
-                            <a [routerLink]="['emergency-female']"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            >الطوارئ الإناث</a>
-                    </li>
-                }
-                @if(roles().includes('7')){
-                    <li>
-                            <a [routerLink]="['pharmacy']"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                            >الصيدلية</a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    </div>
-
-
+<nav class="navbar">
+    <ul>
+        <li *ngIf="roles().includes('Admin')">
+            <a [routerLink]="['/user-pages/admin-page']"
+                routerLinkActive="active">Admin</a>
+        </li>
+        <li *ngIf="roles().includes('Manager')">
+            <a [routerLink]="['/user-pages/manager-page']"
+                routerLinkActive="active">Manager</a>
+        </li>
+        <li *ngIf="roles().includes('Receptionist')">
+            <a [routerLink]="['/user-pages/reception-page']"
+                routerLinkActive="active">Reception</a>
+        </li>
+        <li *ngIf="roles().includes('Doctor')">
+            <a [routerLink]="['/user-pages/clinic-page']"
+                routerLinkActive="active">Clinic</a>
+        </li>
+        <li *ngIf="roles().includes('NurseM')">
+            <a [routerLink]="['/user-pages/emergency-male-page']"
+                routerLinkActive="active">Emergency Male</a>
+        </li>
+        <li *ngIf="roles().includes('NurseF')">
+            <a [routerLink]="['/user-pages/emergency-female-page']"
+                routerLinkActive="active">Emergency Female</a>
+        </li>
+        <li *ngIf="roles().includes('Pharmacist')">
+            <a [routerLink]="['/user-pages/pharmacy-page']"
+                routerLinkActive="active">Pharmacy</a>
+        </li>
+    </ul>
+</nav>

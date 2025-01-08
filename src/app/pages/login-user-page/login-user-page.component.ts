@@ -1,17 +1,17 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from 'express';
-import { Subject, takeUntil } from 'rxjs';
-import { PatientService } from '../../services/patient.service';
-import { LoadingImageComponent } from "../../components/shared/loading-image/loading-image.component";
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
+import { LoadingImageComponent } from '../../components/shared/loading-image/loading-image.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login-user-page',
   standalone: true,
-  imports: [LoadingImageComponent,ReactiveFormsModule, CommonModule,],
+  imports: [ReactiveFormsModule, CommonModule, LoadingImageComponent],
   templateUrl: './login-user-page.component.html',
-  styleUrl: './login-user-page.component.css'
+  styleUrls: ['./login-user-page.component.css'],
 })
 export class LoginUserPageComponent {
   errorMessage = signal<string>('');
@@ -19,8 +19,9 @@ export class LoginUserPageComponent {
   visible = true;
   changeType = true;
   private readonly destroy$ = new Subject<void>();
+
   loginUserForm = new FormGroup({
-    UserID: new FormControl('', [
+    userID: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(12),
@@ -32,63 +33,119 @@ export class LoginUserPageComponent {
     ]),
   });
 
-  private readonly patientService = inject(PatientService);
+  private readonly userService = inject(UserService);
   private readonly router = inject(Router);
-  // Validate user ID field
-  validateFieldID(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const value = inputElement.value.trim();
 
-    if (value.length < 2 || value.length > 12) {
-      inputElement.setCustomValidity(
-        'يرجى إدخال رقم المريض على أن لا يقل عن رقمان ولا يزيد عن 12 رقم'
-      );
-    } else {
-      inputElement.setCustomValidity('');
-    }
+ // Validate patient ID field
+ validateFieldID(event: Event): void {
+  const inputElement = event.target as HTMLInputElement;
+  const value = inputElement.value.trim();
+
+  if (value.length < 2 || value.length > 12) {
+    inputElement.setCustomValidity(
+      'يرجى إدخال رقم المريض على أن لا يقل عن رقمان ولا يزيد عن 12 رقم'
+    );
+  } else {
+    inputElement.setCustomValidity('');
   }
+}
 
-  // Validate password field
-  validateFieldPassword(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const value = inputElement.value.trim();
+// Validate password field
+validateFieldPassword(event: Event): void {
+  const inputElement = event.target as HTMLInputElement;
+  const value = inputElement.value.trim();
 
-    if (value.length < 4 || value.length > 26) {
-      inputElement.setCustomValidity(
-        'يرجى إدخال كلمة المرور على أن لا تقل عن 4 خانات ولا تزيد عن 26 خانة'
-      );
-    } else {
-      inputElement.setCustomValidity('');
-    }
+  if (value.length < 4 || value.length > 26) {
+    inputElement.setCustomValidity(
+      'يرجى إدخال كلمة المرور على أن لا تقل عن 4 خانات ولا تزيد عن 26 خانة'
+    );
+  } else {
+    inputElement.setCustomValidity('');
   }
+}
 
-  // Toggle password visibility
-  togglePasswordVisibility(): void {
-    this.visible = !this.visible;
-    this.changeType = !this.changeType;
-  }
+// Toggle password visibility
+togglePasswordVisibility(): void {
+  this.visible = !this.visible;
+  this.changeType = !this.changeType;
+}
 
   onSubmit(): void {
     if (this.loginUserForm.valid) {
       this.isLoading.set(true);
-      const { UserID, password } = this.loginUserForm.value;
-      this.patientService
-        .loginPatient({ id: UserID as string, password: password as string }).pipe(takeUntil(this.destroy$))
+      const { userID, password } = this.loginUserForm.value;
+
+      // Check if already logged in on another tab
+      if (localStorage.getItem('activeUserSession')) {
+        alert('You are already logged in on another tab.');
+        this.isLoading.set(false);
+        return;
+      }
+
+      this.userService
+        .loginUser({ id: userID as string, password: password as string })
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
-            sessionStorage.setItem('patient', JSON.stringify(response));
-            this.router.navigate(['/patient-page']); // Navigate to patient page on success
+            const sessionToken = this.generateSessionToken();
+            localStorage.setItem('activeUserSession', sessionToken);
+            sessionStorage.setItem('sessionToken', sessionToken);
+            sessionStorage.setItem('user', JSON.stringify(response.user));
+
+            const userRoles = response.user.roles || [];
+            const targetRoute =
+              userRoles.length > 0
+                ? this.getFirstRoleRoute(userRoles[0].roleName)
+                : '/user-pages';
+
+            this.router.navigate([targetRoute]).then(() => {
+              history.replaceState({}, '', targetRoute);
+            });
+
+            this.setupSessionListener();
           },
-          error: (err) => {
-            this.errorMessage.set('يرجى تأكد من رقم المستخدم أو كلمة المرور') ;
+          error: () => {
+            this.errorMessage.set('Invalid credentials');
             this.isLoading.set(false);
           },
         });
     }
   }
+
+  private generateSessionToken(): string {
+    return `${Date.now()}-${Math.random()}`;
+  }
+
+  private getFirstRoleRoute(role: string): string {
+    switch (role) {
+      case 'Admin':
+        return '/user-pages/admin-page';
+      case 'Manager':
+        return '/user-pages/manager-page';
+      case 'Receptionist':
+        return '/user-pages/reception-page';
+      case 'Doctor':
+        return '/user-pages/clinic-page';
+      case 'NurseM':
+        return '/user-pages/emergency-male-page';
+      case 'NurseF':
+        return '/user-pages/emergency-female-page';
+      case 'Pharmacist':
+        return '/user-pages/pharmacy-page';
+      default:
+        return '/user-pages';
+    }
+  }
+
+  private setupSessionListener(): void {
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.clear();
+      localStorage.removeItem('activeUserSession');
+    });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-  
 }

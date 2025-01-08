@@ -1,0 +1,12 @@
+@if( roles().length > 1)
+{
+    <div class="top-center">
+        <app-navbar></app-navbar>
+    </div>
+}
+<router-outlet></router-outlet>
+<footer>
+    <div class="logout-footer" (click)="onLogout()">
+        <app-logout-btn></app-logout-btn>
+    </div>
+</footer>

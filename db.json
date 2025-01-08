@@ -2,38 +2,31 @@
   "roles": [
     {
       "roleID": "1",
-      "roleName": "Admin",
-      "id": "e296"
+      "roleName": "Admin"
     },
     {
       "roleID": "2",
-      "roleName": "Manager",
-      "id": "e4ad"
+      "roleName": "Manager"
     },
     {
       "roleID": "3",
-      "roleName": "Receptionist",
-      "id": "31d6"
+      "roleName": "Receptionist"
     },
     {
       "roleID": "4",
-      "roleName": "Doctor",
-      "id": "763e"
+      "roleName": "Doctor"
     },
     {
       "roleID": "5",
-      "roleName": "NurseM",
-      "id": "fe40"
+      "roleName": "NurseM"
     },
     {
       "roleID": "6",
-      "roleName": "NurseF",
-      "id": "3378"
+      "roleName": "NurseF"
     },
     {
       "roleID": "7",
-      "roleName": "Pharmacist",
-      "id": "efc4"
+      "roleName": "Pharmacist"
     }
   ],
   "users": [

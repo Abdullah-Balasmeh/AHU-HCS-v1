@@ -41,9 +41,7 @@ export class PatientPageComponent {
       if (this.patient &&!this.patient.bloodType) {
         this.globalStateService.isEditing = true;
       }
-    } else {
-      this.router.navigate(['/login-patient']); // Redirect if not logged in
-    }
+    } 
   }
 
   onDataSaved(updatedPatient: Patient): void {
@@ -56,16 +54,13 @@ export class PatientPageComponent {
     this.globalStateService.isEditing = true; // Enable edit mode
   }
 
-
-
-
-  
-
-  
   onLogout(): void {
-    this.patientService.logoutPatient();
+    sessionStorage.clear();
+    localStorage.removeItem('activePatientSession');
+    localStorage.removeItem('currentSession');
     this.router.navigate(['/login-patient']);
   }
+  
 
   onTabChange(tab: string): void {
     this.selectedTab = tab;
