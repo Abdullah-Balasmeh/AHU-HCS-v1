@@ -54,7 +54,7 @@ export class PatientPageComponent {
 
   onLogout(): void {
     const confirmLogout = confirm(
-      'Are you sure you want to logout?'
+      'هل أنت متأكد من الخروج؟'
     );
     if(confirmLogout)
       {

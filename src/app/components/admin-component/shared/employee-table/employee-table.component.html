@@ -1,0 +1,46 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الموظف</th>
+            <th>رقم الموظف</th>
+            <th>الوظيفة</th>
+            <th>تاريخ التسجيل</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <div class="primaryColor btn loading"
+        *ngIf="isLoading()"><app-loading-image></app-loading-image></div>
+    <tbody>
+        <tr *ngFor="let user of users; let index = index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ user.userName }}</td>
+            <td>{{ user.userId }}</td>
+            <td>{{ user.roles?.[0] || 'No role assigned' }}</td>
+            <td>{{ user.createDate ? (user.createDate | date: 'yyyy-MM-dd') :
+                'N/A' }}</td>
+
+            <td>
+                <button class="table-btn" id="icon-edit" (click)="openEditModal(user)">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="table-btn" id="icon-delete"
+                    (click)="deleteUser(user.userId)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+
+@if(isEditModalOpen())
+{
+<div class="model" >
+    <app-employee-edit 
+    [user]="selectedUser"
+    (close)="closeDialog()">
+    </app-employee-edit>
+</div>
+
+}

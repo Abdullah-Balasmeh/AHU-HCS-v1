@@ -1,0 +1,9 @@
+.loading{
+    margin: 20px;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+}

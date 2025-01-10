@@ -1,1 +1,16 @@
-<p>admin-page works!</p>
+<div *ngIf="!selectedCard()" class="card-box whiteColor shadowColor" id="cardForm">
+    <h1>إدارة النظام</h1>
+    <div class="card" id="card-1" (click)="showComponent('employee-section')">
+        <h3>إدارة شؤون الموظفين</h3>
+    </div>
+    <div class="card" id="card-2" (click)="showComponent('list-section')">
+        <h3>إدارة القوائم الطبية</h3>
+    </div>
+</div>
+
+<div *ngIf="selectedCard() === 'employee-section'">
+    <app-employee-section (resetEvent)="handleReset()"></app-employee-section>
+</div>
+<div *ngIf="selectedCard() === 'list-section'">
+    <!-- <app-list-section (resetEvent)="handleReset()"></app-list-section> -->
+</div>

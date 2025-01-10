@@ -13,8 +13,9 @@ export class MultiSelectDropdownComponent {
     @Input() options: string[] = [];
     @Input() placeHolder: string = '';
     @Output() selectedChange = new EventEmitter<string[]>();
-
     @Input() selectedOptions: string[] = [];
+    
+
     customOptions: string[] = [];
     filteredOptions: string[] = [];
     searchTerm: string = '';
@@ -72,6 +73,10 @@ export class MultiSelectDropdownComponent {
 
         this.filterOptions();
         this.selectedChange.emit(this.selectedOptions); // Emit the updated options
+    }
+    reset(): void {
+        this.selectedOptions = [];
+        this.selectedChange.emit(this.selectedOptions);
     }
     @HostListener('document:click', ['$event'])
     onClickOutside(event: MouseEvent): void {

@@ -1,0 +1,71 @@
+<form [formGroup]="registEmpForm" (ngSubmit)="onSubmit()">
+    <div class="Box-grid">
+        <div class="input-box" id="epmNum">
+            <h6 class="text-type">رقم الموظف:</h6>
+            <input
+                formControlName="empId"
+                class="inputText"
+                type="text"
+                maxlength="12"
+                required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                autocomplete="off">
+        </div>
+        <div class="input-box" id="empName">
+            <h6 class="text-type">اسم الموظف:</h6>
+            <input
+                formControlName="empName"
+                class="inputText"
+                type="text">
+        </div>
+        <div class="input-box" id="empPassword">
+            <h6 class="text-type">كلمة المرور:</h6>
+            <span (click)="togglePasswordVisibility()">
+            </span>
+            <input
+                formControlName="password"
+                class="inputText"
+                [type]="changeType ? 'password' : 'text'"
+                minlength="4"
+                maxlength="26">
+        </div>
+        <div class="input-box" id="empConfPassword">
+            <h6 class="text-type">تأكيد كلمة المرور:</h6>
+            <div class="input-container">
+                <input
+                    formControlName="ConfirmPassword"
+                    class="inputText"
+                    [type]="changeType ? 'password' : 'text'"
+                    minlength="4"
+                    maxlength="26">
+                <i
+                    [ngClass]="visible ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"
+                    class="toggle-password-icon"
+                    (click)="togglePasswordVisibility()">
+                </i>
+            </div>
+        </div>
+
+        <div id="empJob">
+            <h6 class="text-type">الوظيفة:</h6>
+            <app-multi-select-dropdown
+                placeHolder="الوظيفة"
+                [options]="['Admin', 'Manager', 'Receptionist', 'Doctor', 'Nurse Male', 'Nurse Female', 'Pharmacist']"
+                (selectedChange)="Role($event)">
+            </app-multi-select-dropdown>
+
+        </div>
+        <div class="footer-btn">
+            <p class="In-valid" *ngIf="errorMessage()">{{errorMessage()}}</p>
+            <p class="valid" *ngIf="successMessage()">تم تسجيل الموظف بنجاح</p>
+            <ng-container *ngIf="isLoading(); else notLoading">
+                <div
+                    class="btn primaryColor"><app-loading-image></app-loading-image></div>
+            </ng-container>
+            <ng-template #notLoading>
+                <button type="submit" class="btn primaryColor">تسجيل</button>
+            </ng-template>
+        </div>
+
+    </div>
+</form>

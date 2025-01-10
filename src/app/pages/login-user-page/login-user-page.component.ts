@@ -77,7 +77,7 @@ onSubmit(): void {
 
     // Prevent login if already logged in another tab
     if (localStorage.getItem('activeUserSession')) {
-      alert('You are already logged in on another tab.');
+      alert('لقد قمت بالفعل بتسجيل الدخول على علامة تبويب أخرى.');
       this.isLoading.set(false);
       return;
     }
@@ -96,7 +96,7 @@ onSubmit(): void {
           const userRoles = response.user.roles || [];
           const targetRoute =
             userRoles.length > 0
-              ? this.getFirstRoleRoute(userRoles[0].roleName)
+              ? this.getFirstRoleRoute(userRoles[0])
               : '/user-pages';
 
           this.router.navigate([targetRoute], { replaceUrl: true }).then(() => {
@@ -104,7 +104,7 @@ onSubmit(): void {
           });
         },
         error: () => {
-          this.errorMessage.set('Invalid credentials');
+          this.errorMessage.set('يرجى تأكد من رقم المستخدم وكلمة المرور');
           this.isLoading.set(false);
         },
       });

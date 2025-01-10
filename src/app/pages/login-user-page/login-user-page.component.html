@@ -41,7 +41,7 @@
             <p class="In-valid" *ngIf="errorMessage()">{{ errorMessage() }}</p>
 
             <!-- Submit Button -->
-            <div>
+            <div class="footer-btn">
                 <ng-container *ngIf="isLoading(); else notLoading">
                     <div
                         class="btn primaryColor"><app-loading-image></app-loading-image></div>

@@ -1,0 +1,11 @@
+<div class="container">
+    <app-employee-tab 
+        (tabChange)="onTabChange($event)"
+        (closeTab)="onClose()">
+    </app-employee-tab>
+
+    <div>
+        <app-employee-regist *ngIf="selectedTab === 'employee-regist'"></app-employee-regist>
+        <app-employee-table *ngIf="selectedTab === 'employee-table'"></app-employee-table>
+    </div>
+</div>

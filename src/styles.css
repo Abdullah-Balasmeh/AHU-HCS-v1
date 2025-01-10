@@ -294,6 +294,10 @@ main{
     margin-bottom: 10px;
     font-weight: bold;
 }
+.valid{
+    color: rgb(102, 161, 12);
+    font-weight: bold;
+}
 
 /* Form style */
 form {
@@ -411,15 +415,17 @@ td {
     background-color: #e70f0f;
 }
 
-#close-btn {
-    display: inline;
+#close-btn{
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
     margin: 10px 0 10px 10px;
     background-color: #4D95A7;
     padding: 6px 10px;
     border-radius: 10px;
     font-weight: bolder;
+    width: max-content;
 }
-
 
 #close-btn:focus {
     outline: 0;

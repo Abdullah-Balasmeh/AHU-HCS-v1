@@ -1,0 +1,15 @@
+/* Active tab text color */
+#tabP-1:checked ~ .nav-box nav label .tab-1,
+#tabH-2:checked ~ .nav-box nav label .tab-2{
+    color: #AEDDDC;
+}
+/* Tab slider position */
+#tabP-1:checked ~ nav .slider {
+    right: 0%;
+    width: 50%;
+}
+
+#tabH-2:checked ~ nav .slider {
+    right: 55%;
+    width: 40%;
+}

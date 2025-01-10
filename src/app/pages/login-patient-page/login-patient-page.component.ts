@@ -76,7 +76,7 @@ export class LoginPatientPageComponent {
   
       // Prevent login if already logged in another tab
       if (localStorage.getItem('activePatientSession')) {
-        alert('You are already logged in on another tab.');
+        alert('لقد قمت بالفعل بتسجيل الدخول على علامة تبويب أخرى.');
         this.isLoading.set(false);
         return;
       }
@@ -93,7 +93,7 @@ export class LoginPatientPageComponent {
             this.router.navigate(['/patient-page'], { replaceUrl: true });
           },
           error: () => {
-            this.errorMessage.set('Invalid credentials');
+            this.errorMessage.set('يرجى تأكد من رقم المستخدم وكلمة المرور');
             this.isLoading.set(false);
           },
         });
