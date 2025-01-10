@@ -25,10 +25,15 @@ export class UserPageComponent {
   }
 
   onLogout(): void {
-    localStorage.removeItem('activeUserSession');
-    sessionStorage.removeItem('sessionToken');
-    sessionStorage.removeItem('user');
-    this.router.navigate(['/login-user']);
+    const confirmLogout = confirm(
+      'Are you sure you want to logout?'
+    );
+    if(confirmLogout){
+      localStorage.removeItem('activeUserSession');
+      sessionStorage.removeItem('sessionToken');
+      sessionStorage.removeItem('user');
+      this.router.navigate(['/login-user']);
+    }
   }
   
 }

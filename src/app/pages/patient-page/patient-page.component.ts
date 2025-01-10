@@ -53,10 +53,16 @@ export class PatientPageComponent {
   }
 
   onLogout(): void {
-    localStorage.removeItem('activePatientSession');
-    sessionStorage.removeItem('sessionToken');
-    sessionStorage.removeItem('patient');
-    this.router.navigate(['/login-patient']);
+    const confirmLogout = confirm(
+      'Are you sure you want to logout?'
+    );
+    if(confirmLogout)
+      {
+        localStorage.removeItem('activePatientSession');
+        sessionStorage.removeItem('sessionToken');
+        sessionStorage.removeItem('patient');
+        this.router.navigate(['/login-patient']);
+      }
   }
   
 

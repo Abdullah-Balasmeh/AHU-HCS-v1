@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./components/main/header/header.component";
@@ -10,12 +10,15 @@ import { HeaderComponent } from "./components/main/header/header.component";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: object,
     private readonly router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     if (this.isBrowser()) {
+      this.handleSessionBasedRedirection();
       this.setupListeners();
     }
   }
@@ -24,28 +27,27 @@ export class AppComponent {
     return isPlatformBrowser(this.platformId);
   }
 
-  private setupListeners(): void {
-    window.addEventListener('popstate', this.handleBackNavigation.bind(this));
-    window.addEventListener('beforeunload', this.clearSessionOnClose.bind(this));
-    this.initializeHistoryState();
-  }
-
-  private initializeHistoryState(): void {
+  private handleSessionBasedRedirection(): void {
     const isPatient = sessionStorage.getItem('patient');
     const isUser = sessionStorage.getItem('user');
     const currentUrl = this.router.url;
 
+    // Ensure proper redirection based on session state only if the user lands on an invalid page
     if (isPatient && currentUrl === '/home') {
       history.replaceState({ patient: true }, '', '/patient-page');
       this.router.navigate(['/patient-page'], { replaceUrl: true });
     } else if (isUser && currentUrl === '/home') {
-      history.replaceState({ user: true }, '', '/user-pages');
       this.router.navigate(['/user-pages'], { replaceUrl: true });
-    } else if (isPatient && currentUrl === '/patient-page') {
-      history.replaceState({ patient: true }, '', '/patient-page');
-    } else if (isUser && currentUrl === '/user-pages') {
-      history.replaceState({ user: true }, '', '/user-pages');
     }
+    // If no valid session exists, do not redirect from the current URL
+    else if (!isPatient && !isUser && currentUrl !== '/home') {
+      this.router.navigate(['/home'], { replaceUrl: true });
+    }
+  }
+
+  private setupListeners(): void {
+    window.addEventListener('popstate', this.handleBackNavigation.bind(this));
+    window.addEventListener('beforeunload', this.persistSessionOnReload.bind(this));
   }
 
   private handleBackNavigation(event: PopStateEvent): void {
@@ -78,17 +80,21 @@ export class AppComponent {
 
   private redirectToCorrectPage(isPatient: boolean, isUser: boolean): void {
     if (isPatient) {
-      history.replaceState({ patient: true }, '', '/patient-page');
       this.router.navigate(['/patient-page'], { replaceUrl: true });
     } else if (isUser) {
-      history.replaceState({ user: true }, '', '/user-pages');
       this.router.navigate(['/user-pages'], { replaceUrl: true });
     }
   }
 
-  private clearSessionOnClose(): void {
-    sessionStorage.clear();
-    localStorage.clear();
+  private persistSessionOnReload(): void {
+    const isPatient = sessionStorage.getItem('patient');
+    const isUser = sessionStorage.getItem('user');
+    const currentUrl = this.router.url;
+
+    // Save the current route into sessionStorage
+    if (isPatient || isUser) {
+      sessionStorage.setItem('lastUrl', currentUrl);
+    }
   }
 
   private logout(): void {
