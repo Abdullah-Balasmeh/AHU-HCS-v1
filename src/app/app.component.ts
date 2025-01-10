@@ -20,9 +20,15 @@ export class AppComponent implements OnInit {
     if (this.isBrowser()) {
       this.handleSessionBasedRedirection();
       this.setupListeners();
-    }
+      
+}
   }
+private clearStorage(): void {
+  sessionStorage.clear();
+  localStorage.clear();
+}
 
+  
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
   }
@@ -46,8 +52,8 @@ export class AppComponent implements OnInit {
   }
 
   private setupListeners(): void {
-    window.addEventListener('popstate', this.handleBackNavigation.bind(this));
-    window.addEventListener('beforeunload', this.persistSessionOnReload.bind(this));
+    window.addEventListener('popstate', this.handleBackNavigation);
+    window.addEventListener('beforeunload', this.persistSessionOnReload);
   }
 
   private handleBackNavigation(event: PopStateEvent): void {
