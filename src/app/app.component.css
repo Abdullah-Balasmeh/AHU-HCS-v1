@@ -8,16 +8,6 @@ header {
     box-sizing: border-box; 
 }
 
-.top-center {
-    position: relative; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    text-align: center; 
-    white-space: nowrap; 
-    max-width: 50%; 
-    overflow: hidden;
-    margin-top: 50px;
-}
 
 .top-right {
     text-align: right; 
@@ -30,10 +20,6 @@ header {
         padding: 0 15px; 
     }
 
-    .top-center {
-        max-width: 50%;
-        margin-top: 12%;
-    }
 }
 /* Responsive adjustments */
 @media (max-width: 1024px) { 
@@ -41,9 +27,6 @@ header {
         padding: 0 15px;
     }
 
-    .top-center {
-        max-width: 40%;
-    }
 }
 
 @media (max-width: 768px) {
@@ -53,11 +36,7 @@ header {
         height: auto;
     }
 
-    .top-center {
-        left: 0;
-        transform: none; 
 
-    }
 
     .top-right {
         margin-left: 0;

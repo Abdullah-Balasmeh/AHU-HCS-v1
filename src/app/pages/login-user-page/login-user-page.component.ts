@@ -37,7 +37,7 @@ export class LoginUserPageComponent {
   private readonly router = inject(Router);
 
  // Validate patient ID field
- validateFieldID(event: Event): void {
+validateFieldID(event: Event): void {
   const inputElement = event.target as HTMLInputElement;
   const value = inputElement.value.trim();
 
@@ -70,47 +70,46 @@ togglePasswordVisibility(): void {
   this.changeType = !this.changeType;
 }
 
-  onSubmit(): void {
-    if (this.loginUserForm.valid) {
-      this.isLoading.set(true);
-      const { userID, password } = this.loginUserForm.value;
+onSubmit(): void {
+  if (this.loginUserForm.valid) {
+    this.isLoading.set(true);
+    const { userID, password } = this.loginUserForm.value;
 
-      // Check if already logged in on another tab
-      if (localStorage.getItem('activeUserSession')) {
-        alert('You are already logged in on another tab.');
-        this.isLoading.set(false);
-        return;
-      }
-
-      this.userService
-        .loginUser({ id: userID as string, password: password as string })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (response) => {
-            const sessionToken = this.generateSessionToken();
-            localStorage.setItem('activeUserSession', sessionToken);
-            sessionStorage.setItem('sessionToken', sessionToken);
-            sessionStorage.setItem('user', JSON.stringify(response.user));
-
-            const userRoles = response.user.roles || [];
-            const targetRoute =
-              userRoles.length > 0
-                ? this.getFirstRoleRoute(userRoles[0].roleName)
-                : '/user-pages';
-
-            this.router.navigate([targetRoute]).then(() => {
-              history.replaceState({}, '', targetRoute);
-            });
-
-            this.setupSessionListener();
-          },
-          error: () => {
-            this.errorMessage.set('Invalid credentials');
-            this.isLoading.set(false);
-          },
-        });
+    // Prevent login if already logged in another tab
+    if (localStorage.getItem('activeUserSession')) {
+      alert('You are already logged in on another tab.');
+      this.isLoading.set(false);
+      return;
     }
+
+    this.userService
+      .loginUser({ id: userID as string, password: password as string })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          const sessionToken = this.generateSessionToken();
+          localStorage.setItem('activeUserSession', 'true'); // Persistent session indicator
+          sessionStorage.setItem('user', JSON.stringify(response.user)); // Persistent user data
+          sessionStorage.setItem('sessionToken', sessionToken); // Session token (tab-specific)
+          
+
+          const userRoles = response.user.roles || [];
+          const targetRoute =
+            userRoles.length > 0
+              ? this.getFirstRoleRoute(userRoles[0].roleName)
+              : '/user-pages';
+
+          this.router.navigate([targetRoute], { replaceUrl: true }).then(() => {
+            history.replaceState({}, '', targetRoute);
+          });
+        },
+        error: () => {
+          this.errorMessage.set('Invalid credentials');
+          this.isLoading.set(false);
+        },
+      });
   }
+}
 
   private generateSessionToken(): string {
     return `${Date.now()}-${Math.random()}`;
@@ -137,12 +136,12 @@ togglePasswordVisibility(): void {
     }
   }
 
-  private setupSessionListener(): void {
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.clear();
-      localStorage.removeItem('activeUserSession');
-    });
-  }
+  // private setupSessionListener(): void {
+  //   window.addEventListener('beforeunload', () => {
+  //     sessionStorage.clear();
+  //     localStorage.removeItem('activeUserSession');
+  //   });
+  // }
 
   ngOnDestroy(): void {
     this.destroy$.next();

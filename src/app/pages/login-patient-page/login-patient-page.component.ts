@@ -73,24 +73,24 @@ export class LoginPatientPageComponent {
     if (this.loginPatientForm.valid) {
       this.isLoading.set(true);
       const { patientID, password } = this.loginPatientForm.value;
-
-      // Check for existing active session
+  
+      // Prevent login if already logged in another tab
       if (localStorage.getItem('activePatientSession')) {
         alert('You are already logged in on another tab.');
         this.isLoading.set(false);
         return;
       }
-
+  
       this.patientService
         .loginPatient({ id: patientID as string, password: password as string })
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
             const sessionToken = this.generateSessionToken();
-            localStorage.setItem('activePatientSession', sessionToken);
+            localStorage.setItem('activePatientSession', 'true');
             sessionStorage.setItem('sessionToken', sessionToken);
             sessionStorage.setItem('patient', JSON.stringify(response));
-            this.router.navigateByUrl('/patient-page');
+            this.router.navigate(['/patient-page'], { replaceUrl: true });
           },
           error: () => {
             this.errorMessage.set('Invalid credentials');
@@ -99,6 +99,7 @@ export class LoginPatientPageComponent {
         });
     }
   }
+  
 
   private generateSessionToken(): string {
     return `${Date.now()}-${Math.random()}`;

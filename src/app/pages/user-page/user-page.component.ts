@@ -25,9 +25,9 @@ export class UserPageComponent {
   }
 
   onLogout(): void {
-    sessionStorage.clear();
     localStorage.removeItem('activeUserSession');
-    localStorage.removeItem('currentSession');
+    sessionStorage.removeItem('sessionToken');
+    sessionStorage.removeItem('user');
     this.router.navigate(['/login-user']);
   }
   

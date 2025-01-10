@@ -1,0 +1,37 @@
+.top-center {
+    position: absolute; 
+    left: 50%; 
+    top:0;
+    transform: translateX(-50%); 
+    text-align: center; 
+    white-space: nowrap; 
+    max-width: 50%; 
+    overflow: hidden;
+    margin-top: 50px;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1335px) { 
+    .top-center {
+        max-width: 50%;
+        margin-top: 12%;
+    }
+}
+/* Responsive adjustments */
+@media (max-width: 1024px) { 
+    .top-center {
+        max-width: 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-center {
+        left: 0;
+        transform: none; 
+
+    }
+}
+
+
+

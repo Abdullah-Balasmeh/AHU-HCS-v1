@@ -1,28 +1,22 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { NavigationStart, Router, RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './components/main/header/header.component';
+import { Router, RouterOutlet } from '@angular/router';
+import { HeaderComponent } from "./components/main/header/header.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [HeaderComponent, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  private currentUrl: string = '/';
-  private previousUrl: string = '/';
-  private allowNavigation = true; // Flag to control navigation
-
   constructor(
-    @Inject(PLATFORM_ID) private platformId: object,
+    @Inject(PLATFORM_ID) private readonly platformId: object,
     private readonly router: Router
   ) {
     if (this.isBrowser()) {
-      this.setupNavigationTracking();
-      this.setupBackNavigationHandler();
-      this.setupTabCloseHandler();
+      this.setupListeners();
     }
   }
 
@@ -30,53 +24,76 @@ export class AppComponent {
     return isPlatformBrowser(this.platformId);
   }
 
-  private setupNavigationTracking(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.previousUrl = this.currentUrl;
-        this.currentUrl = event.url;
-      }
-    });
+  private setupListeners(): void {
+    window.addEventListener('popstate', this.handleBackNavigation.bind(this));
+    window.addEventListener('beforeunload', this.clearSessionOnClose.bind(this));
+    this.initializeHistoryState();
   }
 
-  private setupBackNavigationHandler(): void {
-    window.addEventListener('popstate', (event) => {
-      if (!this.allowNavigation) {
-        // Prevent navigation if "Cancel" was clicked
-        this.allowNavigation = true;
-        history.pushState(null, '', this.currentUrl);
-        return;
-      }
+  private initializeHistoryState(): void {
+    const isPatient = sessionStorage.getItem('patient');
+    const isUser = sessionStorage.getItem('user');
+    const currentUrl = this.router.url;
 
-      if (
-        (this.currentUrl === '/patient-page' || this.currentUrl === '/user-pages') &&
-        (this.previousUrl === '/login-user' || this.previousUrl === '/login-patient')
-      ) {
-        const confirmLogout = window.confirm(
-          'Are you sure you want to go back? This will log you out.'
-        );
-
-        if (confirmLogout) {
-          this.logoutAndRedirect();
-        } else {
-          this.allowNavigation = false; // Prevent navigation
-          history.pushState(null, '', this.currentUrl); // Restore current page
-        }
-      }
-    });
+    if (isPatient && currentUrl === '/home') {
+      history.replaceState({ patient: true }, '', '/patient-page');
+      this.router.navigate(['/patient-page'], { replaceUrl: true });
+    } else if (isUser && currentUrl === '/home') {
+      history.replaceState({ user: true }, '', '/user-pages');
+      this.router.navigate(['/user-pages'], { replaceUrl: true });
+    } else if (isPatient && currentUrl === '/patient-page') {
+      history.replaceState({ patient: true }, '', '/patient-page');
+    } else if (isUser && currentUrl === '/user-pages') {
+      history.replaceState({ user: true }, '', '/user-pages');
+    }
   }
 
-  private setupTabCloseHandler(): void {
-    window.addEventListener('beforeunload', () => {
-      localStorage.removeItem('activeUserSession');
-      localStorage.removeItem('activePatientSession');
-    });
+  private handleBackNavigation(event: PopStateEvent): void {
+    const isPatient = !!sessionStorage.getItem('patient');
+    const isUser = !!sessionStorage.getItem('user');
+    const currentUrl = this.router.url;
+
+    if (isPatient && currentUrl === '/patient-page') {
+      this.handleLogoutConfirmation(event, '/patient-page');
+    } else if (isUser && currentUrl === '/user-pages') {
+      this.handleLogoutConfirmation(event, '/user-pages');
+    } else if (currentUrl === '/home' && (isPatient || isUser)) {
+      this.redirectToCorrectPage(isPatient, isUser);
+    }
   }
 
-  private logoutAndRedirect(): void {
+  private handleLogoutConfirmation(event: PopStateEvent, currentPath: string): void {
+    event.preventDefault();
+
+    const confirmLogout = confirm(
+      'Are you sure you want to go back to the login page? This will log you out.'
+    );
+
+    if (confirmLogout) {
+      this.logout();
+    } else {
+      history.pushState(null, '', currentPath); // Restore the current page state
+    }
+  }
+
+  private redirectToCorrectPage(isPatient: boolean, isUser: boolean): void {
+    if (isPatient) {
+      history.replaceState({ patient: true }, '', '/patient-page');
+      this.router.navigate(['/patient-page'], { replaceUrl: true });
+    } else if (isUser) {
+      history.replaceState({ user: true }, '', '/user-pages');
+      this.router.navigate(['/user-pages'], { replaceUrl: true });
+    }
+  }
+
+  private clearSessionOnClose(): void {
     sessionStorage.clear();
-    localStorage.removeItem('activeUserSession');
-    localStorage.removeItem('activePatientSession');
-    this.router.navigate(['/home']);
+    localStorage.clear();
+  }
+
+  private logout(): void {
+    sessionStorage.clear();
+    localStorage.clear();
+    this.router.navigate(['/home'], { replaceUrl: true });
   }
 }

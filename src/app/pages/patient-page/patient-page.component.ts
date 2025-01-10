@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { PatientReportTableComponent } from "../../components/patient-components/patient-report-table/patient-report-table.component";
 import { PatientTabComponent } from "../../components/patient-components/patient-tab/patient-tab.component";
 import { CommonModule } from '@angular/common';
-import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../interfaces/patient.interface';
 import { Router } from '@angular/router';
 import { PatientInfoFirstComponent } from "../../components/patient-components/patient-info-first/patient-info-first.component";
@@ -28,7 +27,6 @@ export class PatientPageComponent {
   selectedTab: string = 'patient-info';
   patient: Patient | null = null;
   public isEditing = signal<boolean>(false) ;
-  private readonly patientService = inject(PatientService);
   private readonly router = inject(Router);
   globalStateService = inject(GlobalStateService);
 
@@ -55,9 +53,9 @@ export class PatientPageComponent {
   }
 
   onLogout(): void {
-    sessionStorage.clear();
     localStorage.removeItem('activePatientSession');
-    localStorage.removeItem('currentSession');
+    sessionStorage.removeItem('sessionToken');
+    sessionStorage.removeItem('patient');
     this.router.navigate(['/login-patient']);
   }
   

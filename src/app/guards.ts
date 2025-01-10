@@ -7,51 +7,54 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class AuthGuard implements CanActivate {
     constructor(
-        @Inject(PLATFORM_ID) private platformId: object,
+        @Inject(PLATFORM_ID) private readonly platformId: object,
         private readonly router: Router
     ) { }
 
     canActivate(route: ActivatedRouteSnapshot): boolean {
-        if (this.isBrowser()) {
-            const isPatient = this.getSessionItem('patient');
-            const isUser = this.getSessionItem('user');
+        if (!this.isBrowser()) {
+            console.log('Not in a browser environment');
+            return false;
+        }
 
-            const isLoginPage =
-                route.routeConfig?.path === 'login-user' || route.routeConfig?.path === 'login-patient';
+        const isPatient = this.isSessionActive('patient');
+        const isUser = this.isSessionActive('user');
+        const currentPath = route.routeConfig?.path;
 
-            if (isLoginPage) {
-                if (isPatient || isUser) {
-                    this.redirectAuthenticatedUser();
-                    return false;
-                }
-                return true;
+        console.log(`AuthGuard activated for ${currentPath}. Session state:`, { isPatient, isUser });
+
+        if (this.isLoginPage(currentPath)) {
+            if (isPatient) {
+                console.log('Redirecting logged-in patient to patient page');
+                this.router.navigate(['/patient-page'], { replaceUrl: true });
+                return false;
             }
-
-            if (isPatient || isUser) {
-                return true;
+            if (isUser) {
+                console.log('Redirecting logged-in user to user pages');
+                this.router.navigate(['/user-pages'], { replaceUrl: true });
+                return false;
             }
         }
 
-        this.router.navigate(['/home']);
+        if (isPatient || isUser) {
+            console.log('Access granted for logged-in user/patient');
+            return true;
+        }
+
+        console.log('Redirecting unauthenticated user to home');
+        this.router.navigate(['/home'], { replaceUrl: true });
         return false;
     }
 
-    private redirectAuthenticatedUser(): void {
-        const isPatient = this.getSessionItem('patient');
-        const isUser = this.getSessionItem('user');
+    private isLoginPage(path: string | undefined): boolean {
+        return path === 'login-user' || path === 'login-patient';
+    }
 
-        if (isPatient) {
-            this.router.navigate(['/patient-page']);
-        } else if (isUser) {
-            this.router.navigate(['/user-pages']);
-        }
+    private isSessionActive(key: string): boolean {
+        return this.isBrowser() && !!sessionStorage.getItem(key);
     }
 
     private isBrowser(): boolean {
         return isPlatformBrowser(this.platformId);
-    }
-
-    private getSessionItem(key: string): string | null {
-        return this.isBrowser() ? sessionStorage.getItem(key) : null;
     }
 }
