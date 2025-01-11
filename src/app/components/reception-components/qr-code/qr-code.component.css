@@ -1,0 +1,12 @@
+/* QR style */
+#qr-code {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+img {
+    width: 250px; 
+    height: 250px;
+}

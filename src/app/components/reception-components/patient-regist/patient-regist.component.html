@@ -1,0 +1,76 @@
+<form id="regisPatientForm" [formGroup]="registForm" (ngSubmit)="onSubmit()">
+    <div class="input-box">
+        <h6 class="text-type">رقم المريض:</h6>
+        <input
+            class="inputText"
+            type="text"
+            maxlength="12"
+            formControlName="patientId"
+            required
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+            autocomplete="off">
+            <div id="search-container" (click)="checkPatient()">
+                <ng-container  *ngIf="search(); else notSearch">
+                    <div class="btn text-type primaryColor search-btn"><app-loading-image></app-loading-image></div>
+                </ng-container>
+                <ng-template #notSearch >
+                    <button type="button" class="btn text-type primaryColor search-btn" 
+                    >بحث</button>
+                </ng-template>
+            </div>
+
+            @if(error){
+                <p class="errorColor">{{errorMessage}}</p>
+
+            }
+    </div>
+    @if(registForm.get('patientName')?.value)
+    {
+        <div class="input-box">
+            <h6 class="text-type">اسم المريض:</h6>
+            <input
+                class="inputText"
+                type="text"
+                formControlName="patientName"
+                readonly
+                >
+        </div>
+    }
+
+    <h6 class="text-type">حالة المريض:</h6>
+    <div class="radio-inputs margin">
+        <label class="radio" for="place-1">
+            <input
+                type="radio"
+                formControlName="patientType"
+                value="عيادة"
+                id="place-1">
+            <span class="name">عيادة</span>
+        </label>
+        <label class="radio" for="place-2">
+            <input
+                type="radio"
+                formControlName="patientType"
+                value="طوارئ"
+                id="place-2">
+            <span class="name">طوارئ</span>
+        </label>
+        <label class="radio" for="place-3">
+            <input
+                type="radio"
+                formControlName="patientType"
+                value="متابعة الضغط/السكري"
+                id="place-3">
+            <span class="name">متابعة الضغط/السكري</span>
+        </label>
+    </div>
+    <p *ngIf="success()" class="successColor">تم إضافة المريض/ة بنجاح</p>
+    <div class="margin">
+        <ng-container *ngIf="regist(); else notRegist">
+        <div class="btn primaryColor"><app-loading-image ></app-loading-image></div> 
+        </ng-container>
+        <ng-template #notRegist >
+            <button type="btn" class="btn primaryColor">تسجيل</button>
+        </ng-template>
+    </div>
+</form>

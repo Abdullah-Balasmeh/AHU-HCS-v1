@@ -1,0 +1,28 @@
+<div class="nav-box">
+    <h1>الاستقبال</h1>
+    <!-- Radio Inputs -->
+    <input
+        type="radio"
+        name="slider"
+        id="tabP-1"
+        (change)="selectTab('register-patient')"
+        checked />
+    <input
+        type="radio"
+        name="slider"
+        id="tabH-2"
+        (change)="selectTab('medical-record')" />
+    <input
+        type="radio"
+        name="slider"
+        id="tabT-3"
+        (change)="selectTab('attendance')" />
+        
+    <!-- Navigation Labels -->
+    <nav>
+        <label for="tabP-1" class="tab-1">تسجيل مريض</label>
+        <label for="tabH-2" class="tab-2">السجل الطبي</label>
+        <label for="tabT-3" class="tab-3">تسجيل حضور للمتدربين</label>
+        <div class="slider primaryColor"></div>
+    </nav>
+</div>

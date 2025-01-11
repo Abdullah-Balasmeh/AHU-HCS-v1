@@ -1,0 +1,38 @@
+/* Submit button styling */
+.btn {
+    width: 80%; /* Set the button width less than 100% */
+    padding: 10px 15px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 auto; /* Center the button horizontally */
+    display: block; /* Ensures the button behaves like a block element */
+}
+.margin{
+    margin-bottom: 40px;
+}
+#search-container {
+    width: max-content;
+    display: inline-block;
+}
+
+.search-btn{
+    padding: 7px 10px 7px 20px;
+}
+
+
+.successColor{
+    justify-self: center;
+    align-self: center;
+    margin-bottom: 10px;
+}
+input[type="text"] {
+    min-width: 35%;
+    max-width: 100%;
+    field-sizing: content;
+    padding: 5px;
+    background-color: #F0F0F0;
+    border: 1px solid #4D95A7;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+}

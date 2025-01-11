@@ -1,0 +1,44 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم المريض</th>
+            <th>رقم المريض</th>
+            <th>حالة المريض</th>
+            <th>نوع المريض</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+    <tbody>
+        <!-- <tr *ngFor="let patient of patients; let index = index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.state }}</td>
+            <td>{{ patient.type }}</td>
+            <td>
+                <button class="table-btn" id="icon-edit"
+                >
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="table-btn" id="icon-delete"
+                >
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr> -->
+    </tbody>
+</table>
+
+<!-- @if(isEditModalOpen)
+{
+<div class="model">
+    <app-edit-dialog
+        [patient]="selectedPatient"
+        (save)="saveUpdatedPatient($event)"
+        (close)="closeEditModal()">
+    </app-edit-dialog>
+</div>
+
+} -->
