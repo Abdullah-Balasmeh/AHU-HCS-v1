@@ -13,11 +13,14 @@
     font-size: 18px;
     text-align: center;
 }
-.small-input{
-    width: 80px;
+
+.header-btn{
+    align-items: flex-end;
 }
 
-
+.closeColor{
+    margin-right: 10px;
+}
 .header-input {
     display: flex;
     flex-direction: row;
@@ -39,16 +42,11 @@
     align-self: center;
     width: 80px;
 }
-svg path,
-svg rect {
-    fill: white;
-    height: 20px;
-}
-.errorDiv{
-    display: flex;
-    flex-direction: row;
-    justify-items: flex-start;
-    gap: 50px;
+
+.no-data{
+    align-self: center;
+    justify-self: center;
+    color: #4d95a7;
 }
 .primaryColor{
     margin-right: 5px;

@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
       // Assume 5 minutes of inactivity marks a stale session.
       localStorage.removeItem(this.sessionKey);
       localStorage.removeItem(this.timestampKey);
-      console.log('Stale session cleared.');
     }
   }
 

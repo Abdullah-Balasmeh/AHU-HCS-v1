@@ -3,17 +3,9 @@
     display: flex;
     flex-direction: row;
 }
-td {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px; 
-    direction: ltr;
-}
+
 .input-box input {
-    min-width: 300px;
-    max-width: 500px;
-    field-sizing: content;
+    width: 300px;
     background-color: #f0f0f0;
     border: 1px solid #4d95a7;
     border-radius: 10px;
@@ -22,10 +14,9 @@ td {
     text-align: center;
     direction: ltr;
 }
-.small-input{
-    max-width: 100px;
+td { 
+    direction: ltr;
 }
-
 .header-btn{
     align-items: flex-end;
 }
@@ -33,7 +24,6 @@ td {
 .closeColor{
     margin-right: 10px;
 }
-
 .header-input {
     display: flex;
     flex-direction: row;
@@ -55,16 +45,11 @@ td {
     align-self: center;
     width: 80px;
 }
-svg path,
-svg rect {
-    fill: white;
-    height: 20px;
-}
-.errorDiv{
-    display: flex;
-    flex-direction: row;
-    justify-items: flex-start;
-    gap: 50px;
+
+.no-data{
+    align-self: center;
+    justify-self: center;
+    color: #4d95a7;
 }
 .primaryColor{
     margin-right: 5px;

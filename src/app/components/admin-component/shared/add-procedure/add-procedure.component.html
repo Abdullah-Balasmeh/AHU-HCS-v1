@@ -1,23 +1,12 @@
 <form>
     <div class="header-input">
         <div class="input-box">
-            <h6 class="text-type">اسم العلاج:</h6>
+            <h6 class="text-type">اسم الإجراء:</h6>
             <input
                 type="text"
-                [(ngModel)]="currentMedicine.name"
-                name="medicineName"
-                autocomplete="off"
+                [(ngModel)]="currentProcedure.name"
+                name="procedureName"
                 required />
-        </div>
-        <div class="input-box small-input">
-            <h6 class="text-type">العيار:</h6>
-            <input
-                type="text"
-                [(ngModel)]="currentMedicine.dose"
-                name="medicineDose"
-                required
-                maxlength="4"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
         </div>
         <div class="header-btn">
             <ng-container *ngIf="isEdit; else notEdit">
@@ -39,8 +28,7 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>اسم العلاج</th>
-                <th>العيار</th>
+                <th>اسم الإجراء</th>
                 <th>الإجراءات</th>
             </tr>
         </thead>
@@ -48,21 +36,23 @@
             <app-loading-image></app-loading-image>
         </div>
         <tbody *ngIf="!isLoading">
-            <tr *ngFor="let medicine of medicines; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ medicine.name }}</td>
-                <td>{{ medicine.dose }}</td>
+            <tr *ngFor="let procedure of procedures; let index = index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ procedure.name }}</td>
                 <td>
                     <button class="table-btn" id="icon-edit"
-                        (click)="Edit(medicine)">
+                        (click)="Edit(procedure)">
                         <i class="bi bi-pencil-square"></i>
                     </button>
                     <button class="table-btn" id="icon-delete"
-                        (click)="deleteMedicine(medicine.medicineId)">
+                        (click)="deleteProcedure(procedure.proceduresId)">
                         <i class="bi bi-trash"></i>
                     </button>
                 </td>
-                </tr>
+            </tr>
         </tbody>
     </table>
+    <div *ngIf="!isLoading && procedures.length === 0" class="no-data">
+        <p>No procedure found.</p>
+    </div>
 </div>

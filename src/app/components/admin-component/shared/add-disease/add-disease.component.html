@@ -4,14 +4,26 @@
             <h6 class="text-type">اسم المرض:</h6>
             <input
                 type="text"
-                autocomplete="off"
+                [(ngModel)]="currentDisease.name"
+                name="diseaseName"
                 required />
         </div>
-        <button type="button" class="btn primaryColor">إضافة</button>
+        <div class="header-btn">
+            <ng-container *ngIf="isEdit; else notEdit">
+                <button type="button" class="btn primaryColor"
+                    (click)="onSave()">حفظ</button>
+                <button type="button" class="btn closeColor"
+                    (click)="resetForm()">إلغاء</button>
+            </ng-container>
+            <ng-template #notEdit>
+                <button type="button" class="btn primaryColor"
+                    (click)="onAdd()">إضافة</button>
+            </ng-template>
+        </div>
     </div>
 </form>
-<div class="loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
-<div *ngIf="!isLoading">
+
+<div>
     <table>
         <thead>
             <tr>
@@ -20,8 +32,27 @@
                 <th>الإجراءات</th>
             </tr>
         </thead>
-
-        <tbody>
+        <div class="primaryColor btn loading" *ngIf="isLoading">
+            <app-loading-image></app-loading-image>
+        </div>
+        <tbody *ngIf="!isLoading">
+            <tr *ngFor="let disease of diseases; let index = index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ disease.name }}</td>
+                <td>
+                    <button class="table-btn" id="icon-edit"
+                        (click)="Edit(disease)">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="table-btn" id="icon-delete"
+                        (click)="deleteDisease(disease.diseaseId)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
         </tbody>
     </table>
+    <div *ngIf="!isLoading && diseases.length === 0" class="no-data">
+        <p>No diseases found.</p>
+    </div>
 </div>

@@ -1,27 +1,58 @@
 <form>
     <div class="header-input">
         <div class="input-box">
-            <h6 class="text-type">نوع الحساسية:</h6>
+            <h6 class="text-type">اسم الحساسية:</h6>
             <input
                 type="text"
-                autocomplete="off"
+                [(ngModel)]="currentAllergy.name"
+                name="allergyName"
                 required />
         </div>
-        <button type="button" class="btn primaryColor">إضافة</button>
+        <div class="header-btn">
+            <ng-container *ngIf="isEdit; else notEdit">
+                <button type="button" class="btn primaryColor"
+                    (click)="onSave()">حفظ</button>
+                <button type="button" class="btn closeColor"
+                    (click)="resetForm()">إلغاء</button>
+            </ng-container>
+            <ng-template #notEdit>
+                <button type="button" class="btn primaryColor"
+                    (click)="onAdd()">إضافة</button>
+            </ng-template>
+        </div>
     </div>
 </form>
-<div class="loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
-<div *ngIf="!isLoading">
+
+<div>
     <table>
         <thead>
             <tr>
                 <th>#</th>
-                <th>نوع الحساسية</th>
+                <th>اسم الحساسية</th>
                 <th>الإجراءات</th>
             </tr>
         </thead>
-
-        <tbody>
+        <div class="primaryColor btn loading" *ngIf="isLoading">
+            <app-loading-image></app-loading-image>
+        </div>
+        <tbody *ngIf="!isLoading">
+            <tr *ngFor="let allergy of allergies; let index = index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ allergy.name }}</td>
+                <td>
+                    <button class="table-btn" id="icon-edit"
+                        (click)="Edit(allergy)">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="table-btn" id="icon-delete"
+                        (click)="deleteAllergy(allergy.allergyId)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
         </tbody>
     </table>
+    <div *ngIf="!isLoading && allergies.length === 0" class="no-data">
+        <p>No Allergies found.</p>
+    </div>
 </div>
