@@ -8,7 +8,7 @@ import { User } from '../interfaces/users.interface';
 })
 export class UserService {
   private readonly endpoint = 'users'; // API endpoint for users
-  private readonly isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(private readonly apiService: ApiService) {

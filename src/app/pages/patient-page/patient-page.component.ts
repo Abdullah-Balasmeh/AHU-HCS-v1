@@ -69,4 +69,6 @@ export class PatientPageComponent {
   onTabChange(tab: string): void {
     this.selectedTab = tab;
   }
+
+
 }

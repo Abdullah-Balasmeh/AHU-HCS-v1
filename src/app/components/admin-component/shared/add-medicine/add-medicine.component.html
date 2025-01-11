@@ -1,0 +1,37 @@
+<form>
+    <div class="header-input">
+        <div class="input-box">
+            <h6 class="text-type">اسم العلاج:</h6>
+            <input
+                type="text"
+                autocomplete="off"
+                required />
+        </div>
+        <div class="input-box small-input">
+            <h6 class="text-type">العيار:</h6>
+            <input
+                type="text"
+                autocomplete="off"
+                required
+                maxlength="4"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+        </div>
+        <button type="button" class="btn primaryColor">إضافة</button>
+    </div>
+</form>
+<div class="loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+<div *ngIf="!isLoading">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم العلاج</th>
+                <th>العيار</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
+</div>

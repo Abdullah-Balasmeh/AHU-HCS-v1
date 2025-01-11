@@ -1,0 +1,27 @@
+<form>
+    <div class="header-input">
+        <div class="input-box">
+            <h6 class="text-type">نوع الحساسية:</h6>
+            <input
+                type="text"
+                autocomplete="off"
+                required />
+        </div>
+        <button type="button" class="btn primaryColor">إضافة</button>
+    </div>
+</form>
+<div class="loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+<div *ngIf="!isLoading">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>نوع الحساسية</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
+</div>

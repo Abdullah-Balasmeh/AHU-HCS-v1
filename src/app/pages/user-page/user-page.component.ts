@@ -10,7 +10,7 @@ import { LogoutBtnComponent } from "../../components/main/logout-btn/logout-btn.
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.css'],
 })
-export class UserPageComponent {
+export class UserPageComponent{
   roles = signal<string[]>([]);
   private readonly router = inject(Router);
 
@@ -19,11 +19,8 @@ export class UserPageComponent {
     if (user) {
       const parsedUser = JSON.parse(user);
       this.roles.set(parsedUser.roles || []);
-    } else {
-      this.router.navigate(['/login-user']); // Redirect to login if session is missing
     }
   }
-
   onLogout(): void {
     const confirmLogout = confirm(
       'هل أنت متأكد من الخروج؟'
@@ -35,5 +32,5 @@ export class UserPageComponent {
       this.router.navigate(['/login-user']);
     }
   }
-  
+
 }

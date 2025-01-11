@@ -1,0 +1,55 @@
+/* Input box styling */
+.input-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.input-box input {
+    width: 300px;
+    background-color: #f0f0f0;
+    border: 1px solid #4d95a7;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+    text-align: center;
+}
+.small-input{
+    width: 80px;
+}
+
+
+.header-input {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    justify-content: space-between;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    width: max-content;
+}
+
+.loading{
+    justify-self: center;
+    align-self: center;
+    width: 80px;
+}
+svg path,
+svg rect {
+    fill: white;
+    height: 20px;
+}
+.errorDiv{
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    gap: 50px;
+}
+.primaryColor{
+    margin-right: 5px;
+}

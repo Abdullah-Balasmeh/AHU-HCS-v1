@@ -8,7 +8,7 @@ import { Patient } from '../interfaces/patient.interface';
 })
 export class PatientService {
   private readonly endpoint = 'patient'; // API endpoint for patients
-  private readonly isLoggedInSubject = new BehaviorSubject<boolean>(false);
+    isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
   constructor(private readonly apiService: ApiService) {
     this.checkLoginStatus();

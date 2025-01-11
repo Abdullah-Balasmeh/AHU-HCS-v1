@@ -1,1 +1,12 @@
-<p>list-section works!</p>
+<div class="container">
+    <app-list-tab 
+        (tabChange)="onTabChange($event)"
+        (closeTab)="onClose()">
+    </app-list-tab>
+
+    <div>
+        <app-add-medicine *ngIf="selectedTab === 'add-medicine'"></app-add-medicine>
+        <app-add-disease *ngIf="selectedTab === 'add-disease'"></app-add-disease>
+        <app-add-allergy *ngIf="selectedTab === 'add-allergy'"></app-add-allergy>
+    </div>
+</div>

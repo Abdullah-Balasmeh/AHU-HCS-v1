@@ -1,0 +1,35 @@
+<div class="nav-box">
+    <div id="close-btn" (click)="onClose()"><i class="bi bi-x-lg"></i></div>
+    <h1>إدارة القوائم</h1>
+    <!-- Radio Inputs -->
+    <input
+        type="radio"
+        name="slider"
+        id="tabP-1"
+        (change)="selectTab('add-medicine')"
+        checked />
+    <input
+        type="radio"
+        name="slider"
+        id="tabH-2"
+        (change)="selectTab('add-disease')" />
+    <input
+        type="radio"
+        name="slider"
+        id="tabT-3"
+        (change)="selectTab('add-allergy')" />
+    <input
+        type="radio"
+        name="slider"
+        id="tabE-4"
+        (change)="selectTab('add-allergy')" />
+        
+    <!-- Navigation Labels -->
+    <nav>
+        <label for="tabP-1" class="tab-1">العلاجات</label>
+        <label for="tabH-2" class="tab-2">الأمراض</label>
+        <label for="tabT-3" class="tab-3">الحساسيات</label>
+        <label for="tabE-4" class="tab-4">الإجراءات الطبية</label>
+        <div class="slider primaryColor"></div>
+    </nav>
+</div>
