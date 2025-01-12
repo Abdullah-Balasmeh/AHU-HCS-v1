@@ -81,14 +81,10 @@
 
 input[type="text"],
 input[type="password"] {
-    width: 300px;
+    min-width: 300px;
+    max-width: 450px;
     field-sizing: content;
-    padding: 5px;
-    background-color: #F0F0F0;
-    border: 1px solid #4D95A7;
-    border-radius: 10px;
-    outline: none;
-    font-size: 18px;
+
 }
 
 .rest-btn {
@@ -107,7 +103,6 @@ input[type="password"] {
     margin-bottom: 20px;
     padding-left: 15px;
     padding-right: 15px;
-
 }
 
 .btn {
@@ -132,22 +127,18 @@ input[type="password"] {
 .valid {
     margin: 10px 0 10px 0;
     justify-self: center;
-    /* Center horizontally */
     align-self: center;
 }
 
 .input-container {
     position: relative;
     width: 100%;
-    /* Ensure the input takes the full width */
 }
 
 .inputText {
     width: 100%;
     padding-right: 2.5rem;
-    /* Add space for the icon */
     box-sizing: border-box;
-    /* Include padding in width calculation */
 }
 
 .toggle-password-icon {

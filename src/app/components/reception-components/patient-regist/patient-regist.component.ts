@@ -8,57 +8,56 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-patient-regist',
   standalone: true,
-  imports: [LoadingImageComponent ,ReactiveFormsModule,CommonModule],
+  imports: [LoadingImageComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './patient-regist.component.html',
   styleUrl: './patient-regist.component.css'
 })
 export class PatientRegistComponent {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly patientService=inject(PatientService);
-  private readonly medicalRecordService=inject(MedicalRecordService)
+  private readonly patientService = inject(PatientService);
+  private readonly medicalRecordService = inject(MedicalRecordService)
   regist = signal(false);
   search = signal(false);
   success = signal(false);
   errorMessage = '';
   error = false;
-  patientState=false;
-
+  patientState = false;
+  patientId: string = '';
   registForm = new FormGroup({
     patientId: new FormControl('', [Validators.required, Validators.pattern(/^\d{12}$/)]),
     patientName: new FormControl('', Validators.required),
     patientType: new FormControl('عيادة', Validators.required),
   });
 
-  checkPatient(){
+  checkPatient() {
     if (this.search()) return;
     const patientId = this.registForm.get('patientId')?.value;
     this.search.set(true);
-    if(!patientId)
+    if (!patientId) {
+      this.setError('يرجى إدخال رقم الطالب أو الموظف');
+      this.search.set(false);
+    }
+    const subscription = this.patientService.getPatientById(patientId!).subscribe(
       {
-        this.setError('يرجى إدخال رقم الطالب أو الموظف');
-        this.search.set(false);
-      }
-    const subscription= this.patientService.getPatientById(patientId!).subscribe(
-          {
-            next:(patient)=>{
-              this.search.set(false);
-              this.clearError();
-              this.registForm.patchValue({
-                patientName: patient.patientName,
-              });
-              if(patient.patientClass=='طالب' ){
-                this.checkStudent(patient.patientId!);
-              }else{
-                this.checkEmployee(patient.patientId!);
-              }
-            },
-            error:()=>{
-              this.setError('الطالب أو الموظف غير موجود');
-              this.search.set(false);
-            }
+        next: (patient) => {
+          this.search.set(false);
+          this.clearError();
+          this.registForm.patchValue({
+            patientName: patient.patientName,
+          });
+          if (patient.patientClass == 'طالب') {
+            this.checkStudent(patient.patientId!);
+          } else {
+            this.checkEmployee(patient.patientId!);
           }
-        )
-        this.destroyRef.onDestroy(() => subscription.unsubscribe());
+        },
+        error: () => {
+          this.setError('الطالب أو الموظف غير موجود');
+          this.search.set(false);
+        }
+      }
+    )
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   };
   private setError(message: string) {
     this.error = true;
@@ -70,76 +69,83 @@ export class PatientRegistComponent {
     this.errorMessage = '';
   }
 
-  private checkStudent(studentId : string)
-  {
-    const subscription= this.medicalRecordService.getStudentState(studentId).subscribe({
-      next:(student)=>{
-        if(student.studentState == '1')
-          {
-            this.patientState=true;
-            const alertMessage ='هذا الطالب مؤجل ولا يمكن تسجيله';
-            alert(alertMessage);
-          }
+  private checkStudent(studentId: string) {
+    const subscription = this.medicalRecordService.getStudentState(studentId).subscribe({
+      next: (student) => {
+        if (student.studentState == '1') {
+          this.patientState = true;
+          const alertMessage = 'هذا الطالب مؤجل ولا يمكن تسجيله';
+          alert(alertMessage);
+        }
       }
     })
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
-  private checkEmployee(empId : string)
-  {
-    const subscription= this.medicalRecordService.getEmployeeState(empId).subscribe({
-      next:(emp)=>{
-        if(emp.employeeState == '1')
-          {
-            const alertMessage ='هذا الموظف ليس على رأس عمله';
-            alert(alertMessage);
-          }
+  private checkEmployee(empId: string) {
+    const subscription = this.medicalRecordService.getEmployeeState(empId).subscribe({
+      next: (emp) => {
+        if (emp.employeeState == '1') {
+          const alertMessage = 'هذا الموظف ليس على رأس عمله';
+          alert(alertMessage);
+        }
       }
     })
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
-  onSubmit():void{
+  onSubmit(): void {
     this.regist.set(true);
     if (this.registForm.invalid) {
-      this.setError('يرجى إدخال رقم المريض/ة بشكل صحيح');
+      this.setError('يرجى إدخال رقم المريض/ة بشكل صحيح أو النفر على زر البحث');
+      this.regist.set(false);
       return;
     }
-    if(this.patientState){
-      const alertMessage ='هذا الطالب مؤجل ولا يمكن تسجيله';
+    if (this.patientState) {
+      const alertMessage = 'هذا الطالب مؤجل ولا يمكن تسجيله';
       alert(alertMessage);
       this.resetForm();
       return;
     }
-    const formattedDate = new Intl.DateTimeFormat('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true,
-    }).format(new Date());
-    const user = sessionStorage.getItem('user');
-    const parsedUser = user ? JSON.parse(user) : null;
-    const medicalRecord = {
-      userId:parsedUser.userId,
-      patientId: this.registForm.get('patientId')?.value,
-      patientType: this.registForm.get('patientType')?.value,
-      enterDate: new Date(),
-    };
-    const subscription =this.medicalRecordService.addMedicalRecord(medicalRecord).subscribe({
-      next:(response)=>{
-        console.log('Success response:', response);
-        this.success.set(true);
-        this.resetForm();
-      },
-      error: (error) =>{
-        console.error('Error response:', error);
-        alert('حدث خطأ أثناء إضافة المريض');
-        this.resetForm();
+
+    const now = new Date();
+    const offset = now.getTimezoneOffset(); // Get timezone offset in minutes
+    const localDate = new Date(now.getTime() - offset * 60 * 1000).toISOString();
+    const patientId = this.registForm.get('patientId')?.value;
+    const today = new Date().toISOString().split('T')[0]; 
+    const subscription = this.medicalRecordService.getRecordsByPatientId(patientId!).subscribe({
+      next: (records) => {
+        const todayRecords = records.filter((record: any) => record.enterDate.startsWith(today));
+        console.log('todayRecords ' +todayRecords);
+        console.log('localDate ' +localDate);
+        if (todayRecords.length == 3) {
+
+          alert('لا يمكن للمريض إن يكون له أكثر من 3 سجلات طبية في يوم واحد.');
+          this.regist.set(false);
+          return;
+        }
+        const user = sessionStorage.getItem('user');
+        const parsedUser = user ? JSON.parse(user) : null;
+        const medicalRecord = {
+          userId: parsedUser.userId,
+          patientId: patientId,
+          patientType: this.registForm.get('patientType')?.value,
+          enterDate: localDate,
+        };
+        this.medicalRecordService.addMedicalRecord(medicalRecord).subscribe({
+          next: () => {
+            this.success.set(true);
+            this.resetForm();
+          },
+          error: (error) => {
+            console.error('Error response:', error);
+            alert('حدث خطأ أثناء إضافة المريض');
+            this.resetForm();
+          }
+
+        });
       }
-        
     });
+    
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
@@ -150,9 +156,9 @@ export class PatientRegistComponent {
       patientName: '',
       patientType: 'عيادة',
     });
-    this.patientState=false;
+    this.patientState = false;
     this.clearError();
     setTimeout(() => this.success.set(false), 2000);
   }
-  
+
 }

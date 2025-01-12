@@ -306,8 +306,18 @@ form {
     align-items: center;
     justify-content: center;
 }
+/* input-style */
+input[type="text"],
+input[type="password"] {
+    padding: 5px;
+    background-color: #F0F0F0;
+    border: 1px solid #4D95A7;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+}
 /* Radio style */
-/* Radio input container styling */
+
 .radio-inputs {
     width: 100%;
     display: flex;

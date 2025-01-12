@@ -1,1 +1,81 @@
-<p>edit-dialog works!</p>
+<div class="model-boxShadow" (click)="closeDialog()"></div>
+<div class="model whiteColor">
+    <div class="model-title">
+        <h2>تعديل المعلومات</h2>
+    </div>
+    <div class="model-content whiteColor">
+        <form [formGroup]="editRecordForm" (ngSubmit)="saveChanges()">
+            <div id="editModalForm">
+                <h6 class="text-type">فئة المريض:</h6>
+                <div class="radio-inputs">
+                    <label class="radio" for="editType1">
+                        <input
+                            type="radio"
+                            formControlName="type"
+                            value="طالب"
+                            id="editType1"/>
+                        <span class="name">طالب</span>
+                    </label>
+                    <label class="radio" for="editType2">
+                        <input
+                            type="radio"
+                            formControlName="type"
+                            value="موظف"
+                            id="editType2"/>
+                        <span class="name">موظف</span>
+                    </label>
+                </div>
+                <h6 class="text-type">رقم المريض:</h6>
+                <div class="input-box">
+                    <input type="text" formControlName="id"
+                        id="editPatientId" readonly />
+                </div>
+                <h6 class="text-type">اسم المريض:</h6>
+                <div class="input-box">
+                    <input type="text" formControlName="name"
+                        id="editPatientName" readonly />
+                </div>
+                <h6 class="text-type">حالة المريض:</h6>
+                <div class="radio-inputs">
+                    <label class="radio" for="editState1">
+                        <input
+                            type="radio"
+                            formControlName="state"
+                            value="عيادة"
+                            id="editState1" />
+                        <span class="name">عيادة</span>
+                    </label>
+                    <label class="radio" for="editState2">
+                        <input
+                            type="radio"
+                            formControlName="state"
+                            value="طوارئ"
+                            id="editState2" />
+                        <span class="name">طوارئ</span>
+                    </label>
+                    <label class="radio" for="editState3">
+                        <input
+                            type="radio"
+                            formControlName="state"
+                            value="متابعة الضغط/السكري"
+                            id="editState3" />
+                        <span class="name">متابعة الضغط/السكري</span>
+                    </label>
+                </div>
+            </div>
+            <div class="footer-btn">
+                    <ng-container *ngIf="saving(); else notSaving">
+                        <div class="btn primaryColor">
+                            <app-loading-image></app-loading-image>
+                        </div>
+                    </ng-container>
+                    <ng-template #notSaving >
+                            <button type="btn" class="btn primaryColor">حفظ</button>
+                    </ng-template>
+
+                <button type="button" class="btn closeColor"
+                    (click)="closeDialog()">اغلاق</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -8,7 +8,7 @@ import { ApiService } from './api.service'; // Import the generic ApiService
 export class MedicalRecordService {
   private readonly endpoint = 'MedicalRecord';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private readonly apiService: ApiService) {}
 
   getRecordsByEnterDate(date: string): Observable<any> {
     return this.apiService.get<any>(`${this.endpoint}/byDate?date=${date}`);
