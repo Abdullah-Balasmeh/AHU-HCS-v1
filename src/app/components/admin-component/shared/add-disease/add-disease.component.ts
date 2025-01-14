@@ -16,7 +16,7 @@ export class AddDiseaseComponent {
   isLoading = true;
   isEdit = false;
   diseases: Diseases[] = [];
-  currentDisease: Diseases = { diseaseId: '', name: '' }; // Holds the disease being edited or added
+  currentDisease: Diseases = { diseaseId: 0, name: '' }; // Holds the disease being edited or added
 
   constructor(private diseaseService: DiseaseService) {}
 
@@ -41,7 +41,7 @@ export class AddDiseaseComponent {
 
   // Add new disease
   onAdd() {
-    if (!this.currentDisease.name.trim()) {
+    if (!this.currentDisease.name!.trim()) {
       alert('Please enter a valid disease name.');
       return;
     }
@@ -60,12 +60,12 @@ export class AddDiseaseComponent {
 
   // Save edited disease
   onSave() {
-    if (!this.currentDisease.name.trim()) {
+    if (!this.currentDisease.name!.trim()) {
       alert('Please enter a valid disease name.');
       return;
     }
 
-    this.diseaseService.updateDisease(this.currentDisease.diseaseId, this.currentDisease).subscribe({
+    this.diseaseService.updateDisease(this.currentDisease.diseaseId!, this.currentDisease).subscribe({
       next: () => {
         // Update the local array
         const index = this.diseases.findIndex(d => d.diseaseId === this.currentDisease.diseaseId);
@@ -91,11 +91,11 @@ export class AddDiseaseComponent {
   // Reset form
   resetForm() {
     this.isEdit = false;
-    this.currentDisease = { diseaseId: '', name: '' };
+    this.currentDisease = { diseaseId: 0, name: '' };
   }
 
   // Delete disease
-  deleteDisease(diseaseId: string) {
+  deleteDisease(diseaseId: number) {
     if (confirm('Are you sure you want to delete this disease?')) {
       this.diseaseService.deleteDisease(diseaseId).subscribe({
         next: () => {

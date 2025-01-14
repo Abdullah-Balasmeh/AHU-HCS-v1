@@ -1,0 +1,32 @@
+/* Content styling */
+.content {
+    justify-content: center;
+    align-items: center;
+
+}
+.Box-grid {
+    display: grid;
+    grid-row: 2;
+    grid-column: 2;
+    grid-gap: 10px;
+    margin: 20px 0;
+}
+
+#medicalConditionList{
+    grid-row: 1/2;
+    grid-column: 1/2;
+}
+
+#treatmentList {
+    grid-row: 1/2;
+    grid-column: 2/2;
+}
+
+
+.footer-btn {
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+    width: 40%;
+}

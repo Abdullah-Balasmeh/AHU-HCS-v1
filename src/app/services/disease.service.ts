@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service'; // Ensure the path is correct
+import { Diseases } from '../interfaces/list.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,22 +17,22 @@ export class DiseaseService {
   }
 
   // Get a specific disease by ID
-  getDiseaseById(id: string): Observable<any> {
+  getDiseaseById(id: number): Observable<any> {
     return this.apiService.get(`${this.endpoint}/${id}`);
   }
 
   // Add a new disease
-  addDisease(disease: any): Observable<any> {
+  addDisease(disease: Diseases): Observable<any> {
     return this.apiService.post(this.endpoint, disease);
   }
 
   // Update an existing disease
-  updateDisease(id: string, disease: any): Observable<any> {
+  updateDisease(id: number, disease: Diseases): Observable<any> {
     return this.apiService.put(`${this.endpoint}/${id}`, disease);
   }
 
   // Delete a disease by ID
-  deleteDisease(id: string): Observable<any> {
+  deleteDisease(id: number): Observable<any> {
     return this.apiService.delete(`${this.endpoint}/${id}`);
   }
 }

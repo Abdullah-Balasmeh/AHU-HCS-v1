@@ -16,7 +16,7 @@ export class AddProcedureComponent {
   isLoading = true;
   isEdit = false;
   procedures: Procedures[] = [];
-  currentProcedure: Procedures = { proceduresId: '', name: '' };
+  currentProcedure: Procedures = { proceduresId: 0, name: '' };
 
   constructor(private procedureService: ProcedureService) {}
 
@@ -39,7 +39,7 @@ export class AddProcedureComponent {
   }
 
   onAdd() {
-    if (!this.currentProcedure.name.trim()) {
+    if (!this.currentProcedure.name!.trim()) {
       alert('Please enter a valid procedure name.');
       return;
     }
@@ -57,12 +57,12 @@ export class AddProcedureComponent {
   }
 
   onSave() {
-    if (!this.currentProcedure.name.trim()) {
+    if (!this.currentProcedure.name!.trim()) {
       alert('Please enter a valid procedure name.');
       return;
     }
 
-    this.procedureService.updateProcedure(this.currentProcedure.proceduresId, this.currentProcedure).subscribe({
+    this.procedureService.updateProcedure(this.currentProcedure.proceduresId!, this.currentProcedure).subscribe({
       next: () => {
         const index = this.procedures.findIndex(p => p.proceduresId === this.currentProcedure.proceduresId);
         if (index > -1) {
@@ -82,7 +82,7 @@ export class AddProcedureComponent {
     this.currentProcedure = { ...procedure };
   }
 
-  deleteProcedure(id: string) {
+  deleteProcedure(id: number) {
     if (confirm('Are you sure you want to delete this procedure?')) {
       this.procedureService.deleteProcedure(id).subscribe({
         next: () => {
@@ -98,6 +98,6 @@ export class AddProcedureComponent {
 
   resetForm() {
     this.isEdit = false;
-    this.currentProcedure = { proceduresId: '', name: '' };
+    this.currentProcedure = { proceduresId: 0, name: '' };
   }
 }

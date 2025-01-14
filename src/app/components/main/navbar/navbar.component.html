@@ -6,27 +6,27 @@
         </li>
         <li *ngIf="roles().includes('Manager')">
             <a [routerLink]="['/user-pages/manager-page']"
-                routerLinkActive="active">Manager</a>
+                routerLinkActive="active">الإدارة</a>
         </li>
         <li *ngIf="roles().includes('Receptionist')">
             <a [routerLink]="['/user-pages/reception-page']"
-                routerLinkActive="active">Reception</a>
+                routerLinkActive="active">الإستقبال</a>
         </li>
         <li *ngIf="roles().includes('Doctor')">
             <a [routerLink]="['/user-pages/clinic-page']"
-                routerLinkActive="active">Clinic</a>
+                routerLinkActive="active">العيادة</a>
         </li>
         <li *ngIf="roles().includes('Nurse Male')">
             <a [routerLink]="['/user-pages/emergency-male-page']"
-                routerLinkActive="active">Emergency Male</a>
+                routerLinkActive="active">طوارئ الذكور</a>
         </li>
         <li *ngIf="roles().includes('Nurse Female')">
             <a [routerLink]="['/user-pages/emergency-female-page']"
-                routerLinkActive="active">Emergency Female</a>
+                routerLinkActive="active">طوارئ الإناث</a>
         </li>
         <li *ngIf="roles().includes('Pharmacist')">
             <a [routerLink]="['/user-pages/pharmacy-page']"
-                routerLinkActive="active">Pharmacy</a>
+                routerLinkActive="active">الصيدلية</a>
         </li>
     </ul>
 </nav>

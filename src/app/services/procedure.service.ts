@@ -16,7 +16,7 @@ export class ProcedureService {
     return this.apiService.get<Procedures[]>(this.endpoint);
   }
 
-  getProcedureById(id: string): Observable<Procedures> {
+  getProcedureById(id: number): Observable<Procedures> {
     return this.apiService.get<Procedures>(`${this.endpoint}/${id}`);
   }
 
@@ -24,11 +24,11 @@ export class ProcedureService {
     return this.apiService.post<Procedures>(this.endpoint, procedure);
   }
 
-  updateProcedure(id: string, procedure: Procedures): Observable<void> {
+  updateProcedure(id: number, procedure: Procedures): Observable<void> {
     return this.apiService.put<void>(`${this.endpoint}/${id}`, procedure);
   }
 
-  deleteProcedure(id: string): Observable<void> {
+  deleteProcedure(id: number): Observable<void> {
     return this.apiService.delete<void>(`${this.endpoint}/${id}`);
   }
 }

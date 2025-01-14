@@ -16,7 +16,7 @@ export class AddMedicineComponent {
   isLoading = true;
   isEdit = false;
   medicines: Medicine[] = [];
-  currentMedicine: Medicine = { medicineId: '', name: '', dose: '' };
+  currentMedicine: Medicine = { medicineId: 0, name: '', dose: '' };
 
   constructor(private medicineService: MedicineService) {}
 
@@ -34,36 +34,41 @@ export class AddMedicineComponent {
       error: (err) => {
         this.isLoading = false;
         console.error('Error fetching medicines', err);
+        alert('Failed to load medicines. Please try again later.');
       },
     });
   }
+  
 
   onAdd() {
-    if (!this.currentMedicine.name.trim() || !this.currentMedicine.dose.trim()) {
+    if (!this.currentMedicine.name!.trim() || !this.currentMedicine.dose!.trim()) {
       alert('Please fill out all fields.');
       return;
     }
-
+  
     this.medicineService.addMedicine(this.currentMedicine).subscribe({
       next: (newMedicine) => {
         this.medicines.push(newMedicine);
         this.resetForm();
+        alert('Medicine added successfully!');
       },
       error: (err) => {
         console.error('Error adding medicine', err);
-        alert('Failed to add medicine. Please try again later.');
+        alert('Failed to add medicine. Please check the form and try again.');
       },
     });
   }
+  
 
   onSave() {
-    if (!this.currentMedicine.name.trim() || !this.currentMedicine.dose.trim()) {
+    if (!this.currentMedicine.name!.trim() || !this.currentMedicine.dose!.trim()) {
       alert('Please fill out all fields.');
       return;
     }
 
-    this.medicineService.updateMedicine(this.currentMedicine.medicineId, this.currentMedicine).subscribe({
+    this.medicineService.updateMedicine(this.currentMedicine.medicineId!, this.currentMedicine).subscribe({
       next: () => {
+        alert('Medicine Edited successfully!');
         const index = this.medicines.findIndex(m => m.medicineId === this.currentMedicine.medicineId);
         if (index > -1) this.medicines[index] = { ...this.currentMedicine };
         this.resetForm();
@@ -80,7 +85,7 @@ export class AddMedicineComponent {
     this.currentMedicine = { ...medicine };
   }
 
-  deleteMedicine(id: string) {
+  deleteMedicine(id: number) {
     if (confirm('Are you sure you want to delete this medicine?')) {
       this.medicineService.deleteMedicine(id).subscribe({
         next: () => {
@@ -96,6 +101,6 @@ export class AddMedicineComponent {
 
   resetForm() {
     this.isEdit = false;
-    this.currentMedicine = { medicineId: '', name: '', dose: '' };
+    this.currentMedicine = { medicineId: 0, name: '', dose: '' };
   }
 }

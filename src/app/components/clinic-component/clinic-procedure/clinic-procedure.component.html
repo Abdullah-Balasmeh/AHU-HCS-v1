@@ -1,0 +1,133 @@
+<div class="content">
+    <form #clinicProcedure="ngForm" (ngSubmit)="clinicProcedure">
+        <h6 class="text-type">الفحوصات:</h6>
+        <div class="check-inputs-box">
+            <div class="row-check">
+                <label class="check" for="exam-1">
+                    <input
+                        type="checkbox"
+                        id="exam-1"
+                        [(ngModel)]="BPChecked"
+                        name="exam1Checked" />
+                    <span class="name">BP</span>
+                </label>
+
+                <label class="check" for="exam-2">
+                    <input
+                        type="checkbox"
+                        id="exam-2"
+                        [(ngModel)]="TempChecked"
+                        name="exam2Checked" />
+                    <span class="name">Temp</span>
+                </label>
+
+                <label class="check" for="exam-3">
+                    <input
+                        type="checkbox"
+                        id="exam-3"
+                        [(ngModel)]="PulseChecked"
+                        name="exam3Checked" />
+                    <span class="name">Pulse</span>
+                </label>
+
+                <label class="check" for="exam-4">
+                    <input
+                        type="checkbox"
+                        id="exam-4"
+                        [(ngModel)]="RespChecked"
+                        name="exam4Checked" />
+                    <span class="name">Resp</span>
+                </label>
+            </div>
+
+            <div *ngIf="hasChecked" class="input-box-exam input-box">
+                <div *ngIf="BPChecked">
+                    <label for="exam-1-in">
+                        <input
+                            type="text"
+                            id="exam-1-in"
+                            maxlength="3"
+                            (input)="onNumberInput($event)"
+                            autocomplete="off" />
+                        <span>:BP-Up</span>
+                    </label>
+                </div>
+
+                <div *ngIf="BPChecked">
+                    <label for="exam-1-p">
+                        <input
+                            type="text"
+                            id="exam-1-p"
+                            maxlength="3"
+                            (input)="onNumberInput($event)"
+                            autocomplete="off" />
+                        <span>:BP-Down</span>
+                    </label>
+                </div>
+
+                <div *ngIf="TempChecked">
+                    <label for="exam-2-in">
+                        <input
+                            type="text"
+                            id="exam-2-in"
+                            maxlength="4"
+                            (input)="onNumberInput($event)"
+                            autocomplete="off" />
+                        <span>:Temp</span>
+                    </label>
+                </div>
+
+                <div *ngIf="PulseChecked">
+                    <label for="exam-3-in">
+                        <input
+                            type="text"
+                            id="exam-3-in"
+                            maxlength="3"
+                            (input)="onNumberInput($event)"
+                            autocomplete="off" />
+                        <span>:Pulse</span>
+                    </label>
+                </div>
+
+                <div *ngIf="RespChecked">
+                    <label for="exam-4-in">
+                        <input
+                            type="text"
+                            id="exam-4-in"
+                            maxlength="3"
+                            (input)="onNumberInput($event)"
+                            autocomplete="off" />
+                        <span>:Resp</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <h6 class="text-type">الإجراءات:</h6>
+        <ng-container *ngIf="!sendProcedure; else box">
+            <div class="dropdown-box">
+                <app-multi-select-dropdown 
+                [options]="procedureNames"
+                (selectedChange)="selectedProcedures"
+                [selectedOptions]="selectedProcedures"
+                    placeHolder="إجراء">
+                </app-multi-select-dropdown>
+            </div>
+        </ng-container>
+        <ng-template #box>
+            <div class="infoBox">
+                <span>{{patient || 'لم يتم تعبئة الحقل'}}</span>
+            </div>
+        </ng-template>
+            <p *nfIf="errorMessage"></p>
+        <div class="footer-btn">
+            <ng-container *ngIf="saving; else notSaving">
+                <div class="btn primaryColor">
+                    <app-loading-image></app-loading-image>
+                </div>
+            </ng-container>
+            <ng-template #notSaving >
+                    <button type="submit" class="btn primaryColor" (ngSubmit)="clinicProcedure" >حفظ</button>
+            </ng-template>
+        </div>
+    </form>
+</div>

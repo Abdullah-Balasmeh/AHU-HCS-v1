@@ -115,12 +115,14 @@ export class EmployeeEditComponent {
   
       this.userService.updateUser(request.user.userId, request).subscribe({
         next: () => {
+          console.log("request" + request.roleIds + 'user' + request.user.password + request.user.userId + request .user .userName)
           this.isLoading.set(false) ;
           this.successMessage = true;
           setTimeout(() => (this.successMessage = false), 2000);
           setTimeout(() => (this.closeDialog()), 2000);
         },
         error: (err) => {
+          console.log("request" + request.roleIds + 'user' + request.user.password + request.user.userId + request .user .userName);
           this.isLoading.set(false) ;
           this.errorMessage = `Error updating user: ${err.message}`;
         },

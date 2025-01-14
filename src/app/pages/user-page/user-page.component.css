@@ -7,15 +7,15 @@
     white-space: nowrap; 
     max-width: 50%; 
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 
 /* Responsive adjustments */
-@media (max-width: 1335px) { 
+@media (max-width: 1235px) { 
     .top-center {
         max-width: 50%;
-        margin-top: 12%;
+        margin-top: 15%;
     }
 }
 /* Responsive adjustments */

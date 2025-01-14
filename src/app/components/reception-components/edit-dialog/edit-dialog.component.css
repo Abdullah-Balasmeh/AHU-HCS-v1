@@ -44,6 +44,17 @@
     align-self: center;
     justify-self: center;
 }
+
+input[type="text"]{
+    min-width: 300px;
+    field-sizing: content;
+    padding: 5px;
+    background-color: #F0F0F0;
+    border: 1px solid #4D95A7;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+}
 .footer-btn {
     display: flex;
     justify-content: center;

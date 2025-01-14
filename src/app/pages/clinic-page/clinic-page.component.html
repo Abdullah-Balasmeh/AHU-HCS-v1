@@ -1,1 +1,64 @@
-<p>clinic-page works!</p>
+<div class="container shadowColor">
+    <div *ngIf="showTable">
+        <div class="table-title">
+            <h2>سجل العيادة</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>الرقم</th>
+                    <th>الاسم</th>
+                    <th>الرقم الجامعي/الوظيفي</th>
+                    <th>الحالة</th>
+                    <th>الفئة</th>
+                    <th>عرض</th>
+                </tr>
+            </thead>
+            <div class="loading primaryColor btn"
+                *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+            <tbody *ngIf="!isLoading">
+                <tr *ngFor="let patient of patients; let index = index">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ patient.name }}</td>
+                    <td>{{ patient.id }}</td>
+                    <td>{{ patient.type }}</td>
+                    <td>{{ patient.class }}</td>
+                    <td>
+                        <button
+                            class="table-btn"
+                            id="icon-edit"
+                            (click)=" onViewDetails(patient)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                    </td>
+                </tr>
+            </tbody>
+            <div *ngIf="!isLoading && patients.length === 0" class="no-data">
+                لا يوجد مراجعين عيادة لهذا اليوم.
+            </div>
+        </table>
+    </div>
+     <div *ngIf="showTabs">
+        <app-clinic-tab 
+            (close)="closeAll()"
+            (tabChange)="onTabChange($event)">
+        </app-clinic-tab>
+        <div>
+            <div *ngIf="selectedTab === 'patient-info'">
+                <app-patient-info-display [patientId]="selectedPatient!.patientId!"></app-patient-info-display>
+            </div>
+            <div *ngIf="selectedTab === 'prescription'">
+                <app-prescription [patient]="selectedPatient!"></app-prescription>
+            </div>
+            <div *ngIf="selectedTab === 'medical'">
+                <app-clinic-procedure [patient]="selectedPatient!"></app-clinic-procedure>
+            </div>
+            <div *ngIf="selectedTab === 'reports'">
+                <app-report-section ></app-report-section>
+            </div>
+        </div>
+
+    </div>
+

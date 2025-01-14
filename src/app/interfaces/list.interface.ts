@@ -1,17 +1,21 @@
 export interface Diseases{
-    diseaseId:string,
-    name:string
+    diseaseId?:number,
+    name?:string
 }
 export interface Allergy{
-    allergyId:string,
-    name:string
+    allergyId?:number,
+    name?:string
 }
 export interface Procedures{
-    proceduresId:string,
-    name:string
+    proceduresId?:number,
+    name?:string
 }
 export interface Medicine{
-    medicineId:string,
-    name:string,
-    dose:string,
+    medicineId?:number,
+    name?:string,
+    dose?:string,
+}
+export interface ChDisease  {
+    chDiseaseId?: number,
+    name?: string
 }

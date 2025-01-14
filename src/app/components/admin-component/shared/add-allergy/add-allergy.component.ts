@@ -16,7 +16,7 @@ export class AddAllergyComponent {
   isLoading = true;
   isEdit = false;
   allergies: Allergy[] = [];
-  currentAllergy: Allergy = { allergyId: '', name: '' };
+  currentAllergy: Allergy = { allergyId: 0, name: '' };
 
   constructor(private allergyService: AllergyService) {}
 
@@ -39,7 +39,7 @@ export class AddAllergyComponent {
   }
 
   onAdd() {
-    if (!this.currentAllergy.name.trim()) {
+    if (!this.currentAllergy.name!.trim()) {
       alert('Please enter a valid allergy name.');
       return;
     }
@@ -57,12 +57,12 @@ export class AddAllergyComponent {
   }
 
   onSave() {
-    if (!this.currentAllergy.name.trim()) {
+    if (!this.currentAllergy.name!.trim()) {
       alert('Please enter a valid allergy name.');
       return;
     }
 
-    this.allergyService.updateAllergy(this.currentAllergy.allergyId, this.currentAllergy).subscribe({
+    this.allergyService.updateAllergy(this.currentAllergy.allergyId!, this.currentAllergy).subscribe({
       next: () => {
         const index = this.allergies.findIndex(a => a.allergyId === this.currentAllergy.allergyId);
         if (index > -1) {
@@ -82,7 +82,7 @@ export class AddAllergyComponent {
     this.currentAllergy = { ...allergy };
   }
 
-  deleteAllergy(allergyId: string) {
+  deleteAllergy(allergyId: number) {
     if (confirm('Are you sure you want to delete this allergy?')) {
       this.allergyService.deleteAllergy(allergyId).subscribe({
         next: () => {
@@ -98,6 +98,6 @@ export class AddAllergyComponent {
 
   resetForm() {
     this.isEdit = false;
-    this.currentAllergy = { allergyId: '', name: '' };
+    this.currentAllergy = { allergyId: 0, name: '' };
   }
 }

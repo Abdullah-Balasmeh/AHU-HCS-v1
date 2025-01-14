@@ -1,10 +1,10 @@
-import { MedicalRecordService } from './../../../services/medical-record.service';
-import { PatientService } from './../../../services/patient.service';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { MedicalRecordService } from './../../../services/medical-record.service';
+import { PatientService } from './../../../services/patient.service';
+import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 @Component({
   selector: 'app-patient-regist',
   standalone: true,
@@ -92,7 +92,10 @@ export class PatientRegistComponent {
     })
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
-
+  getLocalDate = (): string => {
+    const now = new Date();
+    return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+};
   onSubmit(): void {
     this.regist.set(true);
     if (this.registForm.invalid) {
@@ -107,43 +110,45 @@ export class PatientRegistComponent {
       return;
     }
 
-    const now = new Date();
-    const offset = now.getTimezoneOffset(); // Get timezone offset in minutes
-    const localDate = new Date(now.getTime() - offset * 60 * 1000).toISOString();
     const patientId = this.registForm.get('patientId')?.value;
-    const today = new Date().toISOString().split('T')[0]; 
+    const today=this.getLocalDate();
     const subscription = this.medicalRecordService.getRecordsByPatientId(patientId!).subscribe({
-      next: (records) => {
-        const todayRecords = records.filter((record: any) => record.enterDate.startsWith(today));
-        console.log('todayRecords ' +todayRecords);
-        console.log('localDate ' +localDate);
-        if (todayRecords.length == 3) {
-
-          alert('لا يمكن للمريض إن يكون له أكثر من 3 سجلات طبية في يوم واحد.');
-          this.regist.set(false);
-          return;
-        }
-        const user = sessionStorage.getItem('user');
-        const parsedUser = user ? JSON.parse(user) : null;
-        const medicalRecord = {
-          userId: parsedUser.userId,
-          patientId: patientId,
-          patientType: this.registForm.get('patientType')?.value,
-          enterDate: localDate,
-        };
-        this.medicalRecordService.addMedicalRecord(medicalRecord).subscribe({
-          next: () => {
-            this.success.set(true);
-            this.resetForm();
-          },
-          error: (error) => {
-            console.error('Error response:', error);
-            alert('حدث خطأ أثناء إضافة المريض');
-            this.resetForm();
-          }
-
-        });
-      }
+        next: (records) => {
+          console.log(records);
+          const todayRecords = records.filter((record: any) => {
+            const recordDate = record.enterDate.split('T')[0]; 
+            console.log(`Record Date: ${recordDate}, Today: ${today}`);
+            return recordDate === today.split('T')[0];
+          });
+            console.log(todayRecords);
+            if (todayRecords.length >= 3) {
+                alert('لا يمكن للمريض إن يكون له أكثر من 3 سجلات طبية في يوم واحد.');
+                this.regist.set(false);
+                return;
+            }
+            const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+            const medicalRecord = {
+                userId: user.userId,
+                patientId,
+                patientType: this.registForm.get('patientType')?.value,
+                enterDate: new Date().toISOString(),
+            };
+            this.medicalRecordService.addMedicalRecord(medicalRecord).subscribe({
+                next: () => {
+                    this.success.set(true);
+                    this.resetForm();
+                },
+                error: (error) => {
+                    console.error('Error response:', error);
+                    alert('حدث خطأ أثناء إضافة المريض');
+                    this.resetForm();
+                },
+            });
+        },
+        error: (error) => {
+            console.error('Error fetching records:', error);
+            alert('حدث خطأ أثناء جلب السجلات');
+        },
     });
     
     this.destroyRef.onDestroy(() => subscription.unsubscribe());

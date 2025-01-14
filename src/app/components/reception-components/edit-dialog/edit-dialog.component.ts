@@ -3,6 +3,7 @@ import { Component, EventEmitter, inject, Input, Output, signal } from '@angular
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MedicalRecord } from '../../../interfaces/patient.interface';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -12,16 +13,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './edit-dialog.component.css'
 })
 export class EditDialogComponent {
-  @Input() patient: any;
+  @Input() record?: MedicalRecord | null =null ;
   @Output() save = new EventEmitter<any>(); 
   @Output() close = new EventEmitter<void>(); 
-  private medicalRecordService =inject(MedicalRecordService);
+  private readonly medicalRecordService =inject(MedicalRecordService);
   saving = signal(false);
   editRecordForm: FormGroup;
   isDisabled: boolean = true; 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder) {
     this.editRecordForm = this.fb.group({
-      id: [{ value: '', disabled: true }, Validators.required], 
+      id: [{ value: '',}, Validators.required], 
       name: ['', Validators.required],
       state: ['', Validators.required],
       type: [{ value: '', disabled: true }],
@@ -29,31 +30,30 @@ export class EditDialogComponent {
   }
 
   ngOnChanges(): void {
-    if (this.patient) {
+    if (this.record) {
       this.editRecordForm.patchValue({
-        id: this.patient.id,
-        name: this.patient.name,
-        state: this.patient.type,
-        type: this.patient.class,
+        id: this.record.patient.patientId,
+        name: this.record.patient?.patientName ?? '',
+        state: this.record.patientType ?? '',
+        type: this.record.patient?.patientClass ?? '',
       });
     }
   }
+
   
 
   saveChanges(): void {
     this.saving.set(true);
   
     if (this.editRecordForm.valid) {
-      // Preserve the original fields from `this.patient`
-      const updatedPatient = {
-        ...this.patient, // Include all original fields
-        ...this.editRecordForm.getRawValue(), // Override with updated form values
-        patientType: this.editRecordForm.value.state, // Preserve original type if not in the form
-        enterDate: this.patient.enterDate, // Preserve original enterDate
-        patientId: this.patient.id, // Preserve original patientId
+      this.record = {
+        ...this.record, 
+        ...this.editRecordForm.getRawValue(),
+        patientType: this.editRecordForm.value.state, 
+        patientId: this.record?.patient.patientId, 
       };
       // Send updated patient to the API
-      this.medicalRecordService.updateMedicalRecord(updatedPatient.recordId, updatedPatient).subscribe({
+      this.medicalRecordService.updateMedicalRecord( this.record?.medicalRecordId!, this.record).subscribe({
         next: () => {
           this.saving.set(false);
           this.save.emit(); // Notify the parent component of successful save

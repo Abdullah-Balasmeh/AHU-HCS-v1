@@ -11,25 +11,25 @@
     </thead>
     <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
     <tbody>
-        <tr *ngFor="let patient of patients; let index = index">
+        <tr *ngFor="let record of records; let index = index">
             <td>{{ index + 1 }}</td>
-            <td>{{ patient.name }}</td>
-            <td>{{ patient.id }}</td>
-            <td>{{ patient.type }}</td>
-            <td>{{ patient.class }}</td>
+            <td>{{ record.patient.patientName }}</td>
+            <td>{{ record.patient.patientId }}</td>
+            <td>{{ record.patientType }}</td>
+            <td>{{ record.patient.patientClass }}</td>
             <td>
                 <button class="table-btn" id="icon-edit"
-                (click)="EditModal(patient)">
+                (click)="EditModal(record)">
                     <i class="bi bi-pencil-square"></i>
                 </button>
                 <button class="table-btn" id="icon-delete"
-                (click)="deleteRecord(patient.recordId)">
+                (click)="deleteRecord(record)">
                     <i class="bi bi-trash"></i>
                 </button>
             </td>
         </tr>
     </tbody>
-    <div *ngIf="!isLoading && patients.length === 0" class="no-data">
+    <div *ngIf="!isLoading && records.length==0" class="no-data">
         لا توجد سجلات طبية لهذا اليوم.
     </div>
 </table>
@@ -37,7 +37,7 @@
 @if(isEdit)
 {
     <app-edit-dialog
-        [patient]="editRecord"
+        [record]="record"
         (save)="saveUpdatedRecord()"
         (close)="closeEditModal()">
     </app-edit-dialog>

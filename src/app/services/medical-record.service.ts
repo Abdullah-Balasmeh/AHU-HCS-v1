@@ -38,11 +38,11 @@ export class MedicalRecordService {
   
 
 
-  updateMedicalRecord(id: string, updatedRecord: any): Observable<void> {
+  updateMedicalRecord(id: number, updatedRecord: any): Observable<void> {
     return this.apiService.put<void>(`${this.endpoint}/${id}`, updatedRecord);
   }
 
-  deleteMedicalRecord(id: string): Observable<void> {
+  deleteMedicalRecord(id: number): Observable<void> {
     return this.apiService.delete<void>(`${this.endpoint}/${id}`);
   }
 
@@ -53,4 +53,13 @@ export class MedicalRecordService {
   getEmployeeState(employeeId: string): Observable<any> {
     return this.apiService.get<any>(`EmpOrStudState/employee/${employeeId}`);
   }
+  getPrescriptionByRecordId(recordId: number): Observable<any> {
+    return this.apiService.get<any>(`MedicalRecord/${recordId}/getPrescription`);
+  }
+  
+  addOrUpdatePrescription(recordId: number, prescription: any): Observable<any> {
+    return this.apiService.post<any>(`MedicalRecord/${recordId}/addOrUpdatePrescription`, prescription);
+  }
+  
+  
 }

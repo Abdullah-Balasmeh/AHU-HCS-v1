@@ -4,25 +4,25 @@
             <div id="bloodTypeList">
                 <label for="search" class="text-type">زمرة الدم:</label>
                 <div class="infoBox">
-                    <span class="ltr-text">{{patient?.bloodType}}</span>
+                    <span class="ltr-text">{{patient?.bloodType || 'لم يتم تعبئة الحقل'}}</span>
                 </div>
             </div>
             <div id="allergyList">
                 <label for="search" class="text-type">حساسية:</label>
                 <div class="infoBox">
-                    <span>{{patient?.allergy}}</span>
+                    <span>{{patient?.allergy || 'لم يتم تعبئة الحقل'}}</span>
                 </div>
             </div>
             <div id="medicalConditionList">
                 <label for="search" class="text-type">الأمراض المزمنة:</label>
                 <div class="infoBox">
-                    <span>{{patient?.chDisease}}</span>
+                    <span>{{patient?.chDisease || 'لم يتم تعبئة الحقل'}}</span>
                 </div>
             </div>
             <div id="treatmentList">
                 <label for="search" class="text-type">العلاج:</label>
                 <div class="infoBox">
-                    <span>{{patient?.medicine}}</span>
+                    <span>{{patient?.medicine || 'لم يتم تعبئة الحقل'}}</span>
                 </div>
             </div>
         </div>

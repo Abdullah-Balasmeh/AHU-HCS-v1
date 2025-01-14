@@ -16,7 +16,7 @@ export class AllergyService {
     return this.apiService.get<Allergy[]>(this.endpoint);
   }
 
-  getAllergyById(id: string): Observable<Allergy> {
+  getAllergyById(id: number): Observable<Allergy> {
     return this.apiService.get<Allergy>(`${this.endpoint}/${id}`);
   }
 
@@ -24,11 +24,11 @@ export class AllergyService {
     return this.apiService.post<Allergy>(this.endpoint, allergy);
   }
 
-  updateAllergy(id: string, allergy: Allergy): Observable<void> {
+  updateAllergy(id: number, allergy: Allergy): Observable<void> {
     return this.apiService.put<void>(`${this.endpoint}/${id}`, allergy);
   }
 
-  deleteAllergy(id: string): Observable<void> {
+  deleteAllergy(id: number): Observable<void> {
     return this.apiService.delete<void>(`${this.endpoint}/${id}`);
   }
 }

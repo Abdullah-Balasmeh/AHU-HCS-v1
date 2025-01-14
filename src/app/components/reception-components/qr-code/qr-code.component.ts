@@ -1,15 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 
 @Component({
   selector: 'app-qr-code',
   standalone: true,
-  imports: [],
+  imports: [LoadingImageComponent],
   templateUrl: './qr-code.component.html',
   styleUrl: './qr-code.component.css'
 })
 export class QrCodeComponent implements OnInit, OnDestroy {
   qrImageUrl: string = ''; // Holds the dynamic QR Code URL
   private intervalId: any; // To store the setInterval reference
+  isLoading=true;
 
   ngOnInit(): void {
     this.updateQRCode(); // Generate QR Code on load
@@ -30,7 +32,7 @@ export class QrCodeComponent implements OnInit, OnDestroy {
 
     this.qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
       fullUrl
-    )}`; // Generate the QR code URL
-    // console.log('QR Code Updated:', dynamicContent);
+    )}`; 
+    this.isLoading=false;
   }
 }

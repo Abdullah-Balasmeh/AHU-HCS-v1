@@ -15,7 +15,7 @@ export class MedicineService {
     return this.apiService.get<Medicine[]>(this.endpoint);
   }
 
-  getMedicineById(id: string): Observable<Medicine> {
+  getMedicineById(id: number): Observable<Medicine> {
     return this.apiService.get<Medicine>(`${this.endpoint}/${id}`);
   }
 
@@ -23,11 +23,11 @@ export class MedicineService {
     return this.apiService.post<Medicine>(this.endpoint, medicine);
   }
 
-  updateMedicine(id: string, medicine: Medicine): Observable<void> {
+  updateMedicine(id: number, medicine: Medicine): Observable<void> {
     return this.apiService.put<void>(`${this.endpoint}/${id}`, medicine);
   }
 
-  deleteMedicine(id: string): Observable<void> {
+  deleteMedicine(id: number): Observable<void> {
     return this.apiService.delete<void>(`${this.endpoint}/${id}`);
   }
 }

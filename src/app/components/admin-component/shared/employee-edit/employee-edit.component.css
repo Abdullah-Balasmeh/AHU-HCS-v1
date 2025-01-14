@@ -82,9 +82,13 @@
 input[type="text"],
 input[type="password"] {
     min-width: 300px;
-    max-width: 450px;
     field-sizing: content;
-
+    padding: 5px;
+    background-color: #F0F0F0;
+    border: 1px solid #4D95A7;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
 }
 
 .rest-btn {

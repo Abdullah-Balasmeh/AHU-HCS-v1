@@ -6,5 +6,5 @@ export interface User {
     signName?: string;
     signType?: string;
     signData?: string;
-    roles?: string[]; // List of role names
+    roles?: string[]; 
 }  

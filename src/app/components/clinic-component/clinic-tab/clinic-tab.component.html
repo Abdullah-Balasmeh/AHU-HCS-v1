@@ -1,0 +1,37 @@
+<div class="nav-box">
+    <div>
+        <div id="close-btn" (click)="closeTab()"><i class="bi bi-x-lg"></i></div>
+        <h2>إجراءات العيادة</h2>
+    </div>
+    <input
+        type="radio"
+        name="slider"
+        id="tabP-2"
+        checked
+        (change)="selectTab('patient-info')">
+    <input
+        type="radio"
+        name="slider"
+        id="tabP-1"
+        (change)="selectTab('prescription')">
+    <input
+        type="radio"
+        name="slider"
+        id="tabH-2"
+        (change)="selectTab('medical')">
+    <input
+        type="radio"
+        name="slider"
+        id="tabT-3"
+        (change)="selectTab('reports')">
+    <nav>
+        <label for="tabP-2" class="tab-4">معلومات المريض</label>
+        <label for="tabP-1" class="tab-1">وصفة طبية</label>
+        <label for="tabH-2" class="tab-2">الإجراء الطبي</label>
+        <label for="tabT-3" class="tab-3">التقارير</label>
+        <div class="slider primaryColor"></div>
+    </nav>
+</div>
+
+
+

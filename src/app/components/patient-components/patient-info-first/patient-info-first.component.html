@@ -17,7 +17,7 @@
         <app-multi-select-dropdown
             id="allergyDropdown"
             placeHolder="حساسية"
-            [options]="['Dust', 'Pollen', 'Nuts', 'Shellfish', 'Latex']"
+            [options]="allergy"
             [selectedOptions]="patient?.allergy || []"
             (selectedChange)="onAllergyChange($event)">
         </app-multi-select-dropdown>
@@ -30,7 +30,7 @@
         <app-multi-select-dropdown
             id="chronicDiseaseDropdown"
             placeHolder="مرض"
-            [options]="['Diabetes', 'Hypertension', 'Asthma', 'Arthritis']"
+            [options]="chDiseases"
             [selectedOptions]="patient?.chDisease || []"
             (selectedChange)="onChronicDiseasesChange($event)">
         </app-multi-select-dropdown>
@@ -42,7 +42,7 @@
         <app-multi-select-dropdown
             id="medicationsDropdown"
             placeHolder="دواء"
-            [options]="['Insulin', 'Metformin', 'Aspirin', 'Ibuprofen']"
+            [options]="medicines"
             [selectedOptions]="patient?.medicine || []"
             (selectedChange)="onMedicationsChange($event)">
         </app-multi-select-dropdown>
@@ -59,7 +59,7 @@
                     name="hepatitis-vaccine"
                     [value]="1"
                     [(ngModel)]="vaccineStatus"
-                    (change)="onVaccineStatusChange()">
+                    >
                 <span class="name">نعم</span>
             </label>
             <label class="radio" for="vaccineNo">
@@ -69,7 +69,7 @@
                     name="hepatitis-vaccine"
                     [value]="0"
                     [(ngModel)]="vaccineStatus"
-                    (change)="onVaccineStatusChange()">
+                    >
                 <span class="name">لا</span>
             </label>
         </div>

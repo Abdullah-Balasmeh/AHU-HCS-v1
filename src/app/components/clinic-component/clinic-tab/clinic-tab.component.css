@@ -1,0 +1,37 @@
+h2{
+    white-space: nowrap;
+    align-self: center;
+    justify-self: center;
+}
+#close-btn{
+    display: flex;
+    flex-direction: row;
+    justify-self: end;
+}
+
+/* Active tab text color */
+#tabP-1:checked ~ .nav-box nav label .tab-1,
+#tabH-2:checked ~ .nav-box nav label .tab-2,
+#tabT-3:checked ~ .nav-box nav label .tab-3,
+#tabP-2checked ~ .nav-box nav label .tab-4{
+    color: #AEDDDC;
+}
+/* Tab slider position */
+#tabP-2:checked ~ nav .slider {
+    right: 0%;
+    width: 30%;
+}
+#tabP-1:checked ~ nav .slider {
+    right: 34%;
+    width: 20%;
+}
+
+#tabH-2:checked ~ nav .slider {
+    right: 57%;
+    width: 23%;
+}
+
+#tabT-3:checked ~ nav .slider {
+    right: 83%;
+    width: 15%;
+}

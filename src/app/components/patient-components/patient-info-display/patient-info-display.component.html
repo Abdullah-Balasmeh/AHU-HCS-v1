@@ -1,0 +1,55 @@
+<div class="content whiteColor">
+    <form>
+        <div class="Box-grid">
+            <div id="bloodTypeList">
+                <label for="search" class="text-type">زمرة الدم:</label>
+                <div class="infoBox">
+                    <span class="ltr-text">{{patient?.bloodType || 'لم يتم تعبئة الحقل'}}</span>
+                </div>
+            </div>
+            <div id="allergyList">
+                <label for="search" class="text-type">حساسية:</label>
+                <div class="infoBox">
+                    <span>{{patient?.allergy || 'لم يتم تعبئة الحقل'}}</span>
+                </div>
+            </div>
+            <div id="medicalConditionList">
+                <label for="search" class="text-type">الأمراض المزمنة:</label>
+                <div class="infoBox">
+                    <span>{{patient?.chDisease || 'لم يتم تعبئة الحقل'}}</span>
+                </div>
+            </div>
+            <div id="treatmentList">
+                <label for="search" class="text-type">العلاج:</label>
+                <div class="infoBox">
+                    <span>{{patient?.medicine || 'لم يتم تعبئة الحقل'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <h3>هل تم أخذ مطعوم الكبد الوبائي؟</h3>
+            <div class="radio-inputs">
+                <label class="radio" for="vaccineYesDisabled">
+                    <input
+                        type="radio"
+                        id="vaccineYesDisabled"
+                        name="hepatitis-vaccine-disabled"
+                        [value]="1"
+                        [checked]="patient?.takeVac===true"
+                        disabled>
+                    <span class="name">نعم</span>
+                </label>
+                <label class="radio" for="vaccineNoDisabled">
+                    <input
+                        type="radio"
+                        id="vaccineNoDisabled"
+                        name="hepatitis-vaccine-disabled"
+                        [value]="0"
+                        [checked]="patient?.takeVac ===false"
+                        disabled>
+                    <span class="name">لا</span>
+                </label>
+            </div>
+        </div>
+    </form>
+</div>
