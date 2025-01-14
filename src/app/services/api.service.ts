@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 
@@ -22,9 +22,14 @@ export class ApiService {
   }
 
   // Generic PUT method
-  put<T>(endpoint: string, data: any): Observable<T> {
-    return this.http.put<T>(`${this.baseUrl}${endpoint}`, data).pipe(catchError(this.handleError),delay(1000));
+  put<T>(endpoint: string, data: any, options?: { params?: HttpParams }): Observable<T> {
+    return this.http.put<T>(`${this.baseUrl}${endpoint}`, data, options).pipe(
+      catchError(this.handleError),
+      delay(1000)
+    );
   }
+  
+  
 
   // Generic DELETE method
   delete<T>(endpoint: string): Observable<T> {

@@ -1,4 +1,3 @@
-import { Patient } from './../../../interfaces/patient.interface';
 import { MedicalRecordService } from './../../../services/medical-record.service';
 import { DiseaseService } from './../../../services/disease.service';
 import { MedicineService } from './../../../services/medicine.service';
@@ -16,19 +15,17 @@ import { Prescription } from '../../../interfaces/patient.interface';
   styleUrls: ['./prescription.component.css']
 })
 export class PrescriptionComponent implements OnInit {
-  @Input() patient: Patient  = {};
+  @Input() prescription: Prescription | null  = null;
+  @Input() patientName: string ='';
+  @Input() MedicalRecordId: number = 0;
+  
   saving = false;
   medicines: string[] = [];
   diseases: string[] = [];
+  selectedMedicines: string[] = [];
+  selectedDiseases: string[] = [];
   isEditPrescription=false;
-  prescription: Prescription = {
-    prescriptionId: undefined,
-    disease: [''],
-    medicine:[''],
-    userId: '',
-    date: new Date(),
-    medicalRecordId:undefined,
-  };
+
 
   private readonly medicalRecordService = inject(MedicalRecordService);
   private readonly medicineService = inject(MedicineService);
@@ -37,36 +34,15 @@ export class PrescriptionComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.prescription) {
-      console.error('Record ID is required for PrescriptionComponent.');
-      alert('Invalid record. Please select a valid medical record.');
-      return;
+      this.selectedDiseases = this.prescription.disease || [];
+      this.selectedMedicines = this.prescription.medicine || [];
     }
     this.getAllMedicines();
     this.getAllDisease();
-    this.loadPrescription();
   }
+  
 
-  loadPrescription(): void {
-    if(this.patient)
-    this.medicalRecordService.getPrescriptionByRecordId(this.prescription.medicalRecordId!).subscribe({
-      next: (prescription) => {
-        if (prescription) {
-          this.isEditPrescription=true;
-          this.prescription = {
-            prescriptionId: prescription.prescriptionId,
-            medicine: prescription.medicine ? prescription.medicine.split(', ') : [],
-            disease: prescription.disease ? prescription.disease.split(', ') : [],
-            userId: prescription.userId || '',
-            date: prescription.date || new Date(),
-            medicalRecordId: prescription.medicalRecordId || this.prescription.medicalRecordId
-          };
-        }
-      },
-      error: (err) => {
-        console.error('Error loading prescription:', err);
-      },
-    });
-  }
+
 
   getAllMedicines(): void {
     this.medicineService.getAllMedicines().subscribe({
@@ -88,52 +64,56 @@ export class PrescriptionComponent implements OnInit {
       },
     });
   }
-
+  onMedicinesChange(selected: string[]): void {
+    this.selectedMedicines = [...selected];
+  }
+  
+  onDiseasesChange(selected: string[]): void {
+    this.selectedDiseases = [...selected];
+  }
+  
   onSubmit() {
-    if (!this.prescription.disease!.length || !this.prescription.medicine!.length) {
-      alert('Please select at least one disease and one medicine.');
-      return;
-    }
-
     this.saving = true;
-
+  
     const user = sessionStorage.getItem('user');
     const parsedUser = user ? JSON.parse(user) : null;
-
+  
     if (!parsedUser) {
       alert('User not found in session. Please login again.');
       this.saving = false;
       return;
     }
-
-    const prescriptionPayload = {
-      prescriptionId: this.prescription.prescriptionId ?? null,
-      // disease: this.prescription.disease!.join(', '),
-      // medicine: this.prescription.medicine!.join(', '),
+  
+    const UpdatePrescription: Prescription = {
+      disease: this.selectedDiseases,
+      medicine: this.selectedMedicines,
+      medicalRecordId: this.MedicalRecordId,
       userId: parsedUser.userId,
-      date: new Date().toISOString(),
-      medicalRecordId: this.prescription.medicalRecordId
     };
-
-    console.log('Payload to submit:', prescriptionPayload);
-
-    this.medicalRecordService.addOrUpdatePrescription(this.prescription.medicalRecordId!, prescriptionPayload).subscribe({
+  
+    console.log('Payload being sent:', UpdatePrescription);
+  
+    this.medicalRecordService.addOrUpdatePrescription(this.MedicalRecordId, UpdatePrescription).subscribe({
       next: () => {
+        console.log('Successfully updated prescription', UpdatePrescription);
         this.saving = false;
-        if(this.isEditPrescription){
-          alert(`تم تحديث الوصفة الطبية للمريض ${this.patient.patientName}`);
-        }else{
-          alert(`تم إضافة وصفة طبية للمريض ${this.patient.patientName}`);
+        if (this.isEditPrescription) {
+          alert(`تم تحديث الوصفة الطبية للمريض ${this.patientName}`);
+        } else {
+          alert(`تم إضافة وصفة طبية للمريض ${this.patientName}`);
+          this.isEditPrescription=true;
         }
       },
       error: (err) => {
-        this.saving = false;
         console.error('Error updating prescription:', err);
+        this.saving = false;
         alert('حدث خطأ أثناء تحديث الوصفة الطبية.');
       },
     });
-    
   }
+  
+  
+
   }
   
   

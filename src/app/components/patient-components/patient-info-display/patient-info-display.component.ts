@@ -1,7 +1,6 @@
-import { Patient } from '../../../interfaces/patient.interface';
-import { PatientService } from './../../../services/patient.service';
-import { Component,inject,Input, OnInit } from '@angular/core';
+import { Component,Input } from '@angular/core';
 
+import { Patient } from '../../../interfaces/patient.interface';
 @Component({
   selector: 'app-patient-info-display',
   standalone: true,
@@ -9,20 +8,9 @@ import { Component,inject,Input, OnInit } from '@angular/core';
   templateUrl: './patient-info-display.component.html',
   styleUrl: './patient-info-display.component.css'
 })
-export class PatientInfoDisplayComponent implements OnInit {
-  ngOnInit(): void {
-    this.loadPatientInfo();
-  }
-patient: Patient| null  = null;
-  @Input() patientId: string  = '';
-  private readonly patientService=inject(PatientService)
+export class PatientInfoDisplayComponent {
 
-  loadPatientInfo():void{
-      this.patientService.getPatientById(this.patientId).subscribe({
-        next:(patient: Patient)=>{
-          this.patient=patient;
-        }
-      })
+  @Input() patient?: Patient | null  = null;
 
-  }
+
 }

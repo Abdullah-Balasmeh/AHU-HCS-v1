@@ -5,17 +5,18 @@
                 <label for="search" class="text-type">المرض:</label>
                 <app-multi-select-dropdown
                 placeHolder="مرض"
-                    [options]="diseases"
-                    >
+                [options]="diseases"
+                [selectedOptions]="selectedDiseases"
+                (selectedChange)="onDiseasesChange($event)">
                 </app-multi-select-dropdown>
             </div>
             <div id="treatmentList">
                 <label for="search" class="text-type">العلاج:</label>
                 <app-multi-select-dropdown
                 placeHolder="علاج"
-                    [options]="medicines"
-                    (selectedChange)="prescription.medicine"
-                    >
+                [options]="medicines"
+                [selectedOptions]="selectedMedicines"
+                (selectedChange)="onMedicinesChange($event)">
                 </app-multi-select-dropdown>
             </div>
         </div>

@@ -18,24 +18,24 @@
             <div class="loading primaryColor btn"
                 *ngIf="isLoading"><app-loading-image></app-loading-image></div>
             <tbody *ngIf="!isLoading">
-                <tr *ngFor="let patient of patients; let index = index">
+                <tr *ngFor="let record of records; let index = index">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ patient.name }}</td>
-                    <td>{{ patient.id }}</td>
-                    <td>{{ patient.type }}</td>
-                    <td>{{ patient.class }}</td>
+                    <td>{{ record.patient.patientName }}</td>
+                    <td>{{ record.patient.patientId }}</td>
+                    <td>{{ record.patientType }}</td>
+                    <td>{{ record.patient.patientClass }}</td>
                     <td>
                         <button
                             class="table-btn"
                             id="icon-edit"
-                            (click)=" onViewDetails(patient)">
+                            (click)=" onViewDetails(record)">
                             <i class="bi bi-eye"></i>
                         </button>
 
                     </td>
                 </tr>
             </tbody>
-            <div *ngIf="!isLoading && patients.length === 0" class="no-data">
+            <div *ngIf="!isLoading && records.length === 0" class="no-data">
                 لا يوجد مراجعين عيادة لهذا اليوم.
             </div>
         </table>
@@ -47,13 +47,22 @@
         </app-clinic-tab>
         <div>
             <div *ngIf="selectedTab === 'patient-info'">
-                <app-patient-info-display [patientId]="selectedPatient!.patientId!"></app-patient-info-display>
+                <app-patient-info-display [patient]="selectedRecord!.patient!"></app-patient-info-display>
             </div>
             <div *ngIf="selectedTab === 'prescription'">
-                <app-prescription [patient]="selectedPatient!"></app-prescription>
+                <app-prescription 
+                [prescription]="selectedRecord!.prescription!"
+                [patientName]="selectedRecord!.patient.patientName!"
+                [MedicalRecordId]="selectedRecord!.medicalRecordId!"
+                >
+                </app-prescription>
             </div>
             <div *ngIf="selectedTab === 'medical'">
-                <app-clinic-procedure [patient]="selectedPatient!"></app-clinic-procedure>
+                <app-clinic-procedure 
+                [medicalProcedures]="selectedRecord!.medicalProcedures!"
+                [medicalRecordId]="selectedRecord!.medicalRecordId!"
+                [patientType]="selectedRecord?.patientType!">
+                </app-clinic-procedure>
             </div>
             <div *ngIf="selectedTab === 'reports'">
                 <app-report-section ></app-report-section>

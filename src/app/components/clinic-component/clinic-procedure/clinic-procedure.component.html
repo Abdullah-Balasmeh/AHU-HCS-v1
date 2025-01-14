@@ -1,5 +1,5 @@
 <div class="content">
-    <form #clinicProcedure="ngForm" (ngSubmit)="clinicProcedure">
+    <form>
         <h6 class="text-type">الفحوصات:</h6>
         <div class="check-inputs-box">
             <div class="row-check">
@@ -7,6 +7,7 @@
                     <input
                         type="checkbox"
                         id="exam-1"
+                        [disabled]="disable"
                         [(ngModel)]="BPChecked"
                         name="exam1Checked" />
                     <span class="name">BP</span>
@@ -15,6 +16,7 @@
                 <label class="check" for="exam-2">
                     <input
                         type="checkbox"
+                        [disabled]="disable"
                         id="exam-2"
                         [(ngModel)]="TempChecked"
                         name="exam2Checked" />
@@ -24,6 +26,7 @@
                 <label class="check" for="exam-3">
                     <input
                         type="checkbox"
+                        [disabled]="disable"
                         id="exam-3"
                         [(ngModel)]="PulseChecked"
                         name="exam3Checked" />
@@ -32,6 +35,7 @@
 
                 <label class="check" for="exam-4">
                     <input
+                    [disabled]="disable"
                         type="checkbox"
                         id="exam-4"
                         [(ngModel)]="RespChecked"
@@ -47,8 +51,9 @@
                             type="text"
                             id="exam-1-in"
                             maxlength="3"
+                            [value]="medicalProcedures.bpUpValue "
                             (input)="onNumberInput($event)"
-                            autocomplete="off" />
+                            readonly />
                         <span>:BP-Up</span>
                     </label>
                 </div>
@@ -59,8 +64,9 @@
                             type="text"
                             id="exam-1-p"
                             maxlength="3"
+                            [value]="medicalProcedures.bpDownValue"
                             (input)="onNumberInput($event)"
-                            autocomplete="off" />
+                            readonly />
                         <span>:BP-Down</span>
                     </label>
                 </div>
@@ -71,8 +77,9 @@
                             type="text"
                             id="exam-2-in"
                             maxlength="4"
+                            [value]="medicalProcedures.tempValue"
                             (input)="onNumberInput($event)"
-                            autocomplete="off" />
+                            readonly />
                         <span>:Temp</span>
                     </label>
                 </div>
@@ -83,8 +90,9 @@
                             type="text"
                             id="exam-3-in"
                             maxlength="3"
+                            [value]="medicalProcedures.pulseValue"
                             (input)="onNumberInput($event)"
-                            autocomplete="off" />
+                            readonly />
                         <span>:Pulse</span>
                     </label>
                 </div>
@@ -95,30 +103,31 @@
                             type="text"
                             id="exam-4-in"
                             maxlength="3"
+                            [value]="medicalProcedures.respValue"
                             (input)="onNumberInput($event)"
-                            autocomplete="off" />
+                            readonly />
                         <span>:Resp</span>
                     </label>
                 </div>
             </div>
         </div>
         <h6 class="text-type">الإجراءات:</h6>
-        <ng-container *ngIf="!sendProcedure; else box">
+        <ng-container *ngIf="!disable; else box">
             <div class="dropdown-box">
                 <app-multi-select-dropdown 
                 [options]="procedureNames"
-                (selectedChange)="selectedProcedures"
                 [selectedOptions]="selectedProcedures"
+                (selectedChange)="onChangeProcedures($event)"
                     placeHolder="إجراء">
                 </app-multi-select-dropdown>
             </div>
         </ng-container>
         <ng-template #box>
             <div class="infoBox">
-                <span>{{patient || 'لم يتم تعبئة الحقل'}}</span>
+                <span>{{medicalProcedures.procedures}}</span>
             </div>
         </ng-template>
-            <p *nfIf="errorMessage"></p>
+            <p *ngIf="errorMessage"></p>
         <div class="footer-btn">
             <ng-container *ngIf="saving; else notSaving">
                 <div class="btn primaryColor">
@@ -126,7 +135,12 @@
                 </div>
             </ng-container>
             <ng-template #notSaving >
-                    <button type="submit" class="btn primaryColor" (ngSubmit)="clinicProcedure" >حفظ</button>
+                <button 
+                type="button" 
+                class="btn primaryColor" 
+                (click)="onSubmit()">
+                {{ disable ? 'تعديل' : 'حفظ' }}
+            </button>
             </ng-template>
         </div>
     </form>

@@ -59,8 +59,8 @@ export interface DiabtetesRecord {
 
 export interface Prescription {
     prescriptionId?: number;
-    disease?: string | string[];
-    medicine?: string | string[];
+    disease?: string[];
+    medicine?:string[];
     userId?: string ;
     date?: Data;
     medicalRecordId?: number;
@@ -70,15 +70,15 @@ export interface MedicalProcedures {
     medicalProceduresId?: number;
     nurseId?: string;
     doctorId?: string;
-    bpState?: string;
+    bpState?: boolean;
     bpUpValue?: string;
     bpDownValue?: string;
-    tempState?: string;
+    tempState?: boolean;
     tempValue?: string;
-    pulseState?: string;
+    pulseState?: boolean;
     pulseValue?: string;
-    respState?: string;
+    respState?: boolean;
     respValue?: string;
-    procedures?: string[] |string;
+    procedures?: string[];
     medicalRecord?: string;
 }

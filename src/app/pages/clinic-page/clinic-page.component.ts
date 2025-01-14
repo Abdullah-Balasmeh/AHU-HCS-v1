@@ -7,7 +7,7 @@ import { ReportSectionComponent } from "../../components/clinic-component/report
 import { PatientInfoDisplayComponent } from "../../components/patient-components/patient-info-display/patient-info-display.component";
 import { ClinicProcedureComponent } from "../../components/clinic-component/clinic-procedure/clinic-procedure.component";
 import { PrescriptionComponent } from "../../components/clinic-component/prescription/prescription.component";
-import { Patient } from '../../interfaces/patient.interface';
+import { MedicalRecord } from '../../interfaces/patient.interface';
 
 @Component({
   selector: 'app-clinic-page',
@@ -19,8 +19,8 @@ import { Patient } from '../../interfaces/patient.interface';
 export class ClinicPageComponent implements OnInit {
 
   isLoading:boolean=false;
-  patients: any[] = [];
-  selectedPatient: Patient | undefined; 
+  records: MedicalRecord[] = [];
+  selectedRecord?: MedicalRecord | null; 
   @Output() resetEvent = new EventEmitter<void>(); 
   selectedTab: string='patient-info';
   showTable: boolean = true;
@@ -29,28 +29,22 @@ export class ClinicPageComponent implements OnInit {
   ngOnInit(): void {
     this.loadPatients();
   }
-  loadPatients(): void {
+
+  getLocalDate = (): string => {
     const now = new Date();
-    const offset = now.getTimezoneOffset(); // Get timezone offset in minutes
-    const localDate = new Date(now.getTime() - offset * 60 * 1000).toISOString();
+    return now.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  };
+  loadPatients(): void {
+    const today = this.getLocalDate()
     this.isLoading = true;
   
-    this.medicalRecordService.getRecordsByEnterDate(localDate).subscribe({
+    this.medicalRecordService.getRecordsByEnterDate(today).subscribe({
       next: (records) => {
-        const filteredRecords = records.filter((record: any) => record.patientType === 'عيادة');
+        const filteredRecords = records.filter((record: any) => record.patientType == 'عيادة' || 'تحويل من العيادة');
   
         // Sort filtered records by enterDate in ascending order
         filteredRecords.sort((a: any, b: any) => new Date(a.enterDate).getTime() - new Date(b.enterDate).getTime());
-  
-        // Map sorted and filtered records to patients
-        this.patients = filteredRecords.map((record: any) => ({
-          name: record.patient?.patientName || 'N/A',
-          id: record.patient?.patientId || 'N/A',
-          class: record.patient?.patientClass || 'N/A',
-          type: record.patientType || 'N/A',
-          recordId: record.medicalRecordId,
-          enterDate: record.enterDate,
-        }));
+        this.records = filteredRecords;
         this.isLoading = false;
       },
       error: (error) => {
@@ -61,9 +55,10 @@ export class ClinicPageComponent implements OnInit {
   }
   
 
-  onViewDetails(patient : any) {
+  onViewDetails(record : MedicalRecord) {
     this.selectedTab= 'patient-info';
-    this.selectedPatient=patient;
+    console.log('record ' , record)
+    this.selectedRecord=record;
     this.showTable = false;
     this.showTabs = true;
   }

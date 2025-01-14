@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ApiService } from './api.service'; // Import the generic ApiService
+import { MedicalProcedures, Prescription } from '../interfaces/patient.interface';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -56,10 +58,17 @@ export class MedicalRecordService {
   getPrescriptionByRecordId(recordId: number): Observable<any> {
     return this.apiService.get<any>(`MedicalRecord/${recordId}/getPrescription`);
   }
-  
-  addOrUpdatePrescription(recordId: number, prescription: any): Observable<any> {
-    return this.apiService.post<any>(`MedicalRecord/${recordId}/addOrUpdatePrescription`, prescription);
+
+  addOrUpdatePrescription(recordId: number, prescription: Prescription): Observable<any> {
+    return this.apiService.put<any>(`MedicalRecord/${recordId}/prescription`, prescription);
   }
   
   
+  addOrUpdateProcedures(recordId: number, procedures: any, newPatientType: string): Observable<any> {
+    const params = new HttpParams().set('newPatientType', newPatientType);
+    return this.apiService.put<any>(`MedicalRecord/${recordId}/procedures`, procedures, { params });
+  }
+  
+  
+
 }
