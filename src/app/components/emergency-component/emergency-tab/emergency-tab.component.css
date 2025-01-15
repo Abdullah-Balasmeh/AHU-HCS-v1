@@ -1,0 +1,28 @@
+
+h1{
+    margin-bottom: 20px;
+}
+
+/* Tab slider position */
+#tabBP-1:checked ~ nav .slider {
+    right: 0%;
+    width: 50%;
+}
+
+#tabS-2:checked ~ nav .slider {
+    right: 50%;
+    width: 48%;
+}
+.table-title{
+    width: 100%;
+}
+.table-title h2{
+    white-space: nowrap;
+    align-self: center;
+    justify-self: center; 
+}
+#close-btn{
+    display: flex;
+    flex-direction: row;
+    justify-self: end;
+}

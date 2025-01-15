@@ -1,0 +1,81 @@
+<!-- BP Form -->
+<form [formGroup]="bpForm">
+    <div class="header-input">
+        <div class="input-box">
+            <h6 class="text-type">B.P-Up:</h6>
+            <input
+                type="text"
+                formControlName="bpUp"
+                autocomplete="off"
+                maxlength="3"
+                required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+        </div>
+        <div class="input-box">
+            <h6 class="text-type">B.P-Down:</h6>
+            <input
+                type="text"
+                formControlName="bpDown"
+                autocomplete="off"
+                maxlength="3"
+                required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+        </div>
+        <div class="input-box">
+            <h6 class="text-type note">الملاحظات:</h6>
+            <textarea
+                name="note"
+                formControlName="note"
+                autocomplete="off"
+                class="textarea-note"
+                rows="2"></textarea>
+        </div>
+        <button type="button" class="btn primaryColor"
+            (click)="addBPRecord()">إضافة</button>
+    </div>
+</form>
+<div class="errorDiv">
+    <p *ngIf="bpForm.get('bpUp')?.invalid && bpForm.get('bpUp')?.touched && bpForm.get('bpUp')?.hasError('rangeError')" class="errorColor">
+        {{ bpForm.get('bpUp')?.getError('rangeError') }}
+    </p>
+    <p *ngIf="bpForm.get('bpDown')?.invalid && bpForm.get('bpDown')?.touched && bpForm.get('bpDown')?.hasError('rangeError')" class="errorColor">
+        {{ bpForm.get('bpDown')?.getError('rangeError') }}
+    </p>
+</div>
+
+<!-- BP Readings Table -->
+<div >
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اليوم</th>
+                <th>التاريخ</th>
+                <th>الوقت</th>
+                <th>B.P-Up</th>
+                <th>B.P-Down</th>
+                <th>الملاحظات</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <div class="loading primaryColor btn" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+        <tbody *ngIf="!isLoading">
+            <tr
+                *ngFor="let bpRecord of bpRecords let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ bpRecord.date }}</td>
+                <td>{{ bpRecord.date}}</td>
+                <td>{{ bpRecord.date}}</td>
+                <td>{{bpRecord.bpUp}}</td>
+                <td>{{ bpRecord.bpDown}}</td>
+                <td>{{ bpRecord.note }}</td>
+                <td>
+                    <button class="table-btn" id="icon-delete"
+                    (click)="deleteBPRecord(i)">
+                    <i class="bi bi-trash"></i>
+                </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

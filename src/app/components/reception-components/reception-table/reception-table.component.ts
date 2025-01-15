@@ -24,12 +24,15 @@ export class ReceptionTableComponent implements OnInit {
   }
   getLocalDate = (): string => {
     const now = new Date();
-    return now.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-  };
+    const offset = now.getTimezoneOffset() * 60000; // Get the offset in milliseconds
+    const localTime = new Date(now.getTime() - offset); // Adjust for local time
+    return localTime.toISOString().split('T')[0]; // Extract the date
+};
+
 
   getTodayMedicalRecords(): void {
     const today = this.getLocalDate();
-
+    console.log(today)
     this.isLoading = true;
 
     this.medicalRecordService.getRecordsByEnterDate(today).subscribe({
@@ -47,7 +50,7 @@ export class ReceptionTableComponent implements OnInit {
   }
 
   deleteRecord(record: MedicalRecord): void {
-    if(record.medicalProcedures && record.prescription){
+    if(!record.medicalProcedures && !record.prescription){
       if (confirm('Are you sure you want to delete this record?')) {
         this.medicalRecordService.deleteMedicalRecord(record.medicalRecordId).subscribe({
           next: () => {

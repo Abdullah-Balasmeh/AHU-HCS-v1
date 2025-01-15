@@ -40,16 +40,17 @@
                 </label>
             </div>
 
-            <div *ngIf="hasChecked" class="input-box-exam input-box">
+            <div class="input-box-exam input-box">
                 <div *ngIf="BPChecked">
                     <label for="exam-1-in">
                         <input
                             type="text"
                             id="exam-1-in"
+                            name="BpUp"
                             maxlength="3"
-                            [value]="medicalProcedures.bpUpValue "
+                            [(ngModel)]="medicalProcedures.bpUpValue"
                             (input)="onNumberInput($event)"
-                            readonly />
+                            autocomplete="off">
                         <span>:BP-Up</span>
                     </label>
                 </div>
@@ -60,9 +61,10 @@
                             type="text"
                             id="exam-1-p"
                             maxlength="3"
-                            [value]="medicalProcedures.bpDownValue"
+                            name="BPDown"
+                            [(ngModel)]="medicalProcedures.bpDownValue"
                             (input)="onNumberInput($event)"
-                            readonly />
+                            autocomplete="off"/>
                         <span>:BP-Down</span>
                     </label>
                 </div>
@@ -73,9 +75,10 @@
                             type="text"
                             id="exam-2-in"
                             maxlength="4"
-                            [value]="medicalProcedures.tempValue"
-                            (input)="onNumberInput($event)"
-                            readonly />
+                            autocomplete="off"
+                            name="temp"
+                            [(ngModel)]="medicalProcedures.tempValue"
+                            (input)="onNumberInput($event)"/>
                         <span>:Temp</span>
                     </label>
                 </div>
@@ -86,9 +89,10 @@
                             type="text"
                             id="exam-3-in"
                             maxlength="3"
-                            [value]="medicalProcedures.pulseValue"
-                            (input)="onNumberInput($event)"
-                            readonly />
+                            name="pulse"
+                            autocomplete="off"
+                            [(ngModel)]="medicalProcedures.pulseValue"
+                            (input)="onNumberInput($event)" />
                         <span>:Pulse</span>
                     </label>
                 </div>
@@ -99,9 +103,10 @@
                             type="text"
                             id="exam-4-in"
                             maxlength="3"
-                            [value]="medicalProcedures.respValue"
-                            (input)="onNumberInput($event)"
-                            readonly />
+                            name="resp"
+                            autocomplete="off"
+                            [(ngModel)]="medicalProcedures.respValue"
+                            (input)="onNumberInput($event)"/>
                         <span>:Resp</span>
                     </label>
                 </div>

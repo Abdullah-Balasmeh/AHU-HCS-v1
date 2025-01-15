@@ -1,0 +1,86 @@
+<!-- Main Table -->
+<div class="container" *ngIf="showTable">
+    <div id="close-btn" (click)="reset()">
+        <i class="bi bi-x-lg"></i>
+    </div>
+    <div class="table-title">
+        <h2>سجل الطوارئ</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>الاسم</th>
+                <th>الرقم الجامعي/الوظيفي</th>
+                <th>الحالة</th>
+                <th>الفئة</th>
+                <th>عرض</th>
+            </tr>
+        </thead>
+        <div class="loading primaryColor btn" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+        <tbody>
+            <tr *ngFor="let record of records; let index = index">
+                <td>{{ index + 1 }}</td>
+                <td class="margin-left">{{ record.patient.patientName }}</td>
+                <td>{{ record.patient.patientId }}</td>
+                <td>{{ record.patientType }}</td>
+                <td>{{ record.patient.patientClass }}</td>
+                <td>
+                    <button
+                        class="table-btn"
+                        id="icon-edit"
+                        (click)="onViewDetails(record!)"
+                        *ngIf="record.patientType === 'طوارئ'">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button
+                        class="table-btn"
+                        id="icon-edit"
+                        (click)="openFollowingTab(record)"
+                        *ngIf="record.patientType  !== 'طوارئ'">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+        <div *ngIf="!isLoading && records.length === 0" class="no-data">
+            لا يوجد مراجعين طوارئ لهذا اليوم.
+        </div>
+    </table>
+</div>
+
+
+
+
+
+    <div class="container" *ngIf="showEmergencyDialog">
+        <app-emergency-tab 
+            (close)="closeAll()"
+            (tabChange)="onTabChange($event)">
+        </app-emergency-tab>
+        <div>
+            <app-patient-info-display *ngIf="selectedTab === 'patient-info'"
+            [patient]="selectedRecord?.patient"></app-patient-info-display>
+            <app-emergency-procedure
+                *ngIf="selectedTab === 'emergency-procedure'"
+                [medicalProcedures]="selectedRecord!.medicalProcedures!"
+                [medicalRecordId]="selectedRecord!.medicalRecordId!"
+                [patientType]="selectedRecord?.patientType!"
+            ></app-emergency-procedure>
+        </div>
+    </div>
+    
+
+<div class="container" *ngIf="showFollowingTab">
+    <app-following-tab 
+        (close)="closeAll()"
+        (tabChange)="onTabChange($event)">
+    </app-following-tab>
+    <div>
+        <app-bp-table *ngIf="selectedTab === 'B.P'"
+        [patientId]="selectedRecord?.patient?.patientId!"></app-bp-table>
+        <app-diabetes-table
+            *ngIf="selectedTab === 'diabetes'"
+            [patientId]="selectedRecord?.patient?.patientId!"></app-diabetes-table>
+    </div>
+</div>

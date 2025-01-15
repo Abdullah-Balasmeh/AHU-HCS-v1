@@ -32,16 +32,20 @@ export class ClinicPageComponent implements OnInit {
 
   getLocalDate = (): string => {
     const now = new Date();
-    return now.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-  };
+    const offset = now.getTimezoneOffset() * 60000; // Get the offset in milliseconds
+    const localTime = new Date(now.getTime() - offset); // Adjust for local time
+    return localTime.toISOString().split('T')[0]; // Extract the date
+};
   loadPatients(): void {
     const today = this.getLocalDate()
     this.isLoading = true;
   
     this.medicalRecordService.getRecordsByEnterDate(today).subscribe({
       next: (records) => {
-        const filteredRecords = records.filter((record: any) => record.patientType == 'عيادة' || 'تحويل من العيادة');
-  
+        console.log('time clinic' , today)
+        console.log('clinic records' , records );
+        const filteredRecords = records.filter((record: MedicalRecord) => (record.patientType === 'عيادة' || record.patientType == 'تحويل من العيادة') );
+        console.log('clinic filteredRecords' , filteredRecords );
         // Sort filtered records by enterDate in ascending order
         filteredRecords.sort((a: any, b: any) => new Date(a.enterDate).getTime() - new Date(b.enterDate).getTime());
         this.records = filteredRecords;
@@ -62,8 +66,9 @@ export class ClinicPageComponent implements OnInit {
     this.showTable = false;
     this.showTabs = true;
   }
+  
   reset(): void {
-    this.resetEvent.emit(); // Emit the renamed `resetEvent`
+    this.resetEvent.emit(); 
   }
 
   onTabChange(tab: string) {

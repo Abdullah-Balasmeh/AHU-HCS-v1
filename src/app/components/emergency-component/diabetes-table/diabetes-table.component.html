@@ -1,0 +1,81 @@
+<!-- diabetes Form -->
+<form [formGroup]="diabetesForm">
+    <div class="header-input">
+        <div class="input-box">
+            <h6 class="text-type">FBS:</h6>
+            <input
+                type="text"
+                formControlName="FBS"
+                autocomplete="off"
+                maxlength="3"
+                required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+        </div>
+        <div class="input-box">
+            <h6 class="text-type">RBS:</h6>
+            <input
+                type="text"
+                formControlName="RBS"
+                autocomplete="off"
+                maxlength="3"
+                required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+        </div>
+        <div class="input-box">
+            <h6 class="text-type note">الملاحظات:</h6>
+            <textarea
+                name="note"
+                formControlName="note"
+                autocomplete="off"
+                class="textarea-note"
+                rows="2"></textarea>
+        </div>
+        <button type="button" class="btn primaryColor"
+            (click)="addDiabetesReading()">إضافة</button>
+    </div>
+</form>
+<div class="errorDiv">
+    <p *ngIf="diabetesForm.get('FBS')?.invalid && diabetesForm.get('FBS')?.touched && diabetesForm.get('FBS')?.hasError('rangeError')" class="errorColor">
+        {{ diabetesForm.get('FBS')?.getError('rangeError') }}
+    </p>
+    <p *ngIf="diabetesForm.get('RBS')?.invalid && diabetesForm.get('RBS')?.touched && diabetesForm.get('RBS')?.hasError('rangeError')" class="errorColor">
+        {{ diabetesForm.get('RBS')?.getError('rangeError') }}
+    </p>
+</div>
+
+<!-- BP Readings Table -->
+<div >
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اليوم</th>
+                <th>التاريخ</th>
+                <th>الوقت</th>
+                <th>FBS</th>
+                <th>RBS</th>
+                <th>الملاحظات</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <div class="loading primaryColor btn" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+        <tbody *ngIf="!isLoading">
+            <tr
+                *ngFor="let diabetesRecord of diabetesRecords; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ diabetesRecord.date}}</td>
+                <td>{{ diabetesRecord.date }}</td>
+                <td>{{ diabetesRecord.date}}</td>
+                <td>{{ diabetesRecord.fbs }}</td>
+                <td>{{ diabetesRecord.rbs}}</td>
+                <td>{{ diabetesRecord.note }}</td>
+                <td>
+                    <button class="table-btn" id="icon-delete"
+                    (click)="deleteDiabetesReading(diabetesRecord.diabtetesRecordId!)">
+                    <i class="bi bi-trash"></i>
+                </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

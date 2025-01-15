@@ -1,0 +1,38 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>الاسم</th>
+            <th>الرقم الجامعي/الوظيفي</th>
+            <th>الحالة</th>
+            <th>الفئة</th>
+            <th>عرض</th>
+        </tr>
+    </thead>
+    <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+    <tbody>
+        <tr *ngFor="let record of records; let index = index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ record.patient.patientName }}</td>
+            <td>{{ record.patient.patientId }}</td>
+            <td>{{ record.patientType }}</td>
+            <td>{{ record.patient.patientClass }}</td>
+            <td>
+                <button
+                    class="table-btn"
+                    id="icon-edit"
+                    (click)="openPrescriptionDialog(record.prescription ,record.patient.patientName!)">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Prescription Dialog -->
+<app-prescription-dialog
+    *ngIf="showPrescriptionDialog"
+    [patientName]="patientName"
+    [prescription]="selectedPrescription"
+    (close)="closeAll()">
+</app-prescription-dialog>

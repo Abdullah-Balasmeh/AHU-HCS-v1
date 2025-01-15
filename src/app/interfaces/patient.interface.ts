@@ -40,7 +40,7 @@ export interface Report {
 }
 
 export interface BPRecord {
-    bpRecordId: number;
+    bpRecordId?: number;
     bpUp?: string;
     bpDown?: string;
     note?: string;

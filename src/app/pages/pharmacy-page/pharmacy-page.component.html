@@ -1,1 +1,10 @@
-<p>pharmacy-page works!</p>
+<div class="container">
+    <app-pharmacy-tab (tabChange)="onTabChange($event)"></app-pharmacy-tab>
+
+    <div>
+        <!-- Conditionally render components based on the selected tab -->
+        <app-pharmacy-prescription *ngIf="selectedTab === 'prescription'"></app-pharmacy-prescription>
+        <app-pharmacy-order *ngIf="selectedTab === 'orders'"></app-pharmacy-order>
+
+    </div>
+</div>

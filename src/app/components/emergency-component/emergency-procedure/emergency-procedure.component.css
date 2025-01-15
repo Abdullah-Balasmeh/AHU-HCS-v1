@@ -1,0 +1,60 @@
+.content{
+    min-width: 450px;
+    height:max-content;
+}
+/* Input box styling */
+.input-box input {
+    min-width: 50px;
+    max-width: 100%;
+    field-sizing: content;
+    padding: 3px;
+    background-color: #F0F0F0;
+    border: 1px solid #4D95A7;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+    
+}
+
+.input-box-exam{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+}
+.input-box-exam input{
+    font-size: 16px;
+    text-align: center;
+    margin: 5px;
+}
+    
+.input-box-exam label{
+    margin: 3px;
+}
+    /* buttons */
+.btn {
+    width: 100%
+}
+.input-box-exam span{
+    font-weight: bold;
+}
+
+.footer-btn{
+    justify-self: center;
+    align-self: center;
+    width: 40%;
+    margin-top:35px;
+    
+}
+.infoBox {
+    position: relative; /* Ensures the dropdown body is relative to this container */
+    width: 300px;
+    border: 1px solid #4d95a7;
+    padding: 10px;
+    background-color: #F0F0F0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}

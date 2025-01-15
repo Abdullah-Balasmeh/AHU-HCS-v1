@@ -1,23 +1,35 @@
-import { MedicalRecordService } from './../../../services/medical-record.service';
-import { ProcedureService } from './../../../services/procedure.service';
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { MultiSelectDropdownComponent } from "../../shared/dropdown-menu/dropdown-menu.component";
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, Input } from '@angular/core';
 import { Procedures } from '../../../interfaces/list.interface';
 import { MedicalProcedures } from '../../../interfaces/patient.interface';
+import { MedicalRecordService } from '../../../services/medical-record.service';
+import { ProcedureService } from '../../../services/procedure.service';
+import { CommonModule } from '@angular/common';
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
+import { MultiSelectDropdownComponent } from "../../shared/dropdown-menu/dropdown-menu.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-clinic-procedure',
+  selector: 'app-emergency-procedure',
   standalone: true,
-  imports: [MultiSelectDropdownComponent, CommonModule, FormsModule, LoadingImageComponent],
-  templateUrl: './clinic-procedure.component.html',
-  styleUrl: './clinic-procedure.component.css'
+  imports: [CommonModule, LoadingImageComponent, MultiSelectDropdownComponent,FormsModule],
+  templateUrl: './emergency-procedure.component.html',
+  styleUrl: './emergency-procedure.component.css'
 })
-export class ClinicProcedureComponent implements OnInit {
+export class EmergencyProcedureComponent {
 
-  @Input() medicalProcedures: MedicalProcedures = {};
+  @Input() medicalProcedures: MedicalProcedures = {
+    bpUpValue: '',
+    bpDownValue: '',
+    tempValue: '',
+    pulseValue: '',
+    respValue: '',
+    bpState: false,
+    tempState: false,
+    pulseState: false,
+    respState: false,
+    procedures: [],
+  };
+  
   @Input() patientType: string ='';
   @Input() medicalRecordId: number = 0;
 
@@ -26,7 +38,9 @@ export class ClinicProcedureComponent implements OnInit {
   TempChecked = false;
   PulseChecked = false;
   RespChecked = false;
+
   hasChecked = false;
+  disable = false;
 
   private readonly procedureService = inject(ProcedureService);
   private readonly medicalRecordService = inject(MedicalRecordService);
@@ -51,6 +65,7 @@ export class ClinicProcedureComponent implements OnInit {
       this.medicalProcedures?.pulseValue
     ) {
       this.hasChecked = true;
+      this.disable=true;
     }
   }
 
@@ -74,9 +89,9 @@ export class ClinicProcedureComponent implements OnInit {
       this.saving = false;
     }
 let newPatientType ='';
-if(this.patientType=='عيادة')
+if(this.patientType=='طوارئ')
   {
-    newPatientType="طوارئ";
+    newPatientType="عيادة";
   }
 
 
@@ -92,17 +107,17 @@ if(this.patientType=='عيادة')
 
     const requestMedicalProcedures: MedicalProcedures = {
       medicalProceduresId: this.medicalRecordId,
-      nurseId: '',
+      nurseId: parsedUser.userId,
       doctorId: parsedUser.userId,
       bpState: this.BPChecked,
-      bpUpValue: '',
-      bpDownValue:'',
+      bpUpValue: this.medicalProcedures.bpUpValue,
+      bpDownValue:this.medicalProcedures.bpDownValue,
       tempState: this.TempChecked,
-      tempValue: '',
+      tempValue: this.medicalProcedures.tempValue,
       pulseState: this.PulseChecked,
-      pulseValue: '',
+      pulseValue: this.medicalProcedures.pulseValue,
       respState: this.RespChecked,
-      respValue: '',
+      respValue: this.medicalProcedures.respValue,
       procedures: this.selectedProcedures,
     };
 
@@ -133,4 +148,3 @@ if(this.patientType=='عيادة')
     });
   }
 }
-

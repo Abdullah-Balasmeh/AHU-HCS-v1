@@ -1,0 +1,32 @@
+<div class="model-boxShadow" (click)="closeDialog()"></div>
+<div class="model whiteColor">
+    <div class="model-title">
+        <h2>{{patientName}}</h2>
+    </div>
+    <div class="model-content whiteColor">
+        <form>
+            <div class="Box-grid">
+                <div id="medicalConditionList">
+                    <label for="search" class="text-type">المرض:</label>
+                    <div class="infoBox">
+                        <span>{{prescription?. disease|| 'لم يتم تعبئة الحقل'}}</span>
+                    </div>
+                </div>
+                <div id="treatmentList">
+                    <label for="search" class="text-type">العلاج:</label>
+                    <div class="infoBox">
+                        <span>{{prescription?.medicine || 'لم يتم تعبئة الحقل'}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-btn">
+                <button
+                    type="button"
+                    class="btn closeColor"
+                    (click)="closeDialog()">
+                    اغلاق
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

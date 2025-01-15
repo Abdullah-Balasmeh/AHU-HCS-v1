@@ -1,0 +1,16 @@
+<div class="nav-box">
+    <div class="table-title">
+        <div id="close-btn" (click)="closeTab()"><i class="bi bi-x-lg"></i></div>
+        <h2>إجراءات الطوارئ</h2>
+    </div>
+
+    <input type="radio" name="slider" id="tabBP-1" checked (change)="selectTab('patient-info')"/>
+    <input type="radio" name="slider" id="tabS-2" (change)="selectTab('emergency-procedure')"/>
+    
+
+    <nav>
+        <label for="tabBP-1" class="tab-1">معلومات المريض</label>
+        <label for="tabS-2" class="tab-2">الإجراء الطبي</label>
+        <div class="slider primaryColor"></div>
+    </nav>
+</div>
