@@ -120,6 +120,7 @@ export class EmergencyOrderRequestComponent implements OnInit {
         this.items = [];
         this.saveItemsToSessionStorage();
         this.resetForm();
+        sessionStorage.removeItem('items');
         alert('تم حفظ طلب العلاج');
       },
       error: (err) => {

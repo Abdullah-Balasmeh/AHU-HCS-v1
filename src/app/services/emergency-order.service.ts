@@ -27,8 +27,8 @@ export class EmergencyOrderService {
   }
 
   // Get unapproved orders
-  getUnapprovedOrders(): Observable<EmergencyOrder[]> {
-    return this.apiService.get<EmergencyOrder[]>(`${this.endpoint}/unapproved`);
+  getUnapprovedOrders(orderType: string): Observable<EmergencyOrder[]> {
+    return this.apiService.get<EmergencyOrder[]>(`${this.endpoint}/unapproved/type/${orderType}`);
   }
 
   // Get orders by type

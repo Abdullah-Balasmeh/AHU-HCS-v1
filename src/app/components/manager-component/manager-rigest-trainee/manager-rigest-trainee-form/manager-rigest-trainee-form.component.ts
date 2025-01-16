@@ -29,6 +29,20 @@ private readonly traineeService=inject(TraineeService);
   });
   student: Student | null = null; 
   subject:string='';
+  items: string[] = [
+    'تمريض صحة البالغين سريري 1',
+    'تمريض صحة البالغين سريري 2',
+    'تمريض صحة الأم سريري',
+    'تمريض صحة الطفل سريري',
+    'تمريض الصحة النفسية سريري',
+    'تمريض الرعاية الحثيثة و الطوارئ سريري',
+    'التدريب السريري المكثف',
+    'تدريب مخبري 1',
+    'التدريب الميداني 1',
+    'التدريب الميداني 2',
+    'التدريب الميداني 3',
+    'التدريب الميداني 4',
+  ];
   searchStud()
   {
     if(!this.registTraineeForm.value.TraineeId)
@@ -68,7 +82,6 @@ const newTrainee:Trainee={
     course:this.subject,
     registDate:new Date(),
   };
-console.log('newTrainee',newTrainee)
 this.traineeService.addTrainee(newTrainee).subscribe({
   next:()=>
   {

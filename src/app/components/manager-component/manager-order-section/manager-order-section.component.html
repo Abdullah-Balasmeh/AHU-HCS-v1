@@ -1,0 +1,10 @@
+<div class="container">
+    <app-manager-order-tab (tabChange)="onTabChange($event)" (closeTab)="onClose()"></app-manager-order-tab>
+
+    <div>
+        <!-- Conditionally render components based on the selected tab -->
+        <app-manager-order-table *ngIf="selectedTab === 'male-order'" [gender]="'Male'"></app-manager-order-table>
+        <app-manager-order-table *ngIf="selectedTab === 'female-order'" [gender]="'Female'"></app-manager-order-table>
+
+    </div>
+</div>

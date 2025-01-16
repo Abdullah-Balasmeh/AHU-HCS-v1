@@ -1,0 +1,39 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الممرض</th>
+            <th>فئة الطلب</th>
+            <th>التاريخ</th>
+            <th>عرض</th>
+        </tr>
+    </thead>
+    <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+    <tbody>
+        <tr *ngFor="let order of orders; let index = index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ order.nurseName }}</td>
+            <td *ngIf="order.emergencyOrderType=='Male'"><span>طوارئ الذكور</span></td>
+            <td *ngIf="order.emergencyOrderType=='Female'"><span>طوارئ الإناث</span></td>
+            <td>{{(order.approveDate | date: 'yyyy-MM-dd') || 'N/A'}}</td>
+            <td>
+                <button
+                class="table-btn"
+                id="icon-edit"
+                (click)=" onViewDetails(order)">
+                <i class="bi bi-eye"></i>
+            </button>
+            </td>
+        </tr>
+    </tbody>
+    <div *ngIf="!isLoading && orders.length==0" class="no-data">
+    لا يوجد طلبات.
+    </div>
+</table>
+
+<app-manager-order-dialog
+*ngIf="showOrderDialog"
+[order]="selectedOrder"
+(close)="closeAll()">
+
+</app-manager-order-dialog>

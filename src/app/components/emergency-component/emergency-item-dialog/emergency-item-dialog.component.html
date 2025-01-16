@@ -28,7 +28,7 @@
                     class="btn primaryColor"><app-loading-image></app-loading-image></div>
             </ng-container>
             <ng-template #notRegist>
-                <button *ngIf="isPharmacy==true" class="btn primaryColor"
+                <button *ngIf="isPharmacy" class="btn primaryColor"
                     (click)="onSubmit()">إستلام</button>
                 <button class="btn closeColor"
                     (click)="closeDialog()">إغلاق</button>

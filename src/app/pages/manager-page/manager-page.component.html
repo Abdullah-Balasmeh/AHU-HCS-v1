@@ -3,7 +3,7 @@
     <div class="card" id="card-1" (click)="showComponent('rigest-trainee')">
         <h3>إدارة شؤون المتدربين</h3>
     </div>
-    <div class="card" id="card-2" (click)="showComponent('order-table')">
+    <div class="card" id="card-2" (click)="showComponent('order-section')">
         <h3>طلبات الطوارئ</h3>
     </div>
     <div class="card" id="card-3" (click)="showComponent('medical-report')">
@@ -22,8 +22,8 @@
 <div *ngIf="selectedCard() === 'rigest-trainee'">
     <app-manager-rigest-trainee  (resetEvent)="handleReset()"></app-manager-rigest-trainee>
 </div>
-<div *ngIf="selectedCard() === 'order-table'">
-    <app-manager-order-table (resetEvent)="handleReset()"></app-manager-order-table>
+<div *ngIf="selectedCard() === 'order-section'">
+    <app-manager-order-section (resetEvent)="handleReset()"></app-manager-order-section>
 </div>
 <div *ngIf="selectedCard() === 'medical-report'">
     <app-manager-medical-report (resetEvent)="handleReset()"></app-manager-medical-report>
