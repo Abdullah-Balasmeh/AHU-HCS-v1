@@ -30,21 +30,59 @@
                 class="textarea-note"
                 rows="2"></textarea>
         </div>
-        <button type="button" class="btn primaryColor"
-            (click)="addDiabetesReading()">إضافة</button>
+        <ng-container *ngIf="isEdit; else notEdit">
+            <div class="header-btn">
+                <button type="button" class="btn primaryColor"
+                    (click)="onSave()">حفظ</button>
+                <button type="button" class="btn closeColor"
+                    (click)="resetForm()">إلغاء</button>
+            </div>
+
+        </ng-container>
+        <ng-template #notEdit>
+            <button type="button" class="btn primaryColor"
+                (click)="addDiabetesReading()">إضافة</button>
+        </ng-template>
     </div>
 </form>
 <div class="errorDiv">
-    <p *ngIf="diabetesForm.get('FBS')?.invalid && diabetesForm.get('FBS')?.touched && diabetesForm.get('FBS')?.hasError('rangeError')" class="errorColor">
-        {{ diabetesForm.get('FBS')?.getError('rangeError') }}
+    <p
+        *ngIf="diabetesForm.get('FBS')?.touched && diabetesForm.get('FBS')?.invalid"
+        class="errorColor">
+        <!-- Display required error -->
+        <span *ngIf="diabetesForm.get('FBS')?.hasError('required')">
+            هذا الحقل مطلوب.
+        </span>
+        <!-- Display pattern error -->
+        <span *ngIf="diabetesForm.get('FBS')?.hasError('pattern')">
+            القيمة يجب أن تكون أرقام فقط.
+        </span>
+        <!-- Display range error -->
+        <span *ngIf="diabetesForm.get('FBS')?.hasError('rangeError')">
+            {{ diabetesForm.get('FBS')?.getError('rangeError') }}
+        </span>
     </p>
-    <p *ngIf="diabetesForm.get('RBS')?.invalid && diabetesForm.get('RBS')?.touched && diabetesForm.get('RBS')?.hasError('rangeError')" class="errorColor">
-        {{ diabetesForm.get('RBS')?.getError('rangeError') }}
+
+    <p
+        *ngIf="diabetesForm.get('RBS')?.touched && diabetesForm.get('RBS')?.invalid"
+        class="errorColor">
+        <!-- Display required error -->
+        <span *ngIf="diabetesForm.get('RBS')?.hasError('RBS')">
+            هذا الحقل مطلوب.
+        </span>
+        <!-- Display pattern error -->
+        <span *ngIf="diabetesForm.get('RBS')?.hasError('pattern')">
+            القيمة يجب أن تكون أرقام فقط.
+        </span>
+        <!-- Display range error -->
+        <span *ngIf="diabetesForm.get('RBS')?.hasError('rangeError')">
+            {{ diabetesForm.get('RBS')?.getError('rangeError') }}
+        </span>
     </p>
 </div>
 
 <!-- BP Readings Table -->
-<div >
+<div>
     <table>
         <thead>
             <tr>
@@ -58,24 +96,32 @@
                 <th>الإجراءات</th>
             </tr>
         </thead>
-        <div class="loading primaryColor btn" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+        <div class="loading primaryColor btn"
+            *ngIf="isLoading"><app-loading-image></app-loading-image></div>
         <tbody *ngIf="!isLoading">
             <tr
                 *ngFor="let diabetesRecord of diabetesRecords; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ diabetesRecord.date}}</td>
-                <td>{{ diabetesRecord.date }}</td>
-                <td>{{ diabetesRecord.date}}</td>
+                <td>{{ diabetesRecord.formattedDate?.day}}</td>
+                <td>{{ diabetesRecord.formattedDate?.date }}</td>
+                <td>{{ diabetesRecord.formattedDate?.time}}</td>
                 <td>{{ diabetesRecord.fbs }}</td>
                 <td>{{ diabetesRecord.rbs}}</td>
                 <td>{{ diabetesRecord.note }}</td>
                 <td>
+                    <button class="table-btn" id="icon-edit"
+                        (click)="Edit(diabetesRecord)">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
                     <button class="table-btn" id="icon-delete"
-                    (click)="deleteDiabetesReading(diabetesRecord.diabtetesRecordId!)">
-                    <i class="bi bi-trash"></i>
-                </button>
+                        (click)="deleteDiabetesReading(diabetesRecord.diabtetesRecordId!)">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </td>
             </tr>
         </tbody>
+        <div *ngIf="!isLoading && diabetesRecords.length === 0" class="no-data">
+            لا يوجد قراءات لهذا المراجع.
+        </div>
     </table>
 </div>

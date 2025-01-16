@@ -23,6 +23,7 @@ export class EmergencyTableComponent {
   isLoading:boolean=false;
   records: MedicalRecord[] = [];
   selectedRecord?: MedicalRecord | null; 
+  patientId:string='';
   selectedTab: string='patient-info';
   showTable: boolean = true;
   showTabs: boolean = false; 
@@ -69,8 +70,9 @@ export class EmergencyTableComponent {
     this.showFollowingTab = false;
   }
   
-  openFollowingTab(patient: any): void {
+  openFollowingTab(patientID: string): void {
     this.selectedTab= 'B.P';
+    this.patientId=patientID;
     this.showTable = false;
     this.showFollowingTab = true;
     this.showEmergencyDialog = false;

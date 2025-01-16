@@ -44,14 +44,18 @@ main{
 }
 
 .successColor {
-    color: rgb(102, 161, 12);
+    color: rgb(101, 158, 16);
     font-size: 18px;
     font-weight: bold;
     margin: 5px 0;
 }
-
+.waitColor{
+    color:#bdaa1f;
+    font-size: 18px;
+    font-weight: bold;
+}
 .errorColor {
-    color: #D9534F;
+    color: #d3312b;
     font-size: 18px;
     font-weight: bold;
     margin: 5px 0;
@@ -67,6 +71,13 @@ main{
 }
 
 /* text Style */
+.no-data{
+    font-size: 20px;
+    font-weight: 500;
+    align-self: center;
+    justify-self: center;
+    
+}
 .textWhiteColor {
     color: #fafafa;
 }

@@ -1,0 +1,89 @@
+<form [formGroup]="itemForm">
+    <div class="header-input">
+        <div class="input-box">
+            <h6 class="text-type">الوصف:</h6>
+            <input type="text"
+            formControlName="Description"
+            autocomplete="off">
+        </div>
+        <div class="input-box">
+            <h6 class="text-type">الكمية:</h6>
+            <input type="text"  
+            autocomplete="off"
+            maxlength="5" 
+            formControlName="Quantity"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+        </div>
+        <div class="input-box">
+            <h6 class="text-type">الوحدة:</h6>
+            <input type="text" formControlName="Unit" autocomplete="off">
+        </div>
+        <div class="input-box">
+            <h6 class="text-type note">الملاحظات:</h6>
+            <textarea class="textarea-note"
+                rows="2"
+                autocomplete="off"
+                formControlName="note">
+            </textarea>
+        </div>
+        <ng-container *ngIf="isEdit; else notEdit">
+            <div class="header-btn">
+                <button type="button" class="btn primaryColor"
+                    (click)="addItem()">حفظ</button>
+                <button type="button" class="btn closeColor"
+                    (click)="resetForm()">إلغاء</button>
+            </div>
+
+        </ng-container>
+        <ng-template #notEdit>
+            <button type="button" class="btn primaryColor"
+                (click)="addItem()">إضافة</button>
+        </ng-template>
+    </div>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>الوصف</th>
+            <th>الكمية</th>
+            <th>الوحدة</th>
+            <th>الملاحظات</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr
+        *ngFor="let item of items let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.quantity}}</td>
+        <td>{{item.unit}}</td>
+        <td>{{item.note}}</td>
+        <td>
+            <button class="table-btn" id="icon-edit"
+                (click)="editItem(item)">
+                <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="table-btn" id="icon-delete"
+                (click)="deleteItem(i)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+    <div *ngIf="!isLoading && items.length === 0" class="no-data">
+        لا يوجد عناصر لهذا الطلب.
+    </div>
+</table>
+<div class="footer-btn">
+    <ng-container *ngIf="isLoading; else notLoading">
+        <div
+            class="btn primaryColor"><app-loading-image></app-loading-image></div>
+    </ng-container>
+    <ng-template #notLoading>
+        <button class="btn primaryColor" (click)="onSaveOrder()" >إرسال</button>
+    </ng-template>
+</div>
+

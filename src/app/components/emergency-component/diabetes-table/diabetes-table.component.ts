@@ -1,7 +1,7 @@
 import { DiabtetesRecordService } from './../../../services/diabtetes-record.service';
-import { Component,Input } from '@angular/core';
+import { Component,Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { DiabtetesRecord, Patient } from '../../../interfaces/patient.interface';
+import { DiabtetesRecord } from '../../../interfaces/patient.interface';
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 import { CommonModule } from '@angular/common';
 
@@ -12,25 +12,28 @@ import { CommonModule } from '@angular/common';
   templateUrl: './diabetes-table.component.html',
   styleUrl: './diabetes-table.component.css'
 })
-export class DiabetesTableComponent {
+export class DiabetesTableComponent  implements OnInit{
 constructor(private readonly diabtetesRecordService : DiabtetesRecordService){}
 
   // Input to receive selected patient
   @Input() patientId!: string;
   diabetesRecords: DiabtetesRecord[] = [];
-  // FormGroup for BP inputs
+  currentDiabtetesRecord: DiabtetesRecord = { diabtetesRecordId: 0, fbs: '' , rbs:'' , note:''};
+  isEdit = false;
+  isLoading = false;
   diabetesForm = new FormGroup({
     FBS: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), this.rangeValidator(70, 100),]),
     RBS: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), this.rangeValidator(70, 140),]),
     note: new FormControl(''),
   });
 
-  // Flag to track loading state
-  isLoading = true;
 
   rangeValidator(min: number, max: number) {
     return (control: AbstractControl): ValidationErrors | null => {
-      const value = +control.value; // Convert to number
+      const value = Number(control.value); // Ensure conversion to number
+      if (isNaN(value)) {
+        return { rangeError: `القيمة يجب أن تكون رقمًا صالحًا بين ${min} و ${max}` };
+      }
       if (value < min || value > max) {
         return { rangeError: `القيمة يجب أن تكون بين ${min} و ${max}` };
       }
@@ -41,18 +44,16 @@ constructor(private readonly diabtetesRecordService : DiabtetesRecordService){}
       this.loadDiabtetesRecord();
 
   }
-  getLocalDate = (): string => {
-    const now = new Date();
-    const offset = now.getTimezoneOffset() * 60000; // Get the offset in milliseconds
-    const localTime = new Date(now.getTime() - offset); // Adjust for local time
-    return localTime.toISOString().split('T')[0]; // Extract the date
-};
   loadDiabtetesRecord(): void {
     this.isLoading = true;
     this.diabtetesRecordService.getDiabtetesRecordsByPatientId(this.patientId).subscribe({
-      next: (record) => {
-        this.diabetesRecords = record; 
+      next: (records) => {
+        this.diabetesRecords = records.map(record => ({
+          ...record,
+          formattedDate: this.formatDate(record.date!) // Format the date here
+        }));
         this.isLoading = false;
+        console.log('records', this.diabetesRecords);
       },
       error: () => {
         alert('Failed to load patient data.');
@@ -61,12 +62,37 @@ constructor(private readonly diabtetesRecordService : DiabtetesRecordService){}
     });
   }
 
-  /**
-   * Adds a new BP reading to the patient's medical record.
-   */
+  getLocalDate = (): string => {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000; // Get the offset in milliseconds
+    const localTime = new Date(now.getTime() - offset); // Adjust for local time
+    return localTime.toISOString(); // Extract the date
+};
+formatDate(dateString: string): { date: string; time: string; day: string } {
+  const dateObj = new Date(dateString);
+
+  // Format the date in 'MM/DD/YYYY' format
+  const date =`${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+
+  // Format the time in 12-hour format with AM/PM
+  const time = dateObj
+    .toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+    .replace('AM', 'ص')
+    .replace('PM', 'م');
+
+  // Get the day name in Arabic
+  const day = dateObj.toLocaleDateString('ar-EG', { weekday: 'long' });
+
+  return { date, time, day };
+}
   addDiabetesReading(): void {
     if (this.diabetesForm.invalid) {
       alert('يرجى ملئ قراءات السكري');
+      this.diabetesForm.markAllAsTouched();
       return;
     }
 const newDiabtetesRecord: DiabtetesRecord = {
@@ -76,13 +102,48 @@ const newDiabtetesRecord: DiabtetesRecord = {
   date:this.getLocalDate(),
   patientId: this.patientId,
     }
-    this.diabtetesRecordService.addDiabtetesRecord(this.patientId, newDiabtetesRecord).subscribe((record) => {
-      this.diabetesRecords.push(record);
+    this.diabtetesRecordService.addDiabtetesRecord(this.patientId, newDiabtetesRecord).subscribe({
+      next:()=>{
+        this.loadDiabtetesRecord();
+        this.resetForm();
+      }
   });
   }
+    Edit(diabtetesRecord: DiabtetesRecord) {
+      this.isEdit = true;
+      this.currentDiabtetesRecord = { ...diabtetesRecord };
+      this.diabetesForm.patchValue({
+        FBS: this.currentDiabtetesRecord.fbs,
+        RBS: this.currentDiabtetesRecord.rbs,
+        note: this.currentDiabtetesRecord.note
+      });
+    }
 
+    onSave() {
+      if (this.diabetesForm.invalid) {
+        this.diabetesForm.markAllAsTouched();
+        alert('Please enter a valid diabetesRecord Value.');
+        return;
+      }
+      const UpdateRecord = {
+        fbs:this.diabetesForm.get('FBS')?.value ?? '',
+        rbs: this.diabetesForm.get('RBS')?.value ?? '',
+        note:this.diabetesForm.get('note')?.value ?? '',
+        date:this.getLocalDate(),
+        patientId: this.patientId,
+      };
+      this.diabtetesRecordService.updateDiabtetesRecord(this.currentDiabtetesRecord.diabtetesRecordId!, UpdateRecord).subscribe({
+        next: () => {
+          this.resetForm();
+          this.loadDiabtetesRecord();
+        },
+        error: (err) => {
+          console.error('Error updating diabetes Record', err);
+          alert('Failed to update diabetes Record. Please try again later.');
+        },
+      });
+    }
   deleteDiabetesReading(recordId: number): void {
-    // Show confirmation dialog first
     const confirmed = confirm('هل أنت متأكد من حذف هذه القراءة؟');
     if(confirmed)
       {
@@ -96,4 +157,13 @@ const newDiabtetesRecord: DiabtetesRecord = {
       }
   }
 
+
+  resetForm() {
+    this.isEdit = false;
+    this.currentDiabtetesRecord =  { diabtetesRecordId: 0, fbs: '' , rbs:'' , note:''};
+    this.diabetesForm.reset(); 
+    Object.keys(this.diabetesForm.controls).forEach((controlName) => {
+      this.diabetesForm.get(controlName)?.markAsUntouched();
+    });
+  }
 }

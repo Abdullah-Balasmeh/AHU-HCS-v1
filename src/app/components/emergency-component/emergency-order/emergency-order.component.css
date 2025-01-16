@@ -1,3 +1,29 @@
+.table-title{
+    width: 100%;
+}
+.table-title h2{
+    align-self: center;
+    justify-self: center;
+    margin-bottom: 15px;
+}
+#close-btn{
+    display: inline-flex;
+    flex-direction: row;
+    align-self: end;
+    justify-self: flex-end;
+}
+hr{
+    display: flex;
+    width: 80%;
+    border: 1px solid #AEDDDC;
+    border-radius: 3px;
+    align-self: center;
+    justify-self: center;
+}
+.footer-btn{
+    justify-self: center;
+    align-self: center;
+}
 /* Input box styling */
 .input-box {
     display: flex;
@@ -61,8 +87,4 @@ svg rect {
 }
 .primaryColor{
     margin-right: 5px;
-}
-.header-btn{
-    display: flex;
-    gap: 15px;
 }

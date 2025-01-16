@@ -1,0 +1,23 @@
+<div class="nav-box">
+    <h1>العلاجات</h1>
+    <!-- Radio Inputs -->
+    <input
+        type="radio"
+        name="slider"
+        id="tabP-1"
+        (change)="selectTab('treatment-order')"
+        checked />
+    <input
+        type="radio"
+        name="slider"
+        id="tabH-2"
+        (change)="selectTab('treatment-state')" />
+
+        
+    <!-- Navigation Labels -->
+    <nav>
+        <label for="tabP-1" class="tab-1">طلب علاج</label>
+        <label for="tabH-2" class="tab-2">حالة العلاج</label>
+        <div class="slider primaryColor"></div>
+    </nav>
+</div>

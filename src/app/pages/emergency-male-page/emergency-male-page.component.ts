@@ -1,13 +1,14 @@
 import { CommonModule } from "@angular/common";
 import { Component , signal} from "@angular/core";
 import { EmergencyTableComponent } from "../../components/emergency-component/emergency-table/emergency-table.component";
+import { EmergencyOrderComponent } from "../../components/emergency-component/emergency-order/emergency-order.component";
 
 
 
 @Component({
   selector: 'app-emergency-male-page',
   standalone: true,
-  imports: [CommonModule, EmergencyTableComponent],
+  imports: [CommonModule, EmergencyTableComponent, EmergencyOrderComponent],
   templateUrl: './emergency-male-page.component.html',
   styleUrl: './emergency-male-page.component.css'
 })

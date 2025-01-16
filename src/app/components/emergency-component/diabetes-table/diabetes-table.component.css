@@ -62,3 +62,7 @@ svg rect {
 .primaryColor{
     margin-right: 5px;
 }
+.header-btn{
+    display: flex;
+    gap: 15px;
+}

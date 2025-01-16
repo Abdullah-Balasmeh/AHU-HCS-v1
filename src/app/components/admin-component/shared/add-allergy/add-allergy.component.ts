@@ -18,7 +18,7 @@ export class AddAllergyComponent {
   allergies: Allergy[] = [];
   currentAllergy: Allergy = { allergyId: 0, name: '' };
 
-  constructor(private allergyService: AllergyService) {}
+  constructor(private readonly allergyService: AllergyService) {}
 
   ngOnInit() {
     this.fetchAllergies();

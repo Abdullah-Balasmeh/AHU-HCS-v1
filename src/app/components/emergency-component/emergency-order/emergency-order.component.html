@@ -1,0 +1,15 @@
+<div class="container">
+    <div id="close-btn" (click)="reset()">
+        <i class="bi bi-x-lg"></i>
+    </div>
+    <app-emergency-order-tab (tabChange)="onTabChange($event)"></app-emergency-order-tab>
+
+    <div>
+        <!-- Conditionally render components based on the selected tab -->
+        <app-emergency-order-request *ngIf="selectedTab === 'treatment-order'"></app-emergency-order-request>
+
+        <app-emergency-order-state *ngIf="selectedTab === 'treatment-state'"></app-emergency-order-state>
+
+
+    </div>
+</div>

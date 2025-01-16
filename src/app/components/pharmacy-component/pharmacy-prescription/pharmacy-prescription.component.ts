@@ -58,7 +58,6 @@ export class PharmacyPrescriptionComponent {
   openPrescriptionDialog(prescription: any , patientName : string): void {
     this.selectedPrescription = prescription;
     this.patientName=patientName;
-    this.showTab = false;
     this.showPrescriptionDialog = true;
   }
 

@@ -30,21 +30,59 @@
                 class="textarea-note"
                 rows="2"></textarea>
         </div>
-        <button type="button" class="btn primaryColor"
-            (click)="addBPRecord()">إضافة</button>
+        <ng-container *ngIf="isEdit; else notEdit">
+            <div class="header-btn">
+                <button type="button" class="btn primaryColor"
+                    (click)="onSave()">حفظ</button>
+                <button type="button" class="btn closeColor"
+                    (click)="resetForm()">إلغاء</button>
+            </div>
+
+        </ng-container>
+        <ng-template #notEdit>
+            <button type="button" class="btn primaryColor"
+                (click)="addBPRecord()">إضافة</button>
+        </ng-template>
     </div>
 </form>
 <div class="errorDiv">
-    <p *ngIf="bpForm.get('bpUp')?.invalid && bpForm.get('bpUp')?.touched && bpForm.get('bpUp')?.hasError('rangeError')" class="errorColor">
-        {{ bpForm.get('bpUp')?.getError('rangeError') }}
+    <p
+        *ngIf="bpForm.get('bpUp')?.touched && bpForm.get('bpUp')?.invalid"
+        class="errorColor">
+        <!-- Display required error -->
+        <span *ngIf="bpForm.get('bpUp')?.hasError('required')">
+            هذا الحقل مطلوب.
+        </span>
+        <!-- Display pattern error -->
+        <span *ngIf="bpForm.get('bpUp')?.hasError('pattern')">
+            القيمة يجب أن تكون أرقام فقط.
+        </span>
+        <!-- Display range error -->
+        <span *ngIf="bpForm.get('bpUp')?.hasError('rangeError')">
+            {{ bpForm.get('bpUp')?.getError('rangeError') }}
+        </span>
     </p>
-    <p *ngIf="bpForm.get('bpDown')?.invalid && bpForm.get('bpDown')?.touched && bpForm.get('bpDown')?.hasError('rangeError')" class="errorColor">
-        {{ bpForm.get('bpDown')?.getError('rangeError') }}
+
+    <p
+        *ngIf="bpForm.get('bpDown')?.touched && bpForm.get('bpDown')?.invalid"
+        class="errorColor">
+        <!-- Display required error -->
+        <span *ngIf="bpForm.get('bpDown')?.hasError('required')">
+            هذا الحقل مطلوب.
+        </span>
+        <!-- Display pattern error -->
+        <span *ngIf="bpForm.get('bpDown')?.hasError('pattern')">
+            القيمة يجب أن تكون أرقام فقط.
+        </span>
+        <!-- Display range error -->
+        <span *ngIf="bpForm.get('bpDown')?.hasError('rangeError')">
+            {{ bpForm.get('bpDown')?.getError('rangeError') }}
+        </span>
     </p>
 </div>
 
 <!-- BP Readings Table -->
-<div >
+<div>
     <table>
         <thead>
             <tr>
@@ -58,24 +96,32 @@
                 <th>الإجراءات</th>
             </tr>
         </thead>
-        <div class="loading primaryColor btn" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+        <div class="loading primaryColor btn"
+            *ngIf="isLoading"><app-loading-image></app-loading-image></div>
         <tbody *ngIf="!isLoading">
             <tr
                 *ngFor="let bpRecord of bpRecords let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ bpRecord.date }}</td>
-                <td>{{ bpRecord.date}}</td>
-                <td>{{ bpRecord.date}}</td>
+                <td>{{ bpRecord.formattedDate?.day }}</td>
+                <td>{{ bpRecord.formattedDate?.date}}</td>
+                <td>{{ bpRecord.formattedDate?.time}}</td>
                 <td>{{bpRecord.bpUp}}</td>
                 <td>{{ bpRecord.bpDown}}</td>
                 <td>{{ bpRecord.note }}</td>
                 <td>
+                    <button class="table-btn" id="icon-edit"
+                        (click)="Edit(bpRecord)">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
                     <button class="table-btn" id="icon-delete"
-                    (click)="deleteBPRecord(i)">
-                    <i class="bi bi-trash"></i>
-                </button>
+                        (click)="deleteBPRecord(bpRecord.bpRecordId!)">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </td>
             </tr>
         </tbody>
+        <div *ngIf="!isLoading && bpRecords.length === 0" class="no-data">
+            لا يوجد قراءات لهذا المراجع.
+        </div>
     </table>
 </div>

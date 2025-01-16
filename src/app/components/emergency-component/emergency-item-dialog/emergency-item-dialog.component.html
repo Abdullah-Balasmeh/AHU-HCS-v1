@@ -1,0 +1,38 @@
+<div class="model-boxShadow" (click)="closeDialog()"></div>
+<div class="model whiteColor">
+    <div class="model-content whiteColor">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الوصف</th>
+                    <th>الكمية</th>
+                    <th>الوحدة</th>
+                    <th>الملاحظات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let item of Order.items let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.quantity}}</td>
+                    <td>{{item.unit}}</td>
+                    <td>{{item.note}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-btn">
+            <ng-container *ngIf="isLoading; else notRegist">
+                <div
+                    class="btn primaryColor"><app-loading-image></app-loading-image></div>
+            </ng-container>
+            <ng-template #notRegist>
+                <button *ngIf="isPharmacy==true" class="btn primaryColor"
+                    (click)="onSubmit()">إستلام</button>
+                <button class="btn closeColor"
+                    (click)="closeDialog()">إغلاق</button>
+            </ng-template>
+        </div>
+    </div>
+</div>

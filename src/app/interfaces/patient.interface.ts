@@ -46,7 +46,13 @@ export interface BPRecord {
     note?: string;
     date?: string;
     patientId?: string;
+    formattedDate?: {
+        date: string;
+        time: string;
+        day: string;
+    };
 }
+
 
 export interface DiabtetesRecord {
     diabtetesRecordId?: number;
@@ -55,13 +61,18 @@ export interface DiabtetesRecord {
     note?: string;
     date?: string;
     patientId?: string;
+    formattedDate?: {
+        date: string;
+        time: string;
+        day: string;
+    };
 }
 
 export interface Prescription {
     prescriptionId?: number;
     disease?: string[];
-    medicine?:string[];
-    userId?: string ;
+    medicine?: string[];
+    userId?: string;
     date?: Data;
     medicalRecordId?: number;
 }

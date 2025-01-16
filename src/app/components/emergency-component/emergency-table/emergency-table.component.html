@@ -36,7 +36,7 @@
                     <button
                         class="table-btn"
                         id="icon-edit"
-                        (click)="openFollowingTab(record)"
+                        (click)="openFollowingTab(record.patient.patientId!)"
                         *ngIf="record.patientType  !== 'طوارئ'">
                         <i class="bi bi-eye"></i>
                     </button>
@@ -78,9 +78,9 @@
     </app-following-tab>
     <div>
         <app-bp-table *ngIf="selectedTab === 'B.P'"
-        [patientId]="selectedRecord?.patient?.patientId!"></app-bp-table>
+        [patientId]="patientId"></app-bp-table>
         <app-diabetes-table
             *ngIf="selectedTab === 'diabetes'"
-            [patientId]="selectedRecord?.patient?.patientId!"></app-diabetes-table>
+            [patientId]="patientId"></app-diabetes-table>
     </div>
 </div>
