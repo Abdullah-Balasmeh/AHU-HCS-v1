@@ -36,7 +36,6 @@ export class PharmacyOrderComponent implements OnInit {
 
   closeAll(): void {
     this.showOrderDialog = false;
-  
   }
   onViewDetails(order :EmergencyOrder){
   this.selectedOrder=order;

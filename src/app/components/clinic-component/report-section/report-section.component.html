@@ -1,1 +1,57 @@
-<p>report-section works!</p>
+        <!-- report section -->
+        <div class="content">
+            <form >
+                <div class="Box-grid">
+                    <div id="textarea"autocomplete="off">
+                        <h6 class="text-type">الحالة المرضية:</h6>
+                        <textarea name="notice" class="textarea-note" rows="5"></textarea>
+                    </div>
+                    <div id="report-list">
+                        <h6 class="text-type">نوع النموذج :</h6>
+                        <div class="radio-inputs" >
+                            <label class="radio" for="place-1">
+                                <input
+                                    type="radio"
+                                    name="patientState"
+                                    value="إجازة مرضية"
+                                    id="place-1"
+                                >
+                                <span class="name">إجازة مرضية</span>
+                            </label>
+                            <label class="radio" for="place-2">
+                                <input
+                                    type="radio"
+                                    name="patientState"
+                                    value="مراجعة"
+                                    id="place-2"
+                                >
+                                <span class="name">مراجعة</span>
+                            </label>
+                            <label class="radio" for="place-3">
+                                <input
+                                    type="radio"
+                                    name="patientState"
+                                    value="تحويل"
+                                    id="place-3"
+                                >
+                                <span class="name">تحويل</span>
+                            </label>
+                            <label class="radio" for="place-4">
+                                <input
+                                    type="radio"
+                                    name="patientState"
+                                    value="صرف مطعوم التهاب الكبد"
+                                    id="place-4"
+                                >
+                                <span class="name">صرف مطعوم التهاب الكبد</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-btn">
+                    <button type="button" class="btn primaryColor" >حفظ</button>
+                    <button type="button" class="btn primaryColor" onclick="generatePDF()">طباعة<i class="bi bi-printer-fill"></i></button>
+                </div>
+
+            </form>
+        </div>

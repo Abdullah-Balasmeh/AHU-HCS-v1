@@ -1,0 +1,38 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم المتدرب</th>
+            <th>رقم المتدرب</th>
+            <th>المادة</th>
+            <th>تاريخ التسجيل</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+    <tbody>
+        <tr *ngFor="let trainee of trainees; let index = index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ trainee.traineeName }}</td>
+            <td>{{ trainee.traineeId }}</td>
+            <td>{{ trainee.course}}</td>
+            <td>{{ (trainee.registDate| date: 'yyyy-MM-dd')}}</td>
+
+            <td>
+                <button class="table-btn" id="icon-edit" (click)="openTraineeRecord(trainee)">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="table-btn" id="icon-delete"
+                    (click)="deleteTrainee(trainee.traineeId!)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<app-manager-trainee-dailog
+*ngIf="isView"
+[traineeRecord]="selectedTrainee!"
+(close)="closeAll()">
+</app-manager-trainee-dailog>

@@ -1,0 +1,74 @@
+/* Content styling */
+.content {
+    justify-content: center;
+    align-items: center;
+}
+
+.Box-grid {
+    display: grid;
+    grid-row: 2;
+    grid-column: 2;
+    grid-gap: 10px;
+}
+
+#textarea{
+    grid-row: 1/2;
+    grid-column: 1/2;
+}
+
+#report-list {
+    grid-row: 1/2;
+    grid-column: 2/2;
+    width: 300px;
+}
+form {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/* Radio input container styling */
+.radio-inputs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    height: max-content;
+    border: 1px;
+    border-style: solid;
+    background-color: #F0F0F0;
+    border-color: #4D95A7;
+    border-radius: 10px;
+}
+.name{
+    width: 100%;
+}
+label{
+    padding-bottom:5px;
+}
+
+.textarea-note {
+    max-width: 100%;
+    min-height: 60px;
+    max-height: 150px;
+    min-width: 300px;
+    padding: 10px 20px;
+    border: 1px solid #4D95A7;
+    background-color: #F0F0F0;
+    border-radius: 10px;
+}
+
+.footer-btn {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+    width: 80%;
+    gap: 40px;
+    margin-top: 15px;
+}
+i{
+    padding-right: 10px;
+    font-size: 18px;
+}

@@ -1,0 +1,61 @@
+.btn {
+    width: 80%; /* Set the button width less than 100% */
+    padding: 10px 15px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 auto; /* Center the button horizontally */
+    display: block; /* Ensures the button behaves like a block element */
+}
+.margin{
+    margin-bottom: 40px;
+}
+#tNum{
+    width: 65%;
+}
+.successColor{
+    justify-self: center;
+    align-self: center;
+    margin-bottom: 10px;
+}
+input[type="text"] {
+    width: 100%;
+    field-sizing: content;
+    padding: 8px;
+    background-color: #F0F0F0;
+    border: 1px solid #4D95A7;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+}
+.search-btn {
+    padding: 5px 15px;
+
+}
+
+.Box-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    position: relative;
+}
+
+.input-box {
+    position: relative;
+    z-index: 2; /* Ensure input-box stays above other elements */
+}
+
+#search-container {
+    width: 40%;
+    position: absolute;
+    top: 47%;
+    left: -50%;
+    z-index: 1; 
+}
+#tSubject{
+    margin-top: 10px;
+}
+.footer-btn{
+margin: 30px auto;
+width: 40%;
+}
+

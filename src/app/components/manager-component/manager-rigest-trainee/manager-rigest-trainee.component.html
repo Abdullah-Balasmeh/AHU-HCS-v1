@@ -1,0 +1,11 @@
+<div class="container">
+    <app-manager-rigest-trainee-tab 
+        (tabChange)="onTabChange($event)"
+        (closeTab)="onClose()">
+    </app-manager-rigest-trainee-tab>
+
+    <div>
+        <app-manager-rigest-trainee-form *ngIf="selectedTab === 'trainee-rigest'"></app-manager-rigest-trainee-form>
+        <app-manager-trainee-table *ngIf="selectedTab === 'trainee-table'"></app-manager-trainee-table>
+    </div>
+</div>

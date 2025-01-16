@@ -1,1 +1,34 @@
-<p>manager-page works!</p>
+<div *ngIf="!selectedCard()" class="card-box whiteColor shadowColor" id="cardForm">
+    <h1>الإدارة</h1>
+    <div class="card" id="card-1" (click)="showComponent('rigest-trainee')">
+        <h3>إدارة شؤون المتدربين</h3>
+    </div>
+    <div class="card" id="card-2" (click)="showComponent('order-table')">
+        <h3>طلبات الطوارئ</h3>
+    </div>
+    <div class="card" id="card-3" (click)="showComponent('medical-report')">
+        <h2>
+            إصدار شهادة مطعوم
+                الكبد الوبائي
+        </h2>
+    </div>
+    <div class="card" id="card-4" (click)="showComponent('analysis-report')">
+        <h3>سجل المركز</h3>
+    </div>
+</div>
+
+
+
+<div *ngIf="selectedCard() === 'rigest-trainee'">
+    <app-manager-rigest-trainee  (resetEvent)="handleReset()"></app-manager-rigest-trainee>
+</div>
+<div *ngIf="selectedCard() === 'order-table'">
+    <app-manager-order-table (resetEvent)="handleReset()"></app-manager-order-table>
+</div>
+<div *ngIf="selectedCard() === 'medical-report'">
+    <app-manager-medical-report (resetEvent)="handleReset()"></app-manager-medical-report>
+</div>
+<div *ngIf="selectedCard() === 'analysis-report'">
+    <app-manager-analysis-report (resetEvent)="handleReset()"></app-manager-analysis-report>
+</div>
+
