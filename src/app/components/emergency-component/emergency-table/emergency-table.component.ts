@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MedicalRecordService } from '../../../services/medical-record.service';
 import { MedicalRecord } from '../../../interfaces/patient.interface';
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
@@ -20,6 +20,7 @@ import { DiabetesTableComponent } from "../diabetes-table/diabetes-table.compone
 export class EmergencyTableComponent {
   private readonly medicalRecordService=inject(MedicalRecordService);
   @Output() resetEvent = new EventEmitter<void>(); 
+  @Input() isFemale=false;
   isLoading:boolean=false;
   records: MedicalRecord[] = [];
   selectedRecord?: MedicalRecord | null; 
@@ -42,12 +43,16 @@ export class EmergencyTableComponent {
   loadPatients(): void {
     const today = this.getLocalDate()
     this.isLoading = true;
-  
+    let gender='Male'
+    if(this.isFemale)
+    {
+      gender='Female'
+    }
     this.medicalRecordService.getRecordsByEnterDate(today).subscribe({
       next: (records : MedicalRecord[]) => {
         const filteredRecords = records.filter((record: MedicalRecord) => 
         (record.patientType === 'طوارئ' || record.patientType  === 'متابعة الضغط/السكري' ||  record.patientType ==="تحويل من العيادة") &&
-        record.patient.gender === 'Male');
+        record.patient.gender == gender);
   
         // Sort filtered records by enterDate in ascending order
         filteredRecords.sort((a: any, b: any) => new Date(a.enterDate).getTime() - new Date(b.enterDate).getTime());

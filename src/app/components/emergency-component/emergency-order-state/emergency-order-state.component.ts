@@ -1,6 +1,6 @@
 import { EmergencyOrder } from '../../../interfaces/emergency-order.interface';
 import { EmergencyOrderService } from './../../../services/emergency-order.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 import { CommonModule } from '@angular/common';
 import { EmergencyItemDialogComponent } from "../emergency-item-dialog/emergency-item-dialog.component";
@@ -15,7 +15,7 @@ import { EmergencyItemDialogComponent } from "../emergency-item-dialog/emergency
 export class EmergencyOrderStateComponent implements OnInit{
 
 private readonly emergencyOrderService=inject(EmergencyOrderService);
-
+@Input() gender=false;
 orders:EmergencyOrder[]=[];
 selectedOrder:EmergencyOrder={};
 showOrderDialog=false;
@@ -25,7 +25,7 @@ ngOnInit(): void {
 }
 loadEmpMaleOrder(){
 this.isLoading=true;
-this.emergencyOrderService.getOrdersByType('Male').subscribe({
+this.emergencyOrderService.getOrdersByType(!this.gender? 'Male' : 'Female').subscribe({
   next:(orders)=>{
     this.orders=orders;
     this.isLoading=false;

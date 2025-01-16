@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { EmergencyOrderTabComponent } from "../emergency-order-tab/emergency-order-tab.component";
 import { EmergencyOrderStateComponent } from "../emergency-order-state/emergency-order-state.component";
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { EmergencyOrderRequestComponent } from "../emergency-order-request/emerg
 export class EmergencyOrderComponent {
   selectedTab: string = 'treatment-order'; 
   @Output() resetEvent = new EventEmitter<void>(); 
+  @Input() isFemale=false;
   onTabChange(tab: string) {
       this.selectedTab = tab;
   }

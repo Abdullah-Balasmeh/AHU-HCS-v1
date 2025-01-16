@@ -2,7 +2,6 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>رقم الطلب</th>
             <th>اسم الممرض</th>
             <th>التاريخ</th>
             <th>حالة الطلب</th>
@@ -15,7 +14,6 @@
     <tr
         *ngFor="let order of orders let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ order.emergencyOrderId }}</td>
         <td>{{ order.nurseName}}</td>
         <td>{{ (order.sendDate | date: 'yyyy-MM-dd')}}</td>
         <td *ngIf="order.isApprove"><span class="successColor">تم الموافقة</span></td>

@@ -1,6 +1,6 @@
 import { EmergencyOrderService } from './../../../services/emergency-order.service';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmergencyOrder, Item } from '../../../interfaces/emergency-order.interface';
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
@@ -14,7 +14,7 @@ import { LoadingImageComponent } from "../../shared/loading-image/loading-image.
 })
 export class EmergencyOrderRequestComponent implements OnInit {
   private readonly emergencyOrderService = inject(EmergencyOrderService);
-
+  @Input() gender=false;
   isEdit = false;
   isLoading = false;
   items: Item[] = [];
@@ -109,7 +109,7 @@ export class EmergencyOrderRequestComponent implements OnInit {
     console.log(parsedUser.userName)
     const newOrder: EmergencyOrder = {
       nurseName: parsedUser?.userName ?? '',
-      emergencyOrderType: 'Male',
+      emergencyOrderType:!this.gender ? 'Male' :'Female',
       sendDate: new Date(),
       items: this.items,
     };

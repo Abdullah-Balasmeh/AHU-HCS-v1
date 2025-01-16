@@ -1,1 +1,23 @@
-<p>emergency-female-page works!</p>
+<div *ngIf="!selectedCard()" class="card-box whiteColor shadowColor" id="cardForm">
+    <h1>الإناث</h1>
+    <div class="card" id="card-1" (click)="showComponent('emergency-male-table')">
+        <h3>سجل الطوارئ</h3>
+    </div>
+    <div class="card" id="card-2" (click)="showComponent('emergency-male-order')">
+        <h3>طلب علاجات</h3>
+    </div>
+</div>
+
+<div *ngIf="selectedCard() === 'emergency-male-table'">
+    <app-emergency-table 
+    (resetEvent)="handleReset()"
+    [isFemale]="true">
+    </app-emergency-table>
+</div>
+<div *ngIf="selectedCard() === 'emergency-male-order'">
+    <app-emergency-order
+    (resetEvent)="handleReset()"
+    [isFemale]="true">
+    </app-emergency-order>
+</div>
+

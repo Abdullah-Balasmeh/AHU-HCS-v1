@@ -6,9 +6,15 @@
 
     <div>
         <!-- Conditionally render components based on the selected tab -->
-        <app-emergency-order-request *ngIf="selectedTab === 'treatment-order'"></app-emergency-order-request>
+        <app-emergency-order-request 
+        *ngIf="selectedTab === 'treatment-order'"
+        [gender]="isFemale">
+    </app-emergency-order-request>
 
-        <app-emergency-order-state *ngIf="selectedTab === 'treatment-state'"></app-emergency-order-state>
+        <app-emergency-order-state 
+        *ngIf="selectedTab === 'treatment-state'"
+        [gender]="isFemale">
+        </app-emergency-order-state>
 
 
     </div>
