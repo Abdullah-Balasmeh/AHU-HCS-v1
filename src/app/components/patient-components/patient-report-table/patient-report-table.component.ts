@@ -30,7 +30,7 @@ export class PatientReportTableComponent implements OnInit {
   vaccCertificate: VaccCertificat[] = [];
   allReportsAndCertificateAndVacIssues: any[] = [];
   isLoading = false;
-
+  typeOfReports='';
   formatDay(dateString: Date | string) {
     const dateObj = new Date(dateString);
     return dateObj.toLocaleDateString('ar-EG', { weekday: 'long' });
@@ -50,13 +50,14 @@ export class PatientReportTableComponent implements OnInit {
   }
 
   formatName(name: string): string {
-    return name.replace(/(?!\s)الله/, ' الله');
+    return name.replace(/(?!\s)الله/, '  الله');
   }
 
   loadAllData() {
     this.isLoading = true;
     Promise.all([this.getAllReports(), this.getAllVaccCertificate(), this.getAllVacIssues()])
       .then(() => {
+        // Format the date, day, and time for each item
         this.allReportsAndCertificateAndVacIssues.forEach((item) => {
           if (item.date) {
             item.formattedDate = this.formatDate(item.date);
@@ -69,11 +70,19 @@ export class PatientReportTableComponent implements OnInit {
             item.formattedLeaveTime = this.formatTime(item.leaveTime);
           }
         });
+  
+        // Sort the array from newest to oldest
+        this.allReportsAndCertificateAndVacIssues.sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateB - dateA; // Newest first
+        });
       })
       .finally(() => {
         this.isLoading = false;
       });
   }
+  
 
   getAllReports(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -144,22 +153,26 @@ export class PatientReportTableComponent implements OnInit {
       fileName = `${item.reportType} ${item.patientName}.pdf`;
     } else if (item.reportType === 'صرف مطعوم الكبد الوبائي (B)') {
       formData = {
-        id: item.vaccDipenId,
+        id: item.vaccDipenId.toString(),
         studentId: item.studentId,
         studentName: this.formatName(item.studentName),
         college: item.college,
-        doctorName: item.doctorName,
+        major: item.major,
+        doctorName:this.formatName(item.doctorName),
         date: date,
         day: day,
         leaveTime: leaveTime,
         enterTime: enterTime,
       };
+      console.log('vacIssue',formData)
       pdfPath = 'assets/reports/vacIssue.pdf';
       fileName = `صرف مطعوم ${item.studentName}.pdf`;
-    } else if (item.vaccCertificatnId) {
+      this.typeOfReports='vacIssue'
+      
+    } else if (item.reportType=='شهادة مطعوم الكبد الوبائي (B)') {
       formData = {
         id: item.vaccCertificatnId.toString(),
-        managerName: this.formatName(parsedUser.userName),
+        managerName: this.formatName(item.managerName),
         studentName: this.formatName(item.studentName),
         studentId: item.studentId,
         major: item.major,
@@ -168,6 +181,8 @@ export class PatientReportTableComponent implements OnInit {
         day: day,
         date: date
       };
+      console.log('vacIsvacCerificatesue',formData)
+      this.typeOfReports='Certificat'
       pdfPath = 'assets/reports/vacCerificate.pdf';
       fileName = `شهادة مطعوم ${item.studentName}.pdf`;
     } else {
@@ -175,8 +190,8 @@ export class PatientReportTableComponent implements OnInit {
       return;
     }
 
-    const pdfBlob = await this.PDF.fillPdf(pdfPath, formData, 'Certificat');
 
+    const pdfBlob = await this.PDF.fillPdf(pdfPath, formData,this.typeOfReports);
     // Download the PDF
     const url = URL.createObjectURL(pdfBlob);
     const a = document.createElement('a');

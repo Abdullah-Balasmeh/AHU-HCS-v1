@@ -7,7 +7,9 @@ import fontkit from '@pdf-lib/fontkit'; // Import fontkit
 })
 export class PDF {
   constructor() {}
-
+  formatName(name: string): string {
+    return name.replace(/(?!\s)الله/, '  الله');
+  }
   async fillPdf(templateUrl: string, formData: any , type:string): Promise<Blob> {
     // Fetch the template PDF
     const existingPdfBytes = await fetch(templateUrl).then((res) =>
@@ -41,22 +43,24 @@ export class PDF {
     if(type=='Certificat')
   {
     safeSetField('id', formData.id as string);
-    safeSetField('studentName', formData.studentName);
-    safeSetField('studentId', formData.studentId);
+    safeSetField('studentName', this.formatName(formData.studentName));
+    safeSetField('studentId', formData.studentId as string);
     safeSetField('major', formData.major);
     safeSetField('college', formData.college);
     safeSetField('dose', formData.dose);
     safeSetField('day', formData.day);
     safeSetField('date', formData.date);
-    safeSetField('managerName', formData.managerName);
+    safeSetField('managerName', this.formatName(formData.managerName));
   }else if(type=='vacIssue')
   {
     safeSetField('id', formData.id as string);
-    safeSetField('studentName', formData.studentName);
-    safeSetField('studentId', formData.studentId);
+    safeSetField('studentName', this.formatName(formData.studentName));
+    safeSetField('studentId', formData.studentId as string);
     safeSetField('major', formData.major);
     safeSetField('college', formData.college);
-    safeSetField('date', formData.date);
+    safeSetField('doctorName', this.formatName(formData.doctorName));
+
+    safeSetField('date', formData.date as string);
   }
 
 

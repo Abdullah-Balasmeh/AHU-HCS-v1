@@ -74,6 +74,7 @@ searchStud()
       leaveTime:new Date(),
       date:new Date(),
     }
+    console.log('newCertificate',newCertificate)
     this.vaccCertificatService.addVaccCertificat(newCertificate).subscribe({
       next:()=>{
         alert('add success');
