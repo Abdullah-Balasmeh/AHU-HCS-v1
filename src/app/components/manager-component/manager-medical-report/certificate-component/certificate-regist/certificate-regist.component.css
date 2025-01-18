@@ -27,9 +27,7 @@ input[type="text"] {
     outline: none;
     font-size: 18px;
 }
-.search-btn {
-    padding: 5px 15px;
-}
+
 
 .Box-grid {
     display: grid;
@@ -44,19 +42,21 @@ input[type="text"] {
 }
 
 #search-container {
-    width: 40%;
+    width: 50%;
     position: absolute;
-    top: 47%;
+    top: 50%;
     left: -50%;
     z-index: 1; 
-    align-items: center;
-    justify-content: center;
 }
-#tSubject{
-    margin-top: 10px;
+.search-btn {
+    padding: 5px 15px;
 }
 .footer-btn{
 margin: 30px auto;
 width: 40%;
 }
 
+span{
+    align-self: center;
+    justify-self: center;
+}

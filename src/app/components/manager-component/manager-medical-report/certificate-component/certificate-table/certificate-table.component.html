@@ -1,0 +1,27 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الطالب</th>
+            <th>رقم الطالب</th>
+            <th>التخصص</th>
+            <th>تاريخ الإصدار</th>
+            <th>عرض</th>
+        </tr>
+    </thead>
+    <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
+    <tbody>
+        <tr *ngFor="let vaccCertificat of vaccCertificats let i = index">
+            <td>1</td>
+            <td>{{vaccCertificat.studentName}}</td>
+            <td>{{vaccCertificat.studentId}}</td>
+            <td>{{vaccCertificat.major}}</td>
+            <td>{{(vaccCertificat.date| date: 'yyyy-MM-dd')}}</td>
+            <td>
+                <button class="table-btn" id="icon-edit" (click)="generatePdf(vaccCertificat)">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

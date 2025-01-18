@@ -1,57 +1,89 @@
-        <!-- report section -->
-        <div class="content">
-            <form >
-                <div class="Box-grid">
-                    <div id="textarea"autocomplete="off">
-                        <h6 class="text-type">الحالة المرضية:</h6>
-                        <textarea name="notice" class="textarea-note" rows="5"></textarea>
-                    </div>
-                    <div id="report-list">
-                        <h6 class="text-type">نوع النموذج :</h6>
-                        <div class="radio-inputs" >
-                            <label class="radio" for="place-1">
-                                <input
-                                    type="radio"
-                                    name="patientState"
-                                    value="إجازة مرضية"
-                                    id="place-1"
-                                >
-                                <span class="name">إجازة مرضية</span>
-                            </label>
-                            <label class="radio" for="place-2">
-                                <input
-                                    type="radio"
-                                    name="patientState"
-                                    value="مراجعة"
-                                    id="place-2"
-                                >
-                                <span class="name">مراجعة</span>
-                            </label>
-                            <label class="radio" for="place-3">
-                                <input
-                                    type="radio"
-                                    name="patientState"
-                                    value="تحويل"
-                                    id="place-3"
-                                >
-                                <span class="name">تحويل</span>
-                            </label>
-                            <label class="radio" for="place-4">
-                                <input
-                                    type="radio"
-                                    name="patientState"
-                                    value="صرف مطعوم التهاب الكبد"
-                                    id="place-4"
-                                >
-                                <span class="name">صرف مطعوم التهاب الكبد</span>
-                            </label>
-                        </div>
-                    </div>
+<!-- report section -->
+<div class="content">
+    <form [formGroup]="reportForm">
+        <div class="Box-grid">
+            <div id="textarea">
+                @if(selectedReport!='صرف مطعوم الكبد الوبائي (B)')
+                {
+                <div id="textarea1" autocomplete="off">
+                    <h6 class="text-type">الحالة المرضية:</h6>
+                    <textarea name="notice" class="textarea-note" rows="5"
+                        formControlName="decription"></textarea>
                 </div>
-                <div class="footer-btn">
-                    <button type="button" class="btn primaryColor" >حفظ</button>
-                    <button type="button" class="btn primaryColor" onclick="generatePDF()">طباعة<i class="bi bi-printer-fill"></i></button>
+                }
+                @if(selectedReport=='إجازة مرضية')
+                {
+                <div id="textarea2" autocomplete="off">
+                    <h6 class="text-type">التوصية:</h6>
+                    <textarea name="notice" class="textarea-note" rows="5"
+                        formControlName="recommendation"></textarea>
                 </div>
+                }
+                @if(selectedReport=='تحويل')
+                {
+                <app-dropdown-list
+                [placeHolder]="'عيادة'"
+                [options]="clinics"
+                (selectedChange)="selectClinic($event)">
+                </app-dropdown-list>
+                }
+            </div>
 
-            </form>
+            <div id="report-list">
+                <h6 class="text-type">نوع النموذج :</h6>
+                <div class="radio-inputs">
+                    <label class="radio" for="place-1">
+                        <input
+                            type="radio"
+                            name="patientState"
+                            value="إجازة مرضية"
+                            id="place-1"
+                            (change)="selectReport('إجازة مرضية')">
+                        <span class="name">إجازة مرضية</span>
+                    </label>
+                    <label class="radio" for="place-2">
+                        <input
+                            type="radio"
+                            name="patientState"
+                            value="مراجعة"
+                            id="place-2"
+                            (change)="selectReport('مراجعة')">
+                        <span class="name">مراجعة</span>
+                    </label>
+                    <label class="radio" for="place-3">
+                        <input
+                            type="radio"
+                            name="patientState"
+                            value="تحويل"
+                            id="place-3"
+                            (change)="selectReport('تحويل')">
+                        <span class="name">تحويل</span>
+                    </label>
+                    <label class="radio" for="place-4">
+                        <input
+                            type="radio"
+                            name="patientState"
+                            value='صرف مطعوم الكبد الوبائي (B)'
+                            id="place-4"
+                            (change)="selectReport('صرف مطعوم الكبد الوبائي (B)')">
+                        <span class="name">صرف مطعوم التهاب الكبد</span>
+                    </label>
+                </div>
+            </div>
         </div>
+        <div class="footer-btn">
+            @if(isLoading)
+            {
+                <div class="btn primaryColor">
+                    <app-loading-image></app-loading-image>
+                </div>
+            }@else{
+            
+            <button type="btn" class="btn primaryColor"
+                    (click)="onSave()">حفظ</button>
+            }
+
+        </div>
+
+    </form>
+</div>

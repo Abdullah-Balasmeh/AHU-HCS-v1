@@ -1,0 +1,64 @@
+<form [formGroup]="certificateForm">
+    <div class="Box-grid">
+        <div class="input-box" id="tNum">
+            <h6 class="text-type">رقم الطالب:</h6>
+            <input
+                class="inputText"
+                type="text"
+                maxlength="12"
+                formControlName="studentId"
+                required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                autocomplete="off">
+                <div id="search-container">
+                    <button
+                    (click)="searchStud()"
+                    type="button" 
+                    class="btn  primaryColor search-btn" >
+                    <span >بحث</span>
+                </button>
+            </div>
+        </div>
+        @if(hasData)
+        {
+            <div class="input-box" id="tName">
+                <h6 class="text-type">اسم الطالب:</h6>
+                <input
+                    class="inputText"
+                    type="text"
+                    formControlName="studentName"
+                    readonly>
+            </div>
+            <div class="input-box" id="tMajor">
+                <h6 class="text-type">التخصص:</h6>
+                <input
+                    class="inputText"
+                    type="text"
+                    formControlName="studentMajor"
+                    readonly>
+            </div>
+            <div class="input-box" id="tColloge">
+                <h6 class="text-type" id="tColloge">الكلية:</h6>
+                <input
+                    class="inputText"
+                    type="text"
+                    formControlName="studentCollege"
+                    readonly>
+            </div>
+            <div id="bloodTypeList" id="tSubject">
+                <label for="search" class="text-type">الجرعة:</label>
+                <app-dropdown-list
+                (selectedChange)="doseSelect($event)"
+                    placeHolder="جرعة"
+                    [options]="['جرعة', 'جرعتين', 'ثلاثة جرعات']">
+                </app-dropdown-list>
+            </div>
+        }
+
+        </div>
+
+    <div class="footer-btn margin">
+        <button type="btn" class="btn primaryColor" (click)="release()">إصدار</button>
+    </div>
+
+</form>

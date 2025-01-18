@@ -22,7 +22,10 @@
     "@angular/platform-server": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@angular/ssr": "^18.2.11",
+    "@pdf-lib/fontkit": "^1.1.1",
     "express": "^4.18.2",
+    "fontkit": "^2.0.4",
+    "pdf-lib": "^1.17.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

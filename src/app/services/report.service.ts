@@ -1,44 +1,33 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
-
+import { Observable } from "rxjs";
+import { ApiService } from "./api.service";
+import { Injectable } from "@angular/core";
+import { Report } from "../interfaces/report.interface";
 
 @Injectable({
   providedIn: 'root',
 })
-export class ReportService {
-  private readonly endpoint = 'reports';
+export class ReportsService {
+  private readonly endpoint = 'Reports';
 
   constructor(private readonly apiService: ApiService) {}
 
   // Get all reports
-  getReports(): Observable<any> {
-    return this.apiService.get<any>(this.endpoint);
+  getAllReports(): Observable<Report[]> {
+    return this.apiService.get<[]>(this.endpoint);
   }
 
-  // Get a specific report by ID
-  getReportById(reportId: number): Observable<any> {
-    return this.apiService.get<any>(`${this.endpoint}/${reportId}`);
+  // Get reports by patient ID
+  getReportsByPatientId(patientId: string): Observable<Report[]> {
+    return this.apiService.get<Report[]>(`${this.endpoint}/patient/${patientId}`);
   }
 
-  // Create a new report
-  createReport(reportData: any): Observable<any> {
-    return this.apiService.post<any>(this.endpoint, reportData);
+  // Get reports by date
+  getReportsByDate(date: string): Observable<Report[]> {
+    return this.apiService.get<Report[]>(`${this.endpoint}/date/${date}`);
   }
 
-  // Update an existing report
-  updateReport(reportId: number, reportData: any): Observable<any> {
-    return this.apiService.put<any>(`${this.endpoint}/${reportId}`, reportData);
-  }
-
-  // Delete a report
-  deleteReport(reportId: number): Observable<any> {
-    return this.apiService.delete<any>(`${this.endpoint}/${reportId}`);
-  }
-
-  // Generate a report PDF based on type and data
-  generateReport(reportData: any): Observable<Blob> {
-    const endpoint = `${this.endpoint}/generate-report`; // Ensure your backend has this endpoint
-    return this.apiService.post<Blob>(endpoint, reportData);
+  // Add a new report
+  addReport(report: Report): Observable<Report> {
+    return this.apiService.post<Report>(this.endpoint, report);
   }
 }

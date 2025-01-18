@@ -15,6 +15,10 @@
     grid-row: 1/2;
     grid-column: 1/2;
 }
+#textarea2{
+    grid-row: 2/2;
+    grid-column: 1/2;
+}
 
 #report-list {
     grid-row: 1/2;
@@ -64,7 +68,7 @@ label{
     flex-direction: row;
     justify-self: center;
     align-self: center;
-    width: 80%;
+    width: 40%;
     gap: 40px;
     margin-top: 15px;
 }

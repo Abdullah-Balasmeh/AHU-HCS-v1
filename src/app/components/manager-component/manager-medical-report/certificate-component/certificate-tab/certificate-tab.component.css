@@ -1,0 +1,23 @@
+#close-btn{
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
+}
+
+/* Active tab text color */
+#tabP-1:checked ~ .nav-box nav label .tab-1,
+#tabH-2:checked ~ .nav-box nav label .tab-2 {
+    color: #AEDDDC;
+}
+/* Tab slider position */
+#tabP-1:checked ~ nav .slider {
+    right: 0%;
+    width: 47%;
+}
+
+#tabH-2:checked ~ nav .slider {
+    right: 53%;
+    width: 45%;
+}
+
+

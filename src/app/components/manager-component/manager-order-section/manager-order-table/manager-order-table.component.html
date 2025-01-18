@@ -15,7 +15,7 @@
             <td>{{ order.nurseName }}</td>
             <td *ngIf="order.emergencyOrderType=='Male'"><span>طوارئ الذكور</span></td>
             <td *ngIf="order.emergencyOrderType=='Female'"><span>طوارئ الإناث</span></td>
-            <td>{{(order.approveDate | date: 'yyyy-MM-dd') || 'N/A'}}</td>
+            <td>{{(order.sendDate | date: 'yyyy-MM-dd')}}</td>
             <td>
                 <button
                 class="table-btn"

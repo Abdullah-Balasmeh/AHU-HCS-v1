@@ -1,1 +1,11 @@
-<p>manager-medical-report works!</p>
+<div class="container">
+    <app-certificate-tab (tabChange)="onTabChange($event)"
+    (closeTab)="onClose()">></app-certificate-tab>
+
+    <div class="content">
+        <!-- Conditionally render components based on the selected tab -->
+        <app-certificate-regist *ngIf="selectedTab === 'regist-certificate'"></app-certificate-regist>
+        <app-certificate-table *ngIf="selectedTab === 'certificate-table'"></app-certificate-table>
+
+    </div>
+</div>

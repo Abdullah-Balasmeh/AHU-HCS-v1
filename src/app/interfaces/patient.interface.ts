@@ -29,16 +29,6 @@ export interface Patient {
     diabtetesRecords?: DiabtetesRecord[];
 }
 
-export interface Report {
-    reportId: number;
-    reportType?: string;
-    decription?: string;
-    disease?: string;
-    userId?: string;
-    date?: string;
-    patientId?: string;
-}
-
 export interface BPRecord {
     bpRecordId?: number;
     bpUp?: string;
