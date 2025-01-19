@@ -12,9 +12,9 @@
                 الكبد الوبائي
         </h2>
     </div>
-    <div class="card" id="card-4" (click)="showComponent('analysis-report')">
+    <!-- <div class="card" id="card-4" (click)="showComponent('analysis-report')">
         <h3>سجل المركز</h3>
-    </div>
+    </div> -->
 </div>
 
 
@@ -28,7 +28,7 @@
 <div *ngIf="selectedCard() === 'medical-report'">
     <app-manager-medical-report (resetEvent)="handleReset()"></app-manager-medical-report>
 </div>
-<div *ngIf="selectedCard() === 'analysis-report'">
+<!-- <div *ngIf="selectedCard() === 'analysis-report'">
     <app-manager-analysis-report (resetEvent)="handleReset()"></app-manager-analysis-report>
-</div>
+</div> -->
 

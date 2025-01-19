@@ -6,11 +6,11 @@
     direction: rtl;
     display: grid;
     grid-template-rows: 80px auto;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards on the same row */
-    gap: 30px; /* Space between cards */
+    grid-template-columns: repeat(3, 1fr); /* 4 cards on the same row */
+    gap: 30px; 
     align-items: center;
     justify-items: center;
-    padding: 0 30px 30px 30px;
+    padding: 0 30px 30px 0;
 }
 
 .card-box h1 {

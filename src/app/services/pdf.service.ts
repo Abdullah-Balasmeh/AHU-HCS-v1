@@ -8,7 +8,7 @@ import fontkit from '@pdf-lib/fontkit'; // Import fontkit
 export class PDF {
   constructor() {}
   formatName(name: string): string {
-    return name.replace(/(?!\s)الله/, '  الله');
+    return name.replace(/(?!\s)الله/, 'الله');
   }
   async fillPdf(templateUrl: string, formData: any , type:string): Promise<Blob> {
     // Fetch the template PDF
