@@ -53,6 +53,7 @@ export class EmployeeRegistComponent {
   selectedRoles: string[] = [];
   
   Role(selected: string[]): void {
+    console.log(selected)
     this.selectedRoles = selected.map(roleName => this.roleMapping[roleName]);
   }
   
@@ -104,11 +105,12 @@ export class EmployeeRegistComponent {
           userName: formValues.empName!,
           userId: formValues.empId!,
           password: formValues.password!,
-          createDate: new Date(),
+          salt:'',
+          createDate: new Date().toISOString(),
         },
-        roleIds: this.selectedRoles,
+        roles: this.selectedRoles,
       };
-  
+      console.log('request', request)
       this.isLoading.set(true);
   
       this.userService.addUser(request).subscribe({

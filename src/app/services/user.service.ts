@@ -53,7 +53,7 @@ export class UserService {
   }
 
   // Add a new user
-  addUser(request: { user: User; roleIds: string[] }): Observable<User> {
+  addUser(request: { user: User; roles: string[] }): Observable<User> {
     return this.apiService.post<User>(this.endpoint, request);
   }
 

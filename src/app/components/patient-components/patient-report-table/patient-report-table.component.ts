@@ -138,8 +138,8 @@ export class PatientReportTableComponent implements OnInit {
     if (item.reportType !== 'شهادة مطعوم الكبد الوبائي (B)' && item.reportType !== 'صرف مطعوم الكبد الوبائي (B)') {
       formData = {
         reportId: item.reportId,
-        doctorName: this.formatName(item.doctorName),
-        patientName: this.formatName(item.patientName),
+        doctorName: item.doctorName,
+        patientName: item.patientName,
         patientId: item.patientId,
         enterTime: enterTime,
         date: date,
@@ -149,8 +149,10 @@ export class PatientReportTableComponent implements OnInit {
         description: item.description ?? '',
         recommendation: item.recommendation ?? ''
       };
-      pdfPath = `assets/reports/${item.reportType}.pdf`;
+      this.typeOfReports=item.reportType;
+      pdfPath = `/assets/reports/${item.reportType}.pdf`;
       fileName = `${item.reportType} ${item.patientName}.pdf`;
+      console.log('مراجعة',formData)
     } else if (item.reportType === 'صرف مطعوم الكبد الوبائي (B)') {
       formData = {
         id: item.vaccDipenId.toString(),

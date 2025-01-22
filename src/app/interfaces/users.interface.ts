@@ -2,7 +2,8 @@ export interface User {
     userId: string;
     userName: string;
     password: string;
-    createDate?: Date;
+    salt?:string;
+    createDate?: Date | string;
     signName?: string;
     signType?: string;
     signData?: string;

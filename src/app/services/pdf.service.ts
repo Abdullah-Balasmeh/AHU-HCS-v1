@@ -61,6 +61,18 @@ export class PDF {
     safeSetField('doctorName', this.formatName(formData.doctorName));
 
     safeSetField('date', formData.date as string);
+  }else if(type=='مراجعة')
+  {
+    console.log('مراجعة')
+    safeSetField('id', formData.id as string);
+    safeSetField('patientName', this.formatName(formData.patientName));
+    safeSetField('patientId', formData.patientId as string);
+    safeSetField('day', formData.day);
+    safeSetField('enterTime', formData.enterTime);
+    safeSetField('leaveTime', formData.leaveTime);
+    safeSetField('state', formData.state);
+    safeSetField('doctorName', this.formatName(formData.doctorName));
+    safeSetField('date', formData.date as string);
   }
 
 
