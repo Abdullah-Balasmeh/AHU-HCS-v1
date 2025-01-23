@@ -34,7 +34,7 @@ export class PDF {
     const formattedHours = isPM ? (hours % 12 === 0 ? 12 : hours % 12) : hours || 12;
     const period = isPM ? 'م' : 'ص';
 
-    return ` ${period}${this.padZero(formattedHours)}:${this.padZero(minutes)} `;
+    return ` ${period} ${this.padZero(formattedHours)}:${this.padZero(minutes)} `;
   }
 
   // Pad single-digit numbers with a leading zero
@@ -119,6 +119,26 @@ export class PDF {
       safeSetField('state', formData.description);
       safeSetField('doctorName', this.formatName(formData.doctorName));
       safeSetField('date', formData.date as string);
+    }else if(type === 'vacation'){
+      safeSetField('id', formData.reportId as string);
+      safeSetField('patientName', this.formatName(formData.patientName));
+      safeSetField('patientId', formData.patientId as string);
+      safeSetField('day', formData.day);
+      safeSetField('enterTime', this.debugAndFormatTime(formData.enterTime));
+      safeSetField('leaveTime', this.debugAndFormatTime(formData.leaveTime));
+      safeSetField('state', formData.description);
+      safeSetField('doctorName', this.formatName(formData.doctorName));
+      safeSetField('date', formData.date as string);
+      safeSetField('recommendation', formData.recommendation);
+    }else if(type === 'tans'){
+      safeSetField('id', formData.reportId as string);
+      safeSetField('patientName', this.formatName(formData.patientName));
+      safeSetField('patientId', formData.patientId as string);
+      safeSetField('state', formData.description);
+      safeSetField('doctorName', this.formatName(formData.doctorName));
+      safeSetField('date', formData.date as string);
+      safeSetField('hName', formData.hospitalName as string);
+      safeSetField('clinicName', formData.clinicName as string);
     }
 
     // Serialize the PDF

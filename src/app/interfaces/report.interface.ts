@@ -6,7 +6,7 @@ export interface Report{
     date?:string,
     day?:string,
     enterTime?:string,
-    leaveTime?:Date,
+    leaveTime?:string,
     recommendation?:string,
     doctorName?:string,
     description?:string,

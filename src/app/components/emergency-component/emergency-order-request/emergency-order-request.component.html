@@ -83,7 +83,7 @@
             class="btn primaryColor"><app-loading-image></app-loading-image></div>
     </ng-container>
     <ng-template #notLoading>
-        <button class="btn primaryColor" (click)="onSaveOrder()" >إرسال</button>
+        <button *ngIf="items.length > 0" class="btn primaryColor" (click)="onSaveOrder()" >إرسال</button>
     </ng-template>
 </div>
 

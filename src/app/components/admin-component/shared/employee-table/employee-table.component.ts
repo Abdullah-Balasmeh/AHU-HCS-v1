@@ -39,7 +39,7 @@ export class EmployeeTableComponent implements OnInit {
 
   // Delete a user by ID
   deleteUser(userId: string): void {
-    if (confirm('Are you sure you want to delete this user?')) {
+    if (confirm('هل أنت متأكد من حذف هذا الموظف؟')) {
       this.userService.deleteUser(userId).subscribe({
         next: () => {
           this.loadUsers(); // Reload the user list

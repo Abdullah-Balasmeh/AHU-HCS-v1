@@ -40,7 +40,7 @@ export class AddProcedureComponent {
 
   onAdd() {
     if (!this.currentProcedure.name!.trim()) {
-      alert('Please enter a valid procedure name.');
+      alert('الرجاء إدخال اسم إجراء صالح.');
       return;
     }
 
@@ -51,14 +51,14 @@ export class AddProcedureComponent {
       },
       error: (err) => {
         console.error('Error adding procedure', err);
-        alert('Failed to add procedure.');
+        alert('فشل في إضافة الإجراء.');
       }
     });
   }
 
   onSave() {
     if (!this.currentProcedure.name!.trim()) {
-      alert('Please enter a valid procedure name.');
+      alert('الرجاء إدخال اسم إجراء صالح.');
       return;
     }
 
@@ -72,7 +72,7 @@ export class AddProcedureComponent {
       },
       error: (err) => {
         console.error('Error updating procedure', err);
-        alert('Failed to update procedure.');
+        alert('فشل في تحديث الإجراء.');
       }
     });
   }
@@ -83,14 +83,14 @@ export class AddProcedureComponent {
   }
 
   deleteProcedure(id: number) {
-    if (confirm('Are you sure you want to delete this procedure?')) {
+    if (confirm('هل أنت متأكد أنك تريد حذف هذا الإجراء؟')) {
       this.procedureService.deleteProcedure(id).subscribe({
         next: () => {
           this.procedures = this.procedures.filter(p => p.proceduresId !== id);
         },
         error: (err) => {
           console.error('Error deleting procedure', err);
-          alert('Failed to delete procedure.');
+          alert('فشل في حذف الإجراء.');
         }
       });
     }

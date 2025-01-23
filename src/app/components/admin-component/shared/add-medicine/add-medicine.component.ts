@@ -41,41 +41,44 @@ export class AddMedicineComponent {
   
 
   onAdd() {
-    if (!this.currentMedicine.name!.trim() || !this.currentMedicine.dose!.trim()) {
-      alert('Please fill out all fields.');
+    if (!this.currentMedicine.name!.trim()) {
+      alert('يرجى إدخال اسم العلاج');
       return;
     }
-  
-    this.medicineService.addMedicine(this.currentMedicine).subscribe({
+const newMedicine= this.currentMedicine={
+    ...this.currentMedicine,
+    dose: this.currentMedicine.dose ?? '',
+  }
+    this.medicineService.addMedicine(newMedicine).subscribe({
       next: (newMedicine) => {
         this.medicines.push(newMedicine);
         this.resetForm();
-        alert('Medicine added successfully!');
+        alert('تم إضافة العلاج بنجاح');
       },
       error: (err) => {
         console.error('Error adding medicine', err);
-        alert('Failed to add medicine. Please check the form and try again.');
+        alert('فشل في إضافة العلاج. يرجى التحقق من النموذج والمحاولة مرة أخرى.');
       },
     });
   }
   
 
   onSave() {
-    if (!this.currentMedicine.name!.trim() || !this.currentMedicine.dose!.trim()) {
-      alert('Please fill out all fields.');
+    if (!this.currentMedicine.name!.trim()) {
+      alert('يرجى إدخال اسم العلاج');
       return;
     }
 
     this.medicineService.updateMedicine(this.currentMedicine.medicineId!, this.currentMedicine).subscribe({
       next: () => {
-        alert('Medicine Edited successfully!');
+        alert('تم تعديل العلاج بنجاح');
         const index = this.medicines.findIndex(m => m.medicineId === this.currentMedicine.medicineId);
         if (index > -1) this.medicines[index] = { ...this.currentMedicine };
         this.resetForm();
       },
       error: (err) => {
         console.error('Error updating medicine', err);
-        alert('Failed to update medicine. Please try again later.');
+        alert('فشل تحديث العلاج. يرجى المحاولة مرة أخرى لاحقًا.');
       },
     });
   }
@@ -86,14 +89,14 @@ export class AddMedicineComponent {
   }
 
   deleteMedicine(id: number) {
-    if (confirm('Are you sure you want to delete this medicine?')) {
+    if (confirm('هل أنت متأكد أنك تريد حذف هذا العلاج؟')) {
       this.medicineService.deleteMedicine(id).subscribe({
         next: () => {
           this.medicines = this.medicines.filter(m => m.medicineId !== id);
         },
         error: (err) => {
           console.error('Error deleting medicine', err);
-          alert('Failed to delete medicine. Please try again later.');
+          alert('فشل حذف العلاج. يرجى المحاولة مرة أخرى لاحقًا.');
         },
       });
     }

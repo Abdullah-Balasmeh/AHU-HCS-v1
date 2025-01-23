@@ -40,7 +40,7 @@ export class AddAllergyComponent {
 
   onAdd() {
     if (!this.currentAllergy.name!.trim()) {
-      alert('Please enter a valid allergy name.');
+      alert('الرجاء إدخال اسم حساسية صالح.');
       return;
     }
 
@@ -51,14 +51,14 @@ export class AddAllergyComponent {
       },
       error: (err) => {
         console.error('Error adding allergy', err);
-        alert('Failed to add allergy. Please try again later.');
+        alert('فشل في إضافة الحساسية. يرجى المحاولة مرة أخرى لاحقًا.');
       },
     });
   }
 
   onSave() {
     if (!this.currentAllergy.name!.trim()) {
-      alert('Please enter a valid allergy name.');
+      alert('الرجاء إدخال اسم حساسية صالح.');
       return;
     }
 
@@ -72,7 +72,7 @@ export class AddAllergyComponent {
       },
       error: (err) => {
         console.error('Error updating allergy', err);
-        alert('Failed to update allergy. Please try again later.');
+        alert('فشل تحديث الحساسية. يرجى المحاولة مرة أخرى لاحقًا.');
       },
     });
   }
@@ -83,14 +83,14 @@ export class AddAllergyComponent {
   }
 
   deleteAllergy(allergyId: number) {
-    if (confirm('Are you sure you want to delete this allergy?')) {
+    if (confirm('هل أنت متأكد أنك تريد حذف هذه الحساسية؟')) {
       this.allergyService.deleteAllergy(allergyId).subscribe({
         next: () => {
           this.allergies = this.allergies.filter(a => a.allergyId !== allergyId);
         },
         error: (err) => {
           console.error('Error deleting allergy', err);
-          alert('Failed to delete allergy. Please try again later.');
+          alert('فشل حذف الحساسية. يرجى المحاولة مرة أخرى لاحقًا.');
         },
       });
     }

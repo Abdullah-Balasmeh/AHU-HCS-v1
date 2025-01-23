@@ -36,13 +36,25 @@ export class PatientReportTableComponent implements OnInit {
     return dateObj.toLocaleDateString('ar-EG', { weekday: 'long' });
   }
 
-  formatTime(dateString: Date | string) {
-    const dateObj = new Date(dateString);
-    return dateObj
-      .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
+  formatTime(dateString: Date | string): string {
+    // Parse the date string without applying local system time zone offset
+    const dateObj = typeof dateString === 'string' ? new Date(dateString) : dateString;
+  
+    // Format the time explicitly for the Asia/Amman time zone
+    return new Intl.DateTimeFormat('en-JO', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+      .format(dateObj)
       .replace('AM', 'ص')
       .replace('PM', 'م');
   }
+  
+  
+  
+  
+  
 
   formatDate(dateString: Date | string) {
     const dateObj = new Date(dateString);
@@ -64,6 +76,7 @@ export class PatientReportTableComponent implements OnInit {
             item.formattedDay = this.formatDay(item.date);
           }
           if (item.enterTime) {
+            console.log('enterTime in all data',item.enterTime)
             item.formattedEnterTime = this.formatTime(item.enterTime);
           }
           if (item.leaveTime) {
@@ -82,6 +95,7 @@ export class PatientReportTableComponent implements OnInit {
         this.isLoading = false;
       });
   }
+  
   
 
   getAllReports(): Promise<void> {
@@ -147,10 +161,19 @@ export class PatientReportTableComponent implements OnInit {
         leaveTime: this.formatTime(item.leaveTime),
         reportType: item.reportType,
         description: item.description ?? '',
-        recommendation: item.recommendation ?? ''
+        recommendation: item.recommendation ?? '',
+        clinicName: item.clinicName ?? '',
+        hospitalName: item.hospitalName ?? ''
       };
-      this.typeOfReports='review';
-      pdfPath = `/assets/reports/review.pdf`;
+      if(item.reportType=='مراجعة'){
+        this.typeOfReports='review';
+      }else if(item.reportType=='إجازة مرضية'){
+        this.typeOfReports='vacation';
+      }else{
+        this.typeOfReports='tans';
+      }
+      console.log('typeOfReports',this.typeOfReports)
+      pdfPath = `/assets/reports/${this.typeOfReports}.pdf`;
       fileName = `${item.reportType} ${item.patientName}.pdf`;
       console.log('مراجعة',formData)
     } else if (item.reportType === 'صرف مطعوم الكبد الوبائي (B)') {
@@ -165,6 +188,7 @@ export class PatientReportTableComponent implements OnInit {
         day: day,
         leaveTime: leaveTime,
         enterTime: enterTime,
+
       };
       console.log('vacIssue',formData)
       pdfPath = 'assets/reports/vacIssue.pdf';

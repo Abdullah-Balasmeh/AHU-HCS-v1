@@ -33,6 +33,6 @@
 
 <app-manager-trainee-dailog
 *ngIf="isView"
-[traineeRecord]="selectedTrainee!"
+[traineeRecords]="selectedTrainee?.attendaceRecords!"
 (close)="closeAll()">
 </app-manager-trainee-dailog>

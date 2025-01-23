@@ -42,7 +42,7 @@ export class AddDiseaseComponent {
   // Add new disease
   onAdd() {
     if (!this.currentDisease.name!.trim()) {
-      alert('Please enter a valid disease name.');
+      alert('الرجاء إدخال اسم مرض صالح.');
       return;
     }
 
@@ -53,7 +53,7 @@ export class AddDiseaseComponent {
       },
       error: (err) => {
         console.error('Error adding disease', err);
-        alert('Failed to add disease. Please try again later.');
+        alert('فشل في إضافة المرض. يرجى المحاولة مرة أخرى لاحقًا.');
       }
     });
   }
@@ -61,7 +61,7 @@ export class AddDiseaseComponent {
   // Save edited disease
   onSave() {
     if (!this.currentDisease.name!.trim()) {
-      alert('Please enter a valid disease name.');
+      alert('الرجاء إدخال اسم مرض صالح.');
       return;
     }
 
@@ -76,7 +76,7 @@ export class AddDiseaseComponent {
       },
       error: (err) => {
         console.error('Error updating disease', err);
-        alert('Failed to update disease. Please try again later.');
+        alert('فشل تحديث المرض. يرجى المحاولة مرة أخرى لاحقًا.');
       }
     });
   }
@@ -96,14 +96,14 @@ export class AddDiseaseComponent {
 
   // Delete disease
   deleteDisease(diseaseId: number) {
-    if (confirm('Are you sure you want to delete this disease?')) {
+    if (confirm('هل أنت متأكد أنك تريد حذف هذا المرض؟')) {
       this.diseaseService.deleteDisease(diseaseId).subscribe({
         next: () => {
           this.diseases = this.diseases.filter(disease => disease.diseaseId !== diseaseId);
         },
         error: (err) => {
           console.error('Error deleting disease', err);
-          alert('Failed to delete disease. Please try again later.');
+          alert('فشل حذف المرض. يرجى المحاولة مرة أخرى لاحقًا.');
         }
       });
     }

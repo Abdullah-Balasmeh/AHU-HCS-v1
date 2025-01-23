@@ -5,7 +5,7 @@ export interface Trainee {
     supervisor?: string;
     course?: string;
     registDate?: Date;
-    userId?: string;
+    userName?: string;
     attendaceRecords?: AttendanceRecord[];
 }
 export interface AttendanceRecord {

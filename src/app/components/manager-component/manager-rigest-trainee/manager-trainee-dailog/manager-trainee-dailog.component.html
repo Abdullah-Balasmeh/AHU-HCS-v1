@@ -11,17 +11,19 @@
                     <th>وقت المغادرة</th>
                 </tr>
             </thead>
+            <div class="primaryColor btn loading" *ngIf="isLoading"><app-loading-image></app-loading-image></div>
             <tbody>
-                <!-- *ngFor="let record of traineeRecord let i = index" -->
-                <tr
-                    >
-                    <td>{{  1 }}</td>
-                    <td>{{enterDate.day }}</td>
-                    <td>{{enterDate.date}}</td>
-                    <td>{{enterDate.time}}</td>
-                    <td>{{leaveDate.time}}</td>
+                <tr *ngFor="let record of formattedRecords let i = index">
+                    <td>{{ i+ 1 }}</td>
+                    <td>{{record.day }}</td>
+                    <td>{{record.date}}</td>
+                    <td>{{record.enterTime}}</td>
+                    <td>{{record.leaveTime=='Invalid Date'? '-' : record.leaveTime}}</td>
                 </tr>
             </tbody>
+            <div *ngIf="isLoading==false && formattedRecords.length==0" class="no-data">
+                سجل الحضور فارغ.
+                </div>
         </table>
         <div class="footer-btn">
             <button class="btn closeColor"

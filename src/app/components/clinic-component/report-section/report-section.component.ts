@@ -66,6 +66,7 @@ selectClinic(selected:string)
 
 onSave()
 {
+  console.log('time is ', Date.now() )
   if(!this.selectedReport)
     {
       alert('يرجى اختيار تقرير');
@@ -82,14 +83,14 @@ onSave()
         patientName:this.patient.patientName!,
         date:this.enterDate,
         enterTime:this.enterDate,
-        leaveTime:new Date(),
+        leaveTime: new Date().toISOString(),
         doctorName:parsedUser.userName,
         recommendation:this.reportForm.value.recommendation ?? '',
         description:this.reportForm.value.decription ?? '',
         hospitalName:(this.selectedReport=='تحويل' ? 'مستشفى معان الحكومي' : ''),
         clinicName:this.selectedClinic ?? ''
       }
-      console.log(this.report);
+      console.log('leave time',this.report.leaveTime);
       this.reportsService.addReport(this.report).subscribe({
         next:()=>{
           this.isLoading=false;
@@ -117,7 +118,7 @@ onSave()
             major: this.student.major,    
             date: this.enterDate,
             enterTime:this.enterDate,
-            leaveTime:new Date(),
+            leaveTime: new Date().toISOString(),
             dose:'Vial 1.0 ml',
             doctorName: parsedUser.userName,
           };

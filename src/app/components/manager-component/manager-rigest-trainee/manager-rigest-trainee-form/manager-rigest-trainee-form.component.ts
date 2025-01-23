@@ -73,6 +73,8 @@ private readonly traineeService=inject(TraineeService);
 
 onSubmit()
 {
+  sessionStorage.getItem('user');
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
   this.isLoading=true;
 const newTrainee:Trainee={
     traineeId:this.student?.studentId!,
@@ -81,6 +83,7 @@ const newTrainee:Trainee={
     password:this.student?.password!,
     course:this.subject,
     registDate:new Date(),
+    userName:user.userName,
   };
 this.traineeService.addTrainee(newTrainee).subscribe({
   next:()=>

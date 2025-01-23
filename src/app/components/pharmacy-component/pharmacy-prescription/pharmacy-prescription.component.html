@@ -27,6 +27,9 @@
             </td>
         </tr>
     </tbody>
+    <div *ngIf="!isLoading && records.length==0" class="no-data">
+        لا يوجد وصفات.
+        </div>
 </table>
 
 <!-- Prescription Dialog -->

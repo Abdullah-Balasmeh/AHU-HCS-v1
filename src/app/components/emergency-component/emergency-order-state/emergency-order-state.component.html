@@ -29,6 +29,9 @@
         </td>
     </tr>
 </tbody>
+<div *ngIf="!isLoading && orders.length==0" class="no-data">
+    لا يوجد طلبات.
+    </div>
 </table>
 
 <app-emergency-item-dialog

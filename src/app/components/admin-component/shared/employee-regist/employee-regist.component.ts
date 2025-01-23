@@ -94,7 +94,7 @@ export class EmployeeRegistComponent {
   onSubmit(): void {
     if (this.registEmpForm.valid) {
       const formValues = this.registEmpForm.value;
-  
+      this.errorMessage.set('');
       if (formValues.password !== formValues.ConfirmPassword) {
         this.errorMessage.set('كلمة المرور غير متطابقة!');
         return;
@@ -110,11 +110,11 @@ export class EmployeeRegistComponent {
         },
         roles: this.selectedRoles,
       };
-      console.log('request', request)
       this.isLoading.set(true);
   
       this.userService.addUser(request).subscribe({
         next: () => {
+          this.errorMessage.set('');
           this.isLoading.set(false);
           this.successMessage.set(true);
           this.registEmpForm.reset();
@@ -124,7 +124,7 @@ export class EmployeeRegistComponent {
         },
         error: (err) => {
           this.isLoading.set(false);
-          this.errorMessage.set(`Error adding user: ${err.message}`);
+          alert('رقم الموظف بالفعل موجود');
         },
       });
     } else {
