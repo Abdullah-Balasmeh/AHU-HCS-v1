@@ -64,15 +64,15 @@ export class ClinicProcedureComponent implements OnInit {
   }
 
   onSubmit(): void {
-
     this.saving = true;
+    this.errorMessage='';
     if (!this.BPChecked || !this.TempChecked ||
       !this.RespChecked || !this.PulseChecked ||
       !this.selectedProcedures
     ) {
       this.errorMessage = 'يرجى أختيار على الأقل فحص واحد';
       this.saving = false;
-      
+      return;
     }
 let newPatientType ='';
 if(this.patientType=='عيادة')

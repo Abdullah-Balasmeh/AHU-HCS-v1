@@ -79,14 +79,15 @@ export class EmergencyProcedureComponent {
   }
 
   onSubmit(): void {
-
+    this.errorMessage='';
     this.saving = true;
-    if (!this.BPChecked && !this.TempChecked &&
-      !this.RespChecked && !this.PulseChecked &&
+    if (!this.BPChecked || !this.TempChecked ||
+      !this.RespChecked || !this.PulseChecked ||
       !this.selectedProcedures
     ) {
       this.errorMessage = 'يرجى أختيار على الأقل فحص واحد';
       this.saving = false;
+      return;
     }
 let newPatientType ='';
 if(this.patientType=='طوارئ')
@@ -140,7 +141,10 @@ if(this.patientType=='طوارئ')
   getAllProcedures(): void {
     this.procedureService.getAllProcedures().subscribe({
       next: (procedures: Procedures[]) => {
-        this.procedureNames = procedures.map((proc) => proc.name ?? '');
+        this.procedureNames = [
+          ...this.selectedProcedures,
+          ...procedures.map((proc) => proc.name ?? ''),
+        ]
       },
       error: (err) => {
         console.error('Error fetching procedures:', err);

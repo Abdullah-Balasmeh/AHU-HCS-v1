@@ -50,11 +50,12 @@
                 <app-patient-info-display
                     [patient]="selectedRecord!.patient!"></app-patient-info-display>
             </div>
-            <div *ngIf="selectedTab === 'prescription' && selectedRecord">
+            <div *ngIf="selectedTab === 'prescription'">
                 <app-prescription
                     [prescription]="selectedRecord!.prescription!"
                     [patientName]="selectedRecord!.patient.patientName!"
-                    [MedicalRecordId]="selectedRecord!.medicalRecordId!"></app-prescription>
+                    [MedicalRecordId]="selectedRecord!.medicalRecordId!">
+                </app-prescription>
             </div>
 
             <div *ngIf="selectedTab === 'medical'">

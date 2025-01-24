@@ -50,22 +50,26 @@ export class MultiSelectDropdownComponent {
         );
     }
 
-    addCustomOption(): void {
-        if(!this.isRole)
-            {
-            const customOption = this.searchTerm.trim();
-            if (customOption && !this.selectedOptions.includes(customOption)) {
-                this.selectedOptions.push(customOption);
-                if (!this.options.includes(customOption)) {
-                    this.customOptions.push(customOption);
-                }
-            }
-            this.searchTerm = '';
-            this.filterOptions();
-            this.selectedChange.emit(this.selectedOptions); 
+    addCustomOption(event?: KeyboardEvent): void {
+        if (event) {
+            event.preventDefault(); // Prevent form submission on Enter
         }
-
+    
+        const customOption = this.searchTerm.trim();
+        if (customOption && !this.selectedOptions.includes(customOption)) {
+            this.selectedOptions.push(customOption); // Add to selected options
+            if (!this.options.includes(customOption)) {
+                this.options = [customOption, ...this.options]; // Temporarily add to options
+            }
+        }
+        this.searchTerm = ''; // Clear the search term
+        this.filterOptions(); // Reapply filtering
+        this.selectedChange.emit(this.selectedOptions); // Emit the updated selected options
     }
+    
+    
+    
+    
 
     removeOption(option: string, event: MouseEvent): void {
         event.stopPropagation();

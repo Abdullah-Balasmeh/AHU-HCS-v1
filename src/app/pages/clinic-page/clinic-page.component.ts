@@ -1,5 +1,5 @@
 import { MedicalRecordService } from './../../services/medical-record.service';
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { LoadingImageComponent } from "../../components/shared/loading-image/loading-image.component";
 import { CommonModule } from '@angular/common';
 import { ClinicTabComponent } from "../../components/clinic-component/clinic-tab/clinic-tab.component";
@@ -20,8 +20,7 @@ export class ClinicPageComponent implements OnInit {
 
   isLoading:boolean=false;
   records: MedicalRecord[] = [];
-  selectedRecord?: MedicalRecord | null; 
-  @Output() resetEvent = new EventEmitter<void>(); 
+  selectedRecord?: MedicalRecord | null;
   selectedTab: string='patient-info';
   showTable: boolean = true;
   showTabs: boolean = false; 
@@ -72,14 +71,7 @@ export class ClinicPageComponent implements OnInit {
     this.selectedRecord = null;
   }
   
-  reset(): void {
-    this.resetEvent.emit();
-    if (this.showTabs) {
-      return;
-    }
-    this.showTable = true;
-    this.showTabs = false;
-  }
+
   
   
 

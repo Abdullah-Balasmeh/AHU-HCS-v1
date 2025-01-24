@@ -3,6 +3,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { PatientGuard } from './patientGuard';
 import { UserGuard } from './userGuards';
 
+
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomePageComponent },
@@ -19,7 +20,7 @@ export const routes: Routes = [
             import('./pages/login-patient-page/login-patient-page.component').then(
                 (c) => c.LoginPatientPageComponent
             ),
-        
+
     },
     {
         path: 'patient-page',

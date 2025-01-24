@@ -1,34 +1,43 @@
 <div class="content">
-    <form>
+    <form (keydown.enter)="$event.preventDefault()">
         <div class="Box-grid">
             <div id="medicalConditionList">
-                <label for="search" class="text-type">المرض:</label>
+                <h6 class="text-type">المرض:</h6>
                 <app-multi-select-dropdown
-                placeHolder="مرض"
-                [options]="diseases"
-                [selectedOptions]="selectedDiseases"
-                (selectedChange)="onDiseasesChange($event)">
+                    placeHolder="مرض"
+                    [options]="diseases"
+                    [selectedOptions]="selectedDiseases"
+                    (selectedChange)="onDiseasesChange($event)">
                 </app-multi-select-dropdown>
             </div>
             <div id="treatmentList">
-                <label for="search" class="text-type">العلاج:</label>
-                <app-multi-select-dropdown
-                placeHolder="علاج"
-                [options]="medicines"
-                [selectedOptions]="selectedMedicines"
-                (selectedChange)="onMedicinesChange($event)">
+                <h6 class="text-type">العلاج:</h6>
+                <app-multi-select-dropdown 
+                    [options]="medicines"
+                    [selectedOptions]="selectedMedicines"
+                    (selectedChange)="onMedicinesChange($event)"
+                    placeHolder="إجراء">
                 </app-multi-select-dropdown>
             </div>
         </div>
-        <p *ngIf="errorMassage" class="errorColor">{{errorMassage}}</p>
+
+        <!-- Show error message -->
+        <p *ngIf="errorMassage" class="errorColor">{{ errorMassage }}</p>
+
         <div class="footer-btn">
             <ng-container *ngIf="saving; else notSaving">
                 <div class="btn primaryColor">
                     <app-loading-image></app-loading-image>
                 </div>
             </ng-container>
-            <ng-template #notSaving >
-                    <button type="btn" class="btn primaryColor" (click)="onSubmit()">حفظ</button>
+            <ng-template #notSaving>
+                <!-- Allow user to click "Save" and trigger validation -->
+                <button
+                    type="button"
+                    class="btn primaryColor"
+                    (click)="onSubmit()">
+                    حفظ
+                </button>
             </ng-template>
         </div>
     </form>
