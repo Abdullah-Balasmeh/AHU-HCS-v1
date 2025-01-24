@@ -8,7 +8,7 @@
             <div id="editModalForm">
                 <h6 class="text-type">فئة المريض:</h6>
                 <div class="radio-inputs">
-                    <label class="radio" for="editType1">
+                    <label class="radio" for="editType1" *ngIf="record?.patient?.patientClass=='طالب'">
                         <input
                             type="radio"
                             formControlName="type"
@@ -16,7 +16,7 @@
                             id="editType1"/>
                         <span class="name">طالب</span>
                     </label>
-                    <label class="radio" for="editType2">
+                    <label class="radio" for="editType2" *ngIf="record?.patient?.patientClass=='موظف'">
                         <input
                             type="radio"
                             formControlName="type"

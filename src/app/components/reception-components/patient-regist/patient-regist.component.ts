@@ -1,10 +1,11 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { MedicalRecordService } from './../../../services/medical-record.service';
 import { PatientService } from './../../../services/patient.service';
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-patient-regist',
   standalone: true,
@@ -13,7 +14,7 @@ import { LoadingImageComponent } from "../../shared/loading-image/loading-image.
   styleUrl: './patient-regist.component.css'
 })
 export class PatientRegistComponent {
-  private readonly destroyRef = inject(DestroyRef);
+  private readonly destroy$ = new Subject<void>();
   private readonly patientService = inject(PatientService);
   private readonly medicalRecordService = inject(MedicalRecordService)
   regist = signal(false);
@@ -30,14 +31,14 @@ export class PatientRegistComponent {
   });
 
   checkPatient() {
-    if (this.search()) return;
     const patientId = this.registForm.get('patientId')?.value;
     this.search.set(true);
     if (!patientId) {
       this.setError('يرجى إدخال رقم الطالب أو الموظف');
       this.search.set(false);
+      return;
     }
-    const subscription = this.patientService.getPatientById(patientId!).subscribe(
+    this.patientService.getPatientById(patientId).pipe(takeUntil(this.destroy$)).subscribe(
       {
         next: (patient) => {
           this.search.set(false);
@@ -57,7 +58,6 @@ export class PatientRegistComponent {
         }
       }
     )
-    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   };
   private setError(message: string) {
     this.error = true;
@@ -70,7 +70,7 @@ export class PatientRegistComponent {
   }
 
   private checkStudent(studentId: string) {
-    const subscription = this.medicalRecordService.getStudentState(studentId).subscribe({
+  this.medicalRecordService.getStudentState(studentId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (student) => {
         if (student.studentState == '1') {
           this.patientState = true;
@@ -79,10 +79,9 @@ export class PatientRegistComponent {
         }
       }
     })
-    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
   private checkEmployee(empId: string) {
-    const subscription = this.medicalRecordService.getEmployeeState(empId).subscribe({
+    this.medicalRecordService.getEmployeeState(empId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (emp) => {
         if (emp.employeeState == '1') {
           const alertMessage = 'هذا الموظف ليس على رأس عمله';
@@ -90,7 +89,6 @@ export class PatientRegistComponent {
         }
       }
     })
-    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
   getLocalDate = (): string => {
     const now = new Date();
@@ -99,7 +97,7 @@ export class PatientRegistComponent {
   onSubmit(): void {
     this.regist.set(true);
     if (this.registForm.invalid) {
-      this.setError('يرجى إدخال رقم المريض/ة بشكل صحيح أو النفر على زر البحث');
+      this.setError('يرجى إدخال رقم المريض/ة بشكل صحيح أو النقر على زر البحث');
       this.regist.set(false);
       return;
     }
@@ -112,46 +110,38 @@ export class PatientRegistComponent {
 
     const patientId = this.registForm.get('patientId')?.value;
     const today=this.getLocalDate();
-    const subscription = this.medicalRecordService.getRecordsByPatientId(patientId!).subscribe({
+    this.medicalRecordService.getRecordsByPatientId(patientId!).subscribe({
         next: (records) => {
-          console.log(records);
           const todayRecords = records.filter((record: any) => {
             const recordDate = record.enterDate.split('T')[0]; 
-            console.log(`Record Date: ${recordDate}, Today: ${today}`);
             return recordDate === today.split('T')[0];
           });
-            console.log(todayRecords);
             if (todayRecords.length >= 3) {
                 alert('لا يمكن للمريض إن يكون له أكثر من 3 سجلات طبية في يوم واحد.');
                 this.regist.set(false);
                 return;
             }
-            const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+            const user = JSON.parse(sessionStorage.getItem('user') ?? '{}');
             const medicalRecord = {
                 userId: user.userId,
                 patientId,
                 patientType: this.registForm.get('patientType')?.value,
                 enterDate: new Date().toISOString(),
             };
-            this.medicalRecordService.addMedicalRecord(medicalRecord).subscribe({
+            this.medicalRecordService.addMedicalRecord(medicalRecord).pipe(takeUntil(this.destroy$)).subscribe({
                 next: () => {
                     this.success.set(true);
                     this.resetForm();
                 },
-                error: (error) => {
-                    console.error('Error response:', error);
+                error: () => {
                     alert('حدث خطأ أثناء إضافة المريض');
                     this.resetForm();
                 },
             });
         },
-        error: (error) => {
-            console.error('Error fetching records:', error);
-            alert('حدث خطأ أثناء جلب السجلات');
-        },
+        error: () => alert('حدث خطأ أثناء جلب السجلات'),
     });
-    
-    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  
   }
 
   private resetForm() {
@@ -165,5 +155,8 @@ export class PatientRegistComponent {
     this.clearError();
     setTimeout(() => this.success.set(false), 2000);
   }
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

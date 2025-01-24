@@ -9,19 +9,18 @@
             required
             oninput="this.value = this.value.replace(/[^0-9]/g, '');"
             autocomplete="off">
-            <div id="search-container" (click)="checkPatient()">
+            <div id="search-container" >
                 <ng-container  *ngIf="search(); else notSearch">
                     <div class="btn text-type primaryColor search-btn"><app-loading-image></app-loading-image></div>
                 </ng-container>
                 <ng-template #notSearch >
-                    <button type="button" class="btn text-type primaryColor search-btn" 
+                    <button type="button" (click)="checkPatient()" class="btn text-type primaryColor search-btn" 
                     >بحث</button>
                 </ng-template>
             </div>
 
             @if(error){
                 <p class="errorColor">{{errorMessage}}</p>
-
             }
     </div>
     @if(registForm.get('patientName')?.value)

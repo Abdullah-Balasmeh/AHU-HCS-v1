@@ -4,6 +4,7 @@ import { LoadingImageComponent } from "../../shared/loading-image/loading-image.
 import { CommonModule } from '@angular/common';
 import { EditDialogComponent } from "../edit-dialog/edit-dialog.component";
 import { MedicalRecord } from '../../../interfaces/patient.interface';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-reception-table',
@@ -13,6 +14,7 @@ import { MedicalRecord } from '../../../interfaces/patient.interface';
   imports: [LoadingImageComponent, CommonModule, EditDialogComponent],
 })
 export class ReceptionTableComponent implements OnInit {
+  private readonly destroy$ = new Subject<void>();
   isLoading = true;
   records: MedicalRecord[] = []; // Array to store patients with medical records
   isEdit = false;
@@ -32,7 +34,6 @@ export class ReceptionTableComponent implements OnInit {
 
   getTodayMedicalRecords(): void {
     const today = this.getLocalDate();
-    console.log(today)
     this.isLoading = true;
 
     this.medicalRecordService.getRecordsByEnterDate(today).subscribe({
@@ -42,24 +43,19 @@ export class ReceptionTableComponent implements OnInit {
         
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error fetching records:', error);
-        this.isLoading = false;
-      },
+      error: () => this.isLoading = false,
+  
     });
   }
 
   deleteRecord(record: MedicalRecord): void {
     if(!record.medicalProcedures && !record.prescription){
-      if (confirm('Are you sure you want to delete this record?')) {
-        this.medicalRecordService.deleteMedicalRecord(record.medicalRecordId).subscribe({
+      if (confirm('هل أنت متأكد أنك تريد حذف هذا السجل؟')) {
+        this.medicalRecordService.deleteMedicalRecord(record.medicalRecordId).pipe(takeUntil(this.destroy$)).subscribe({
           next: () => {
             this.getTodayMedicalRecords(); // Refresh the records after deletion
           },
-          error: (err) => {
-            console.error('Error deleting record:', err);
-            alert('Error deleting record.');
-          },
+          error: () => alert('حدث خطأ إثناء الحذف , يرحى المحاولة لاحقا'),
         });
       }
     }else{
@@ -80,5 +76,8 @@ export class ReceptionTableComponent implements OnInit {
     this.isEdit = false;
     this.record = null;
   }
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
