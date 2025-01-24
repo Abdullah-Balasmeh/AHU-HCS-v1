@@ -29,7 +29,7 @@ export class ClinicPageComponent implements OnInit {
   ngOnInit(): void {
     this.loadPatients();
   }
-
+  
   getLocalDate = (): string => {
     const now = new Date();
     const offset = now.getTimezoneOffset() * 60000; // Get the offset in milliseconds

@@ -125,7 +125,7 @@
                 <span>{{medicalProcedures.procedures}}</span>
             </div>
         </ng-template> -->
-            <p *ngIf="errorMessage"></p>
+            <p *ngIf="errorMessage" class="errorColor">{{errorMessage}}</p>
         <div class="footer-btn">
                 <ng-container *ngIf="saving; else notSaving">
                     <div class="btn primaryColor">

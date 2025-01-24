@@ -19,7 +19,7 @@ export class PharmacyPrescriptionComponent {
   selectedPrescription: any = null;
   patientName:string='';
   isLoading = true;
-  constructor(private medicalRecordService: MedicalRecordService) {}
+  constructor(private readonly medicalRecordService: MedicalRecordService) {}
 
   ngOnInit(): void {
     this.loadPatients();
@@ -37,10 +37,7 @@ export class PharmacyPrescriptionComponent {
     
       this.medicalRecordService.getRecordsByEnterDate(today).subscribe({
         next: (records) => {
-          console.log('time clinic' , today)
-          console.log('clinic records' , records );
           const filteredRecords = records.filter((record: MedicalRecord) => (record.patientType === 'عيادة' && record.prescription) );
-          console.log('clinic filteredRecords' , filteredRecords );
           // Sort filtered records by enterDate in ascending order
           filteredRecords.sort((a: any, b: any) => new Date(a.enterDate).getTime() - new Date(b.enterDate).getTime());
           this.records = filteredRecords;
