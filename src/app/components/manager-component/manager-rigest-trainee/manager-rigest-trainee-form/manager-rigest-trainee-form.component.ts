@@ -96,22 +96,18 @@ export class ManagerRigestTraineeFormComponent {
     const user = JSON.parse(sessionStorage.getItem('user') ?? '{}');
 
     this.traineeService.getTraineeById(this.student?.studentId!)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (trainee) => {
-          if (trainee.traineeId === this.student?.studentId!) {
-            alert('هذا الطالب متدرب بالفعل');
-            this.resetForm();
-            this.isExits = true;
-            return;
-          }
-          this.registerNewTrainee(user);
-        },
-        error: () => {
-          alert('حدث خطأ أثناء التحقق من المتدرب');
-          this.isLoading = false;
-        },
-      });
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (trainee) => {
+        if (trainee.traineeId === this.student?.studentId!) {
+          alert('هذا الطالب متدرب بالفعل');
+          this.resetForm();
+          this.isExits = true;
+        } 
+      },
+      error:()=> this.registerNewTrainee(user),
+    });
+  
   }
 
   private registerNewTrainee(user: any): void {
@@ -131,9 +127,11 @@ export class ManagerRigestTraineeFormComponent {
         .subscribe({
           next: () => {
             alert('تم تسجيل المتدرب بنجاح');
+            console.log('newTrainee',newTrainee)
             this.resetForm();
           },
-          error: () => {
+          error: (err) => {
+            console.error(err)
             alert('حدث خطأ أثناء إضافة المتدرب');
             this.isLoading = false;
           },
