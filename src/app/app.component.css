@@ -8,7 +8,9 @@ header {
     box-sizing: border-box; 
 }
 
-
+.centerBody{
+    margin-top: 5%;
+}
 .top-right {
     text-align: right; 
     margin-top: 50px;

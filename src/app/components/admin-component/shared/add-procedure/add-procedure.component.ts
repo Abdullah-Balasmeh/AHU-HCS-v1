@@ -18,7 +18,7 @@ export class AddProcedureComponent {
   procedures: Procedures[] = [];
   currentProcedure: Procedures = { proceduresId: 0, name: '' };
 
-  constructor(private procedureService: ProcedureService) {}
+  constructor(private readonly procedureService: ProcedureService) {}
 
   ngOnInit() {
     this.fetchProcedures();
@@ -46,6 +46,7 @@ export class AddProcedureComponent {
 
     this.procedureService.addProcedure(this.currentProcedure).subscribe({
       next: (newProcedure) => {
+        alert('تم إضافة الإجراء بنجاح');
         this.procedures.push(newProcedure);
         this.resetForm();
       },
@@ -64,6 +65,7 @@ export class AddProcedureComponent {
 
     this.procedureService.updateProcedure(this.currentProcedure.proceduresId!, this.currentProcedure).subscribe({
       next: () => {
+        alert('تم تعديل الإجراء بنجاح');
         const index = this.procedures.findIndex(p => p.proceduresId === this.currentProcedure.proceduresId);
         if (index > -1) {
           this.procedures[index] = { ...this.currentProcedure };

@@ -24,9 +24,9 @@ export class LoginUserPageComponent {
     return shouldLogout;
   }
   
-  errorMessage = signal<string>(''); // Reactive error message
-  isLoading = signal<boolean>(false); // Reactive loading state
-  visible = true; // Password visibility toggle
+  errorMessage = signal<string>('');
+  isLoading = signal<boolean>(false);
+  visible = true; 
   changeType = true;
   private readonly destroy$ = new Subject<void>();
 
@@ -35,6 +35,7 @@ export class LoginUserPageComponent {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(12),
+      Validators.pattern(/^\d{2,12}$/),
     ]),
     password: new FormControl('', [
       Validators.required,
@@ -49,14 +50,13 @@ export class LoginUserPageComponent {
 
     if (value.length < 2 || value.length > 12) {
       inputElement.setCustomValidity(
-        'يرجى إدخال رقم المريض على أن لا يقل عن رقمان ولا يزيد عن 12 رقم'
+        'يرجى إدخال رقم المستخدم على أن لا يقل عن رقمان ولا يزيد عن 12 رقم'
       );
     } else {
       inputElement.setCustomValidity('');
     }
   }
 
-  // Validate password field
   validateFieldPassword(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const value = inputElement.value.trim();
@@ -73,13 +73,11 @@ export class LoginUserPageComponent {
   private readonly userService = inject(UserService);
   private readonly router = inject(Router);
 
-  // Toggle password visibility
   togglePasswordVisibility(): void {
     this.visible = !this.visible;
     this.changeType = !this.changeType;
   }
 
-  // Handle form submission
   onSubmit(): void {
     if (this.loginUserForm.valid) {
       this.isLoading.set(true);
@@ -110,7 +108,7 @@ export class LoginUserPageComponent {
             
           },
           error: () => {
-            this.errorMessage.set('Invalid user ID or password. Please try again.');
+            this.errorMessage.set('رقم المستخدم أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.');
             this.isLoading.set(false);
           },
         });
@@ -120,7 +118,7 @@ export class LoginUserPageComponent {
 
   private isAnotherSessionActive(sessionKey: string): boolean {
     if (localStorage.getItem(sessionKey)) {
-      alert('You are already logged in on another tab.');
+      alert("لقد قمت بالفعل بتسجيل الدخول على علامة تبويب أخرى.");
       this.isLoading.set(false);
       return true;
     }

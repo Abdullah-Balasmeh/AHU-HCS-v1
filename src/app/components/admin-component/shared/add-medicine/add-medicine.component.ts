@@ -18,7 +18,7 @@ export class AddMedicineComponent {
   medicines: Medicine[] = [];
   currentMedicine: Medicine = { medicineId: 0, name: '', dose: '' };
 
-  constructor(private medicineService: MedicineService) {}
+  constructor(private readonly medicineService: MedicineService) {}
 
   ngOnInit() {
     this.fetchMedicines();
@@ -31,10 +31,8 @@ export class AddMedicineComponent {
         this.isLoading = false;
         this.medicines = medicines;
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
-        console.error('Error fetching medicines', err);
-        alert('Failed to load medicines. Please try again later.');
       },
     });
   }
@@ -52,8 +50,8 @@ const newMedicine= this.currentMedicine={
     this.medicineService.addMedicine(newMedicine).subscribe({
       next: (newMedicine) => {
         this.medicines.push(newMedicine);
-        this.resetForm();
         alert('تم إضافة العلاج بنجاح');
+        this.resetForm();
       },
       error: (err) => {
         console.error('Error adding medicine', err);

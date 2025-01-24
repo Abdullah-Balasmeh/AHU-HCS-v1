@@ -42,10 +42,4 @@
     margin: 0 auto;
     font-size: 18px;
 }
-.card:focus {
-    outline: 0;
-}
 
-.card:active {
-    transform: scale(0.98);
-}

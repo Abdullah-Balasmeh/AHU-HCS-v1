@@ -16,8 +16,8 @@ import { Subject, takeUntil } from 'rxjs';
 export class LoginPatientPageComponent {
 
 
-  errorMessage = signal<string>(''); // Reactive error message
-  isLoading = signal<boolean>(false); // Reactive loading state
+  errorMessage = signal<string>('');
+  isLoading = signal<boolean>(false);
   visible = true; 
   changeType = true;
   private readonly destroy$ = new Subject<void>();
@@ -34,7 +34,6 @@ export class LoginPatientPageComponent {
       Validators.maxLength(26),
     ]),
   });
- // Validate patient ID field
 validateFieldID(event: Event): void {
   const inputElement = event.target as HTMLInputElement;
   const value = inputElement.value.trim();
@@ -64,14 +63,11 @@ validateFieldPassword(event: Event): void {
   private readonly patientService = inject(PatientService);
   private readonly router = inject(Router);
 
-  // Toggle password visibility
 
   togglePasswordVisibility(): void {
     this.visible = !this.visible;
     this.changeType = !this.changeType;
   }
-
-  // Handle form submission
   onSubmit(): void {
     if (this.loginPatientForm.valid) {
       this.isLoading.set(true);
@@ -90,15 +86,13 @@ validateFieldPassword(event: Event): void {
           localStorage.setItem('activePatientSession', 'true');
           sessionStorage.setItem('patient', JSON.stringify(response));
           sessionStorage.setItem('sessionToken', sessionToken);
-    
-          // Navigate to the patient page and replace the login page in history
           this.router.navigate(['/patient-page'], { replaceUrl: true }).then(() => {
             window.history.pushState(null, '', '/patient-page');
         });
         
         },
         error: () => {
-          this.errorMessage.set('Invalid patient ID or password. Please try again.');
+          this.errorMessage.set('رقم المستخدم أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.');
           this.isLoading.set(false);
         },
       });
@@ -109,7 +103,7 @@ validateFieldPassword(event: Event): void {
 
   private isAnotherSessionActive(sessionKey: string): boolean {
     if (localStorage.getItem(sessionKey)) {
-      alert('You are already logged in on another tab.');
+      alert("لقد قمت بالفعل بتسجيل الدخول على علامة تبويب أخرى.");
       this.isLoading.set(false);
       return true;
     }

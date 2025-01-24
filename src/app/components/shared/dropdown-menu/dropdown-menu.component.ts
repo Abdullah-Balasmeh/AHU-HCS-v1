@@ -15,7 +15,7 @@ export class MultiSelectDropdownComponent {
     @Output() selectedChange = new EventEmitter<string[]>();
     @Input() selectedOptions: string[] = [];
     
-
+    @Input() isRole=false;
     customOptions: string[] = [];
     filteredOptions: string[] = [];
     searchTerm: string = '';
@@ -51,16 +51,20 @@ export class MultiSelectDropdownComponent {
     }
 
     addCustomOption(): void {
-        const customOption = this.searchTerm.trim();
-        if (customOption && !this.selectedOptions.includes(customOption)) {
-            this.selectedOptions.push(customOption);
-            if (!this.options.includes(customOption)) {
-                this.customOptions.push(customOption);
+        if(!this.isRole)
+            {
+            const customOption = this.searchTerm.trim();
+            if (customOption && !this.selectedOptions.includes(customOption)) {
+                this.selectedOptions.push(customOption);
+                if (!this.options.includes(customOption)) {
+                    this.customOptions.push(customOption);
+                }
             }
+            this.searchTerm = '';
+            this.filterOptions();
+            this.selectedChange.emit(this.selectedOptions); 
         }
-        this.searchTerm = '';
-        this.filterOptions();
-        this.selectedChange.emit(this.selectedOptions); // Emit the updated options
+
     }
 
     removeOption(option: string, event: MouseEvent): void {

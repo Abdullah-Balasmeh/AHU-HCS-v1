@@ -18,7 +18,7 @@ export class AddDiseaseComponent {
   diseases: Diseases[] = [];
   currentDisease: Diseases = { diseaseId: 0, name: '' }; // Holds the disease being edited or added
 
-  constructor(private diseaseService: DiseaseService) {}
+  constructor(private readonly diseaseService: DiseaseService) {}
 
   ngOnInit() {
     this.fetchDiseases();
@@ -32,9 +32,8 @@ export class AddDiseaseComponent {
         this.isLoading = false;
         this.diseases = diseases;
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
-        console.error('Error fetching diseases', err);
       }
     });
   }
@@ -48,11 +47,11 @@ export class AddDiseaseComponent {
 
     this.diseaseService.addDisease(this.currentDisease).subscribe({
       next: (newDisease) => {
+        alert('تم إضافة المرض بنجاح');
         this.diseases.push(newDisease);
         this.resetForm();
       },
-      error: (err) => {
-        console.error('Error adding disease', err);
+      error: () => {
         alert('فشل في إضافة المرض. يرجى المحاولة مرة أخرى لاحقًا.');
       }
     });
@@ -67,25 +66,22 @@ export class AddDiseaseComponent {
 
     this.diseaseService.updateDisease(this.currentDisease.diseaseId!, this.currentDisease).subscribe({
       next: () => {
-        // Update the local array
+        alert('تم تعديل المرض بنجاح');
         const index = this.diseases.findIndex(d => d.diseaseId === this.currentDisease.diseaseId);
         if (index > -1) {
           this.diseases[index] = { ...this.currentDisease };
         }
         this.resetForm();
       },
-      error: (err) => {
-        console.error('Error updating disease', err);
+      error: () => {
         alert('فشل تحديث المرض. يرجى المحاولة مرة أخرى لاحقًا.');
       }
     });
   }
 
-  // Edit existing disease
   Edit(disease: Diseases) {
     this.isEdit = true;
     this.currentDisease = { ...disease };
-    console.log(this.currentDisease );
   }
 
   // Reset form

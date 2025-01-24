@@ -13,12 +13,11 @@ import { ListSectionComponent } from "../../components/admin-component/list-sect
 export class AdminPageComponent {
   selectedCard =signal <string | null >(null);
 
-  // Show the component based on the card clicked
+
   showComponent(card: string): void {
     this.selectedCard.set(card) ;
   }
 
-  // Reset to show the cards again
   handleReset(): void {
     this.selectedCard.set(null);
   }

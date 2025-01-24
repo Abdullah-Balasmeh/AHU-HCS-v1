@@ -52,13 +52,13 @@
                 <td>{{ medicine.name }}</td>
                 <td>{{ medicine.dose }}</td>
                 <td>
+                    <button class="table-btn" id="icon-delete"
+                    (click)="deleteMedicine(medicine.medicineId!)">
+                    <i class="bi bi-trash"></i>
+                </button>
                     <button class="table-btn" id="icon-edit"
                         (click)="Edit(medicine)">
                         <i class="bi bi-pencil-square"></i>
-                    </button>
-                    <button class="table-btn" id="icon-delete"
-                        (click)="deleteMedicine(medicine.medicineId!)">
-                        <i class="bi bi-trash"></i>
                     </button>
                 </td>
                 </tr>

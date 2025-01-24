@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MultiSelectDropdownComponent } from '../../../shared/dropdown-menu/dropdown-menu.component';
 import { LoadingImageComponent } from "../../../shared/loading-image/loading-image.component";
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-employee-edit',
@@ -16,6 +17,7 @@ export class EmployeeEditComponent {
   @Input() user: any = null;
   @Output() close = new EventEmitter<void>();
   @ViewChild(MultiSelectDropdownComponent) dropdown!: MultiSelectDropdownComponent;
+  private readonly destroy$ = new Subject<void>();
   oldPassword='';
   restPasswordS = false;
   visible = true;
@@ -29,7 +31,7 @@ export class EmployeeEditComponent {
       Validators.required,
       Validators.pattern(/^\d{2,12}$/),
     ]),
-    empName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    empName: new FormControl('', [Validators.required, Validators.minLength(2),Validators.pattern(/^[A-Za-z\u0621-\u064A\u0660-\u0669\s]+$/),]),
     password: new FormControl('', [Validators.minLength(4), Validators.maxLength(26)]),
     ConfirmPassword: new FormControl(''),
   });
@@ -94,16 +96,21 @@ export class EmployeeEditComponent {
 
   onSubmit(): void {
     this.isLoading.set(true) ;
+    if(this.selectedRoles.length == 0 || this.EditEmpForm.invalid)
+      {
+        this.errorMessage ='يرجى تعبئة جميع الحقول بشكل صحيح';
+        this.isLoading.set(false);
+        return ;
+      }
     if (this.EditEmpForm.valid) {
       const formValues = this.EditEmpForm.getRawValue();
-  
-      // Check for password mismatch
-      if (this.restPasswordS && formValues.password !== formValues.ConfirmPassword) {
-        this.errorMessage = 'كلمة المرور غير متطابقة!';
-        return;
+      if (this.restPasswordS && formValues.password !== formValues.ConfirmPassword ) {
+          this.errorMessage = 'كلمة المرور غير متطابقة!';
+          this.isLoading.set(false);
+          return;
       }
-  
-      const roleIds = this.selectedRoles.filter(Boolean); // Ensure no undefined values
+      this.errorMessage = '';
+      const roleIds = this.selectedRoles.filter(Boolean);
       const request = {
         user: {
           userId: formValues.empId!,
@@ -113,26 +120,25 @@ export class EmployeeEditComponent {
         roleIds,
       };
   
-      this.userService.updateUser(request.user.userId, request).subscribe({
+      this.userService.updateUser(request.user.userId, request).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => {
-          console.log("request" + request.roleIds + 'user' + request.user.password + request.user.userId + request .user .userName)
           this.isLoading.set(false) ;
           this.successMessage = true;
           setTimeout(() => (this.successMessage = false), 2000);
           setTimeout(() => (this.closeDialog()), 2000);
         },
-        error: (err) => {
-          console.log("request" + request.roleIds + 'user' + request.user.password + request.user.userId + request .user .userName);
+        error: () => {
           this.isLoading.set(false) ;
-          this.errorMessage = `Error updating user: ${err.message}`;
+          this.errorMessage = 'يرجى تعبئة جميع حقول كلمة المرور بشكل صحيح';
         },
       });
-    } else {
-      this.errorMessage = 'يرجى تعبئة جميع الحقول بشكل صحيح';
     }
   }
   
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   closeDialog(): void {
     this.close.emit();
   }

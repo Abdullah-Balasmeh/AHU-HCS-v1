@@ -12,6 +12,7 @@
                     required
                     maxlength="12"
                     minlength="2"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                     (input)="validateFieldID($event)"
                     (invalid)="validateFieldID($event)"/>
                 <i class="bx bxs-user"></i>

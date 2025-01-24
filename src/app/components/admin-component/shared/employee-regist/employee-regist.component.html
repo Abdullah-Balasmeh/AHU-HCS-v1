@@ -1,22 +1,26 @@
-<form [formGroup]="registEmpForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="registEmpForm" (ngSubmit)="onSubmit()" ngNativeValidate>
     <div class="Box-grid">
-        <div class="input-box" id="epmNum">
+        <div class="input-box" id="epmNum" >
             <h6 class="text-type">رقم الموظف:</h6>
             <input
                 formControlName="empId"
                 class="inputText"
                 type="text"
                 maxlength="12"
+                minlength="2"
                 required
+                (input)="validateFieldID($event)"
+                (invalid)="validateFieldID($event)"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                autocomplete="off">
+                >
         </div>
         <div class="input-box" id="empName">
             <h6 class="text-type">اسم الموظف:</h6>
             <input
                 formControlName="empName"
                 class="inputText"
-                type="text">
+                type="text"
+                oninput="this.value = this.value.replace(/[^A-Za-z\u0621-\u064A\u0660-\u0669\s]/g, '')">
         </div>
         <div class="input-box" id="empPassword">
             <h6 class="text-type">كلمة المرور:</h6>
@@ -27,7 +31,9 @@
                 class="inputText"
                 [type]="changeType ? 'password' : 'text'"
                 minlength="4"
-                maxlength="26">
+                maxlength="26"
+                (input)="validateFieldPassword($event)"
+                (invalid)="validateFieldPassword($event)">
         </div>
         <div class="input-box" id="empConfPassword">
             <h6 class="text-type">تأكيد كلمة المرور:</h6>
@@ -49,6 +55,7 @@
         <div id="empJob">
             <h6 class="text-type">الوظيفة:</h6>
             <app-multi-select-dropdown
+            [isRole]="true"
                 placeHolder="الوظيفة"
                 [options]="['Admin', 'Manager', 'Receptionist', 'Doctor', 'Nurse Male', 'Nurse Female', 'Pharmacist']"
                 (selectedChange)="Role($event)">

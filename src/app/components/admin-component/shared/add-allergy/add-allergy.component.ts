@@ -46,6 +46,7 @@ export class AddAllergyComponent {
 
     this.allergyService.addAllergy(this.currentAllergy).subscribe({
       next: (newAllergy) => {
+        alert('تم إضافة الحساسية بنجاح');
         this.allergies.push(newAllergy);
         this.resetForm();
       },
@@ -64,6 +65,7 @@ export class AddAllergyComponent {
 
     this.allergyService.updateAllergy(this.currentAllergy.allergyId!, this.currentAllergy).subscribe({
       next: () => {
+        alert('تم تعديل الحساسية بنجاح');
         const index = this.allergies.findIndex(a => a.allergyId === this.currentAllergy.allergyId);
         if (index > -1) {
           this.allergies[index] = { ...this.currentAllergy };

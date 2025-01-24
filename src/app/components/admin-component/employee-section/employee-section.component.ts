@@ -12,15 +12,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './employee-section.component.css'
 })
 export class EmployeeSectionComponent {
-  @Output() resetEvent = new EventEmitter<void>(); // Notify parent to reset the view
+  @Output() resetEvent = new EventEmitter<void>();
 
-  selectedTab: string = 'employee-regist'; // Default tab
+  selectedTab: string = 'employee-regist';
 
   onTabChange(tab: string) {
-    this.selectedTab = tab; // Update the selected tab
+    this.selectedTab = tab;
   }
 
   onClose() {
-    this.resetEvent.emit(); // Emit event when close is clicked
+    this.resetEvent.emit(); 
   }
 }

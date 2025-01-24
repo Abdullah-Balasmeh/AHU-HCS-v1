@@ -21,7 +21,8 @@
                         <input
                             formControlName="empName"
                             class="inputText"
-                            type="text">
+                            type="text"
+                            oninput="this.value = this.value.replace(/[^A-Za-z\u0621-\u064A\u0660-\u0669\s]/g, '')">
                     </div>
                     <button type="button" class="btn primaryColor rest-btn textWhiteColor" (click)="restPassword()">إعادة تعين كلمة المرور</button>
                     @if(restPasswordS)
@@ -59,6 +60,7 @@
                     <div id="empJob">
                         <h6 class="text-type">الوظيفة:</h6>
                         <app-multi-select-dropdown
+                        [isRole]="true"
                             placeHolder="الوظيفة"
                             [options]="['Admin', 'Manager', 'Receptionist', 'Doctor', 'Nurse Male', 'Nurse Female', 'Pharmacist']"
                             (selectedChange)="Role($event)"

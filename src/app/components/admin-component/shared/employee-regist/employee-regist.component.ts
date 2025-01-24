@@ -1,10 +1,10 @@
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Component, signal, ViewChild } from '@angular/core';
 import { MultiSelectDropdownComponent } from '../../../shared/dropdown-menu/dropdown-menu.component';
-import { User } from '../../../../interfaces/users.interface';
 import { LoadingImageComponent } from '../../../shared/loading-image/loading-image.component';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../../services/user.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-employee-regist',
@@ -14,19 +14,20 @@ import { UserService } from '../../../../services/user.service';
   styleUrls: ['./employee-regist.component.css']
 })
 export class EmployeeRegistComponent {
-  private readonly user: User | null = null;
   @ViewChild(MultiSelectDropdownComponent) dropdown!: MultiSelectDropdownComponent;
-
+  private readonly destroy$ = new Subject<void>();
   visible = true;
   changeType = true;
   errorMessage = signal<string>('');
   successMessage= signal<boolean>(false);
   isLoading = signal<boolean>(false);
-
+  isExist=false;
   registEmpForm = new FormGroup({
-    empName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    empName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern(/^[A-Za-z\u0621-\u064A\u0660-\u0669\s]+$/),]),
     empId: new FormControl('', [
       Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(12),
       Validators.pattern(/^\d{2,12}$/),
     ]),
     password: new FormControl('', [
@@ -34,7 +35,10 @@ export class EmployeeRegistComponent {
       Validators.minLength(4),
       Validators.maxLength(26),
     ]),
-    ConfirmPassword: new FormControl('', [Validators.required]),
+    ConfirmPassword: new FormControl('', [
+      Validators.required ,
+      Validators.minLength(4),
+      Validators.maxLength(26),]),
   });
 
 
@@ -53,11 +57,10 @@ export class EmployeeRegistComponent {
   selectedRoles: string[] = [];
   
   Role(selected: string[]): void {
-    console.log(selected)
     this.selectedRoles = selected.map(roleName => this.roleMapping[roleName]);
   }
   
-
+  
 
   validateFieldID(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -65,7 +68,7 @@ export class EmployeeRegistComponent {
 
     if (value.length < 2 || value.length > 12) {
       inputElement.setCustomValidity(
-        'يرجى إدخال الرقم الوظيفي على أن لا يقل عن رقمان ولا يزيد عن 12 رقم'
+        'يرجى إدخال رقم الوظيفي على أن لا يقل عن رقمان ولا يزيد عن 12 رقم'
       );
     } else {
       inputElement.setCustomValidity('');
@@ -92,46 +95,63 @@ export class EmployeeRegistComponent {
 
   // Handle form submission
   onSubmit(): void {
-    if (this.registEmpForm.valid) {
+    this.isLoading.set(true);
+    if(this.selectedRoles.length == 0 || this.registEmpForm.invalid)
+      {
+        this.errorMessage.set('يرجى تعبئة جميع الحقول بشكل صحيح');
+        this.isLoading.set(false);
+        return ;
+      }
       const formValues = this.registEmpForm.value;
-      this.errorMessage.set('');
       if (formValues.password !== formValues.ConfirmPassword) {
         this.errorMessage.set('كلمة المرور غير متطابقة!');
+        this.isLoading.set(false);
         return;
       }
-  
-      const request = {
-        user: {
-          userName: formValues.empName!,
-          userId: formValues.empId!,
-          password: formValues.password!,
-          salt:'',
-          createDate: new Date().toISOString(),
-        },
-        roles: this.selectedRoles,
-      };
-      this.isLoading.set(true);
-  
-      this.userService.addUser(request).subscribe({
-        next: () => {
-          this.errorMessage.set('');
-          this.isLoading.set(false);
-          this.successMessage.set(true);
-          this.registEmpForm.reset();
-          setTimeout(() => this.successMessage.set(false), 2000);
-          this.selectedRoles = [];
-          this.dropdown.reset();
-        },
-        error: (err) => {
-          this.isLoading.set(false);
-          alert('رقم الموظف بالفعل موجود');
-        },
-      });
-    } else {
-      this.errorMessage.set('يرجى تعبئة جميع الحقول بشكل صحيح');
-    }
 
-  }
-  
-  
-}  
+          const request = {
+            user: {
+              userName: formValues.empName!,
+              userId: formValues.empId!,
+              password: formValues.password!,
+              salt:'',
+              createDate: new Date().toISOString(),
+            },
+            roles: this.selectedRoles,
+          };
+          this.userService.getUserById(formValues.empId!).pipe(takeUntil(this.destroy$)).subscribe({
+            next:(user)=>{
+              if(user.userId==formValues.empId)
+                {
+                  this.isLoading.set(false);
+                  alert('رقم الموظف بالفعل موجود');
+                  this.isExist=true;
+                  return;
+                }
+            },
+          });
+          if(this.isExist)
+            {
+              this.userService.addUser(request).pipe(takeUntil(this.destroy$)).subscribe({
+                next: () => {
+                  this.errorMessage.set('');
+                  this.isLoading.set(false);
+                  this.successMessage.set(true);
+                  this.registEmpForm.reset();
+                  setTimeout(() => this.successMessage.set(false), 2000);
+                  this.selectedRoles = [];
+                  this.dropdown.reset();
+                },
+                error: () => {
+                  this.isLoading.set(false);
+                  alert('رقم الموظف بالفعل موجود');
+                },
+              });
+            }
+
+          }
+          ngOnDestroy(): void {
+            this.destroy$.next();
+            this.destroy$.complete();
+          }
+    } 

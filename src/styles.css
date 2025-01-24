@@ -6,6 +6,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Cairo", sans-serif;
+    user-select: none;
 }
 
 body {
@@ -123,7 +124,7 @@ main{
     min-width: fit-content;
     width: max-content;
     height: max-content;
-    max-height: 700px;
+    max-height: 750px;
     max-width: 1400px;
     background-color: #fafafa;
     padding: 20px;
@@ -309,7 +310,16 @@ main{
     color: rgb(102, 161, 12);
     font-weight: bold;
 }
+.card:hover{
+    cursor: pointer;
+}
+.card:focus {
+    outline: 0;
+}
 
+.card:active {
+    transform: scale(0.98);
+}
 /* Form style */
 form {
     width: 100%;
@@ -460,9 +470,13 @@ td {
 .table-btn:active {
     transform: scale(0.98);
 }
+.table-btn:hover {
+cursor: pointer;
+}
 
 #icon-edit {
     background-color: #4D95A7;
+
 }
 
 #icon-delete {
@@ -491,6 +505,7 @@ td {
 
 #close-btn:hover {
     background-color: #e70f0f;
+    cursor: pointer;
 }
 
 .logout-footer{
