@@ -20,6 +20,7 @@
                 </app-multi-select-dropdown>
             </div>
         </div>
+        <p *ngIf="errorMassage" class="errorColor">{{errorMassage}}</p>
         <div class="footer-btn">
             <ng-container *ngIf="saving; else notSaving">
                 <div class="btn primaryColor">

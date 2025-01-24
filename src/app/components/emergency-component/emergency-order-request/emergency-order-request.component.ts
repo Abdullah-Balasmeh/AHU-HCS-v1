@@ -106,14 +106,12 @@ export class EmergencyOrderRequestComponent implements OnInit {
 
     const user = sessionStorage.getItem('user');
     const parsedUser = user ? JSON.parse(user) : null;
-    console.log(parsedUser.userName)
     const newOrder: EmergencyOrder = {
       nurseName: parsedUser?.userName ?? '',
       emergencyOrderType:!this.gender ? 'Male' :'Female',
       sendDate: new Date(),
       items: this.items,
     };
-    console.log('newOrder',newOrder);
     this.emergencyOrderService.addOrder(newOrder).subscribe({
       next: () => {
         this.isLoading=false;
@@ -123,8 +121,7 @@ export class EmergencyOrderRequestComponent implements OnInit {
         sessionStorage.removeItem('items');
         alert('تم حفظ طلب العلاج');
       },
-      error: (err) => {
-        console.error('Error saving order:', err);
+      error: () => {
         this.isLoading=false;
         alert('حدث خطأ أثناء حفظ الطلب');
       },

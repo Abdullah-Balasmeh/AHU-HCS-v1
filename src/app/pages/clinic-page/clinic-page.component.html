@@ -40,37 +40,36 @@
             </div>
         </table>
     </div>
-     <div *ngIf="showTabs">
-        <app-clinic-tab 
+    <div *ngIf="showTabs">
+        <app-clinic-tab
             (close)="closeAll()"
             (tabChange)="onTabChange($event)">
         </app-clinic-tab>
         <div>
             <div *ngIf="selectedTab === 'patient-info'">
-                <app-patient-info-display [patient]="selectedRecord!.patient!"></app-patient-info-display>
+                <app-patient-info-display
+                    [patient]="selectedRecord!.patient!"></app-patient-info-display>
             </div>
-            <div *ngIf="selectedTab === 'prescription'">
-                <app-prescription 
-                [prescription]="selectedRecord!.prescription!"
-                [patientName]="selectedRecord!.patient.patientName!"
-                [MedicalRecordId]="selectedRecord!.medicalRecordId!"
-                >
-                </app-prescription>
+            <div *ngIf="selectedTab === 'prescription' && selectedRecord">
+                <app-prescription
+                    [prescription]="selectedRecord!.prescription!"
+                    [patientName]="selectedRecord!.patient.patientName!"
+                    [MedicalRecordId]="selectedRecord!.medicalRecordId!"></app-prescription>
             </div>
+
             <div *ngIf="selectedTab === 'medical'">
-                <app-clinic-procedure 
-                [medicalProcedures]="selectedRecord!.medicalProcedures!"
-                [medicalRecordId]="selectedRecord!.medicalRecordId!"
-                [patientType]="selectedRecord?.patientType!">
+                <app-clinic-procedure
+                    [medicalProcedures]="selectedRecord!.medicalProcedures!"
+                    [medicalRecordId]="selectedRecord!.medicalRecordId!"
+                    [patientType]="selectedRecord?.patientType!">
                 </app-clinic-procedure>
             </div>
             <div *ngIf="selectedTab === 'reports'">
-                <app-report-section 
-                [patient]="selectedRecord!.patient!"
-                [enterDate]="selectedRecord?.enterDate!">
-            </app-report-section>
+                <app-report-section
+                    [patient]="selectedRecord!.patient!"
+                    [enterDate]="selectedRecord?.enterDate!">
+                </app-report-section>
             </div>
         </div>
 
     </div>
-

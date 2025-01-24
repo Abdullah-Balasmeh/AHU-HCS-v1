@@ -6,6 +6,7 @@ import { MultiSelectDropdownComponent } from "../../shared/dropdown-menu/dropdow
 import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 import { CommonModule } from '@angular/common';
 import { Prescription } from '../../../interfaces/patient.interface';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-prescription',
@@ -15,9 +16,11 @@ import { Prescription } from '../../../interfaces/patient.interface';
   styleUrls: ['./prescription.component.css']
 })
 export class PrescriptionComponent implements OnInit {
+  private readonly destroy$ = new Subject<void>();
   @Input() prescription: Prescription | null  = null;
   @Input() patientName: string ='';
   @Input() MedicalRecordId: number = 0;
+  errorMassage='';
   
   saving = false;
   medicines: string[] = [];
@@ -45,22 +48,16 @@ export class PrescriptionComponent implements OnInit {
 
 
   getAllMedicines(): void {
-    this.medicineService.getAllMedicines().subscribe({
+    this.medicineService.getAllMedicines().pipe(takeUntil(this.destroy$)).subscribe({
       next: (medicines) => {
         this.medicines = medicines.map((medicine: any) => `${medicine.name} - ${medicine.dose}`);
-      },
-      error: (err) => {
-        console.error('Error fetching medicines:', err);
       },
     });
   }
   getAllDisease(): void {
-    this.diseaseService.getAllDiseases().subscribe({
+    this.diseaseService.getAllDiseases().pipe(takeUntil(this.destroy$)).subscribe({
       next: (diseases) => {
         this.diseases = diseases.map((disease: any) => disease.name);
-      },
-      error: (err) => {
-        console.error('Error fetching diseases:', err);
       },
     });
   }
@@ -72,47 +69,48 @@ export class PrescriptionComponent implements OnInit {
     this.selectedDiseases = [...selected];
   }
   
-  onSubmit() {
+  onSubmit(): void {
+    if (this.selectedDiseases.length === 0 || this.selectedMedicines.length === 0) {
+      this.errorMassage = 'يرجى إختيار مرض وعلاج';
+      return;
+    }
     this.saving = true;
-  
     const user = sessionStorage.getItem('user');
     const parsedUser = user ? JSON.parse(user) : null;
   
-    if (!parsedUser) {
-      alert('User not found in session. Please login again.');
-      this.saving = false;
-      return;
-    }
-  
+    // Prepare the prescription object
     const UpdatePrescription: Prescription = {
       disease: this.selectedDiseases,
       medicine: this.selectedMedicines,
       medicalRecordId: this.MedicalRecordId,
-      userId: parsedUser.userId,
+      userId: parsedUser?.userId ?? 0,
     };
   
-    console.log('Payload being sent:', UpdatePrescription);
-  
-    this.medicalRecordService.addOrUpdatePrescription(this.MedicalRecordId, UpdatePrescription).subscribe({
-      next: () => {
-        console.log('Successfully updated prescription', UpdatePrescription);
-        this.saving = false;
-        if (this.isEditPrescription) {
-          alert(`تم تحديث الوصفة الطبية للمريض ${this.patientName}`);
-        } else {
-          alert(`تم إضافة وصفة طبية للمريض ${this.patientName}`);
-          this.isEditPrescription=true;
-        }
-      },
-      error: (err) => {
-        console.error('Error updating prescription:', err);
-        this.saving = false;
-        alert('حدث خطأ أثناء تحديث الوصفة الطبية.');
-      },
-    });
+    // Call the service to update the prescription
+    this.medicalRecordService
+      .addOrUpdatePrescription(this.MedicalRecordId, UpdatePrescription)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.saving = false;
+          this.isEditPrescription = true;
+          alert(
+            this.isEditPrescription
+              ? `تم تحديث الوصفة الطبية للمريض ${this.patientName}`
+              : `تم إضافة وصفة طبية للمريض ${this.patientName}`
+          );
+        },
+        error: () => {
+          this.saving = false;
+          alert('حدث خطأ أثناء تحديث الوصفة الطبية.');
+        },
+      });
   }
   
-  
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   }
   

@@ -4,6 +4,7 @@ import { LoadingImageComponent } from "../../shared/loading-image/loading-image.
 import { CommonModule } from '@angular/common';
 import { EmergencyOrder } from '../../../interfaces/emergency-order.interface';
 import { EmergencyItemDialogComponent } from "../../emergency-component/emergency-item-dialog/emergency-item-dialog.component";
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pharmacy-order',
@@ -13,6 +14,7 @@ import { EmergencyItemDialogComponent } from "../../emergency-component/emergenc
   styleUrl: './pharmacy-order.component.css'
 })
 export class PharmacyOrderComponent implements OnInit {
+  private readonly destroy$ = new Subject<void>();
   selectedOrder:EmergencyOrder={};
   showOrderDialog=false;
   isPharmacy=true;
@@ -26,7 +28,7 @@ export class PharmacyOrderComponent implements OnInit {
 
   loadEmrOrders(){
     this.isLoading=true;
-    this.emergencyOrderService.getApprovedOrders().subscribe({
+    this.emergencyOrderService.getApprovedOrders().pipe(takeUntil(this.destroy$)).subscribe({
       next:(orders)=>{
         this.orders=orders;
         this.isLoading=false;
@@ -40,5 +42,10 @@ export class PharmacyOrderComponent implements OnInit {
   onViewDetails(order :EmergencyOrder){
   this.selectedOrder=order;
   this.showOrderDialog=true;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

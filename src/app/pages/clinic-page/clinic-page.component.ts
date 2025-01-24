@@ -42,17 +42,13 @@ export class ClinicPageComponent implements OnInit {
   
     this.medicalRecordService.getRecordsByEnterDate(today).subscribe({
       next: (records) => {
-        console.log('time clinic' , today)
-        console.log('clinic records' , records );
         const filteredRecords = records.filter((record: MedicalRecord) => (record.patientType === 'عيادة' || record.patientType == 'تحويل من العيادة') );
-        console.log('clinic filteredRecords' , filteredRecords );
         // Sort filtered records by enterDate in ascending order
         filteredRecords.sort((a: any, b: any) => new Date(a.enterDate).getTime() - new Date(b.enterDate).getTime());
         this.records = filteredRecords;
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error fetching records:', error);
+      error: () => {
         this.isLoading = false;
       },
     });
@@ -61,23 +57,30 @@ export class ClinicPageComponent implements OnInit {
 
   onViewDetails(record : MedicalRecord) {
     this.selectedTab= 'patient-info';
-    console.log('record ' , record)
     this.selectedRecord=record;
     this.showTable = false;
     this.showTabs = true;
   }
   
-  reset(): void {
-    this.resetEvent.emit(); 
-  }
-
   onTabChange(tab: string) {
     this.selectedTab = tab; // Update the selected tab
   }
+
   closeAll(): void {
     this.showTable = true;
     this.showTabs = false;
+    this.selectedRecord = null;
   }
-
+  
+  reset(): void {
+    this.resetEvent.emit();
+    if (this.showTabs) {
+      return;
+    }
+    this.showTable = true;
+    this.showTabs = false;
+  }
+  
+  
 
 }
