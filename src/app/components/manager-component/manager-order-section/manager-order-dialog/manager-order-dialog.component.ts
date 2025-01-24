@@ -4,6 +4,7 @@ import { EmergencyOrder, Item } from '../../../../interfaces/emergency-order.int
 import { EmergencyOrderService } from '../../../../services/emergency-order.service';
 import { LoadingImageComponent } from "../../../shared/loading-image/loading-image.component";
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-manager-order-dialog',
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './manager-order-dialog.component.css'
 })
 export class ManagerOrderDialogComponent {
+  private readonly destroy$ = new Subject<void>();
   private readonly emergencyOrderService = inject(EmergencyOrderService);
   @Output() close = new EventEmitter<void>();
   @Input() order:EmergencyOrder={};
@@ -80,6 +82,16 @@ export class ManagerOrderDialogComponent {
       this.items.splice(index, 1);
       this.saveItemsToSessionStorage();
     }
+    if(this.items.length==0)
+      {
+        this.closeDialog();
+        this.emergencyOrderService.deleteOrder(this.order.emergencyOrderId!).pipe(takeUntil(this.destroy$)).subscribe({
+          next:()=>{
+            alert('تم حذف الطلب بسبب خلوه من العناصر');
+            sessionStorage.removeItem('items');
+          }
+        });
+      }
   }
 
   resetForm(): void {
@@ -99,7 +111,7 @@ onSubmit()
         items:this.items,
         isApprove:true,
       };
-      this.emergencyOrderService.updateOrder(this.order.emergencyOrderId! , submittedOrder).subscribe({
+      this.emergencyOrderService.updateOrder(this.order.emergencyOrderId! , submittedOrder).pipe(takeUntil(this.destroy$)).subscribe({
         next:()=>{
           this.isLoading=false;
           this.closeDialog();
@@ -119,15 +131,20 @@ onSubmit()
         items:this.items,
         isApprove:false,
       };
-      this.emergencyOrderService.updateOrder(this.order.emergencyOrderId! , submittedOrder).subscribe({
+      this.emergencyOrderService.updateOrder(this.order.emergencyOrderId! , submittedOrder).pipe(takeUntil(this.destroy$)).subscribe({
         next:()=>{
           this.isLoading=false;
           this.closeDialog();
+          sessionStorage.removeItem('items');
         },
         error:(er)=>{
           console.error(er);
         }
       });
+    }
+    ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
     }
 
 }

@@ -41,6 +41,8 @@
     padding: 0 10px 10px 10px;
     display: flex;
     flex-direction: column;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .model-title h2 {

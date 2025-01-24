@@ -50,15 +50,21 @@
                 <app-dropdown-list
                 (selectedChange)="doseSelect($event)"
                     placeHolder="جرعة"
-                    [options]="['جرعة', 'جرعتين', 'ثلاثة جرعات']">
+                    [options]="['جرعة', 'جرعتين', 'ثلاث جرعات']">
                 </app-dropdown-list>
             </div>
         }
-
         </div>
-
     <div class="footer-btn margin">
-        <button type="btn" class="btn primaryColor" (click)="release()">إصدار</button>
+        <ng-container *ngIf="isLoading; else notLoading">
+            <div class="btn primaryColor">
+                <app-loading-image></app-loading-image>
+            </div>
+        </ng-container>
+        <ng-template #notLoading >
+            <button type="btn" class="btn primaryColor" (click)="release()">إصدار</button>
+        </ng-template>
+        
     </div>
 
 </form>

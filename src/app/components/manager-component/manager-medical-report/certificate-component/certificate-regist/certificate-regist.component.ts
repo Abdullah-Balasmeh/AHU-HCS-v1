@@ -6,16 +6,19 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Student } from '../../../../../interfaces/student.interface';
 import { StudentService } from '../../../../../services/student.service';
 import { VaccCertificat } from '../../../../../interfaces/VaccCertificat.inertface';
+import { Subject, takeUntil } from 'rxjs';
+import { LoadingImageComponent } from "../../../../shared/loading-image/loading-image.component";
 
 
 @Component({
   selector: 'app-certificate-regist',
   standalone: true,
-  imports: [DropdownListComponent,CommonModule,ReactiveFormsModule],
+  imports: [DropdownListComponent, CommonModule, ReactiveFormsModule, LoadingImageComponent],
   templateUrl: './certificate-regist.component.html',
   styleUrl: './certificate-regist.component.css'
 })
 export class CertificateRegistComponent {
+  private readonly destroy$ = new Subject<void>();
 private readonly studentService=inject(StudentService);
 private readonly vaccCertificatService=inject(VaccCertificatService);
 
@@ -40,7 +43,7 @@ searchStud()
         alert('يرجى إدخال رقم الطالب');
         return;
       }
-      this.studentService.getStudentById(this.certificateForm.value.studentId).subscribe({
+      this.studentService.getStudentById(this.certificateForm.value.studentId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (data) => {
           this.student = data;
           this.certificateForm.patchValue({
@@ -51,15 +54,28 @@ searchStud()
           this.hasData=true;
 
         },
-        error: (err) => {
-          console.error(err)
-          this.student = null; // Clear any previous data
+        error: () => {
+          alert('هذا الطالب غير موجود');
+          this.student = null;
         },
       });
   }
 
   release()
   {
+    this.isLoading=true;
+    if(!this.certificateForm.value.studentId)
+      {
+        this.isLoading=false;
+        alert('يرجى تعبئة حقل رقم الطالب');
+        return;
+      }
+    if(this.certificateForm.invalid || this.dose=='')
+      {
+        this.isLoading=false;
+        alert('يرجى تعبئة جميع الحقول بشكل صحيح');
+        return;
+      }
     const user = sessionStorage.getItem('user');
     const parsedUser = user ? JSON.parse(user) : null;
     const newCertificate:VaccCertificat={
@@ -74,15 +90,18 @@ searchStud()
       leaveTime:new Date(),
       date:new Date(),
     }
-    console.log('newCertificate',newCertificate)
-    this.vaccCertificatService.addVaccCertificat(newCertificate).subscribe({
+    this.vaccCertificatService.addVaccCertificat(newCertificate).pipe(takeUntil(this.destroy$)).subscribe({
       next:()=>{
-        alert('add success');
-        this.certificateForm.reset()
+        this.isLoading=false;
+        alert('شهادة مطعوم الكبد الوبائي (B) تم إضافة');
+        this.certificateForm.reset();
       },
-      error:(err)=>console.error(err),
+      error:()=>alert('حدث خطأ أثناء الإضافة'),
     })
   }
 
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
