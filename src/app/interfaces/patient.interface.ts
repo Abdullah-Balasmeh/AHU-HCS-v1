@@ -65,6 +65,7 @@ export interface Prescription {
     userId?: string;
     date?: Data;
     medicalRecordId?: number;
+    isSubmit?:boolean;
 }
 
 export interface MedicalProcedures {

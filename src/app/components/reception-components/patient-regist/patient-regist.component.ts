@@ -36,6 +36,9 @@ export class PatientRegistComponent {
     if (!patientId) {
       this.setError('يرجى إدخال رقم الطالب أو الموظف');
       this.search.set(false);
+      this.registForm.patchValue({
+        patientName:'',
+      });
       return;
     }
     this.patientService.getPatientById(patientId).pipe(takeUntil(this.destroy$)).subscribe(
@@ -55,6 +58,9 @@ export class PatientRegistComponent {
         error: () => {
           this.setError('الطالب أو الموظف غير موجود');
           this.search.set(false);
+          this.registForm.patchValue({
+            patientName:'',
+          });
         }
       }
     )

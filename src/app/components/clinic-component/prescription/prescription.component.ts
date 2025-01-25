@@ -111,6 +111,7 @@ export class PrescriptionComponent implements OnInit {
       medicine: this.selectedMedicines,
       medicalRecordId: this.MedicalRecordId,
       userId: parsedUser.userId,
+      isSubmit:false
     };
   
     this.medicalRecordService

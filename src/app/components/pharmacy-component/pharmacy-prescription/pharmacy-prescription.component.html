@@ -19,11 +19,19 @@
             <td>{{ record.patient.patientClass }}</td>
             <td>
                 <button
+                [disabled]="record.prescription?.isSubmit"
                     class="table-btn"
                     id="icon-edit"
                     (click)="openPrescriptionDialog(record.prescription ,record.patient.patientName!)">
                     <i class="bi bi-eye"></i>
                 </button>
+                <div
+                    *ngIf="record.prescription?.isSubmit"
+                    class="table-btn"
+                    id="icon-check"
+                >
+                    <i class="bi bi-check-circle"></i>
+                </div>
             </td>
         </tr>
     </tbody>
