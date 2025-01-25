@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ApiService } from './api.service'; // Import the generic ApiService
-import { MedicalProcedures, Prescription } from '../interfaces/patient.interface';
+import { Prescription } from '../interfaces/patient.interface';
 import { HttpParams } from '@angular/common/http';
 
 @Injectable({
