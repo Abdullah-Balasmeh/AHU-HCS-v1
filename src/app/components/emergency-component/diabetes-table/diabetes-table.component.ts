@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DiabetesTableComponent  implements OnInit{
 constructor(private readonly diabtetesRecordService : DiabtetesRecordService){}
-
+isSaving=false;
   // Input to receive selected patient
   @Input() patientId!: string;
   diabetesRecords: DiabtetesRecord[] = [];
@@ -95,6 +95,7 @@ formatDate(dateString: string): { date: string; time: string; day: string } {
       this.diabetesForm.markAllAsTouched();
       return;
     }
+    this.isSaving=true;
 const newDiabtetesRecord: DiabtetesRecord = {
   fbs:this.diabetesForm.get('FBS')?.value ?? '',
   rbs: this.diabetesForm.get('RBS')?.value ?? '',
@@ -104,6 +105,7 @@ const newDiabtetesRecord: DiabtetesRecord = {
     }
     this.diabtetesRecordService.addDiabtetesRecord(this.patientId, newDiabtetesRecord).subscribe({
       next:()=>{
+        
         this.loadDiabtetesRecord();
         this.resetForm();
       }
@@ -125,6 +127,7 @@ const newDiabtetesRecord: DiabtetesRecord = {
         alert('Please enter a valid diabetesRecord Value.');
         return;
       }
+      this.isSaving=true;
       const UpdateRecord = {
         fbs:this.diabetesForm.get('FBS')?.value ?? '',
         rbs: this.diabetesForm.get('RBS')?.value ?? '',
@@ -159,6 +162,7 @@ const newDiabtetesRecord: DiabtetesRecord = {
 
 
   resetForm() {
+    this.isSaving=false;
     this.isEdit = false;
     this.currentDiabtetesRecord =  { diabtetesRecordId: 0, fbs: '' , rbs:'' , note:''};
     this.diabetesForm.reset(); 

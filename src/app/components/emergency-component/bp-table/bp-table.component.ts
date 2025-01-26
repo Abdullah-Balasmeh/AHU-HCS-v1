@@ -18,7 +18,7 @@ export class BpTableComponent implements OnInit {
 
   constructor(private readonly bpRecordService: BPRecordService) {}
 
-  
+  isSaving=false;
   @Input() patientId!: string;
   bpRecords: BPRecord[] = [];
   isEdit = false;
@@ -110,6 +110,7 @@ export class BpTableComponent implements OnInit {
       this.bpForm.markAllAsTouched();
       return;
     }
+    this.isSaving=true;
     const newRecord: BPRecord = {
       patientId: this.patientId,
       bpUp: this.bpForm.get('bpUp')?.value ?? '',
@@ -120,6 +121,7 @@ export class BpTableComponent implements OnInit {
 
     this.bpRecordService.addBPRecord(this.patientId, newRecord).subscribe({
       next:()=>{
+        this.isSaving=true;
         this.loadBPRecords();
         this.resetForm();
       }
@@ -140,6 +142,7 @@ export class BpTableComponent implements OnInit {
         alert('Please enter a valid BPRecord Value.');
         return;
       }
+      this.isSaving=true;
       const UpdateRecord = {
         patientId:this.patientId,
         bpUp: this.bpForm.get('bpUp')?.value ?? '',
@@ -175,6 +178,7 @@ export class BpTableComponent implements OnInit {
 
     resetForm() {
       this.isEdit = false;
+      this.isSaving=false;
       this.currentBpRecord = { bpRecordId: 0, bpDown: '' , bpUp:'' , note:''};
       this.bpForm.reset(); 
       Object.keys(this.bpForm.controls).forEach((controlName) => {

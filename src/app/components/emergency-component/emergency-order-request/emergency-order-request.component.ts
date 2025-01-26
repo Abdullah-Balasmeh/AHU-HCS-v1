@@ -19,7 +19,7 @@ export class EmergencyOrderRequestComponent implements OnInit {
   isLoading = false;
   items: Item[] = [];
   currentItem: Item = {};
-
+isSaving=false;
   itemForm = new FormGroup({
     Description: new FormControl('', [Validators.required]),
     Quantity: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
@@ -45,7 +45,7 @@ export class EmergencyOrderRequestComponent implements OnInit {
       unit: this.itemForm.get('Unit')?.value ?? '',
       note: this.itemForm.get('note')?.value ?? '',
     };
-
+    this.isSaving=true;
     if (this.isEdit) {
       // Update the existing item
       const index = this.items.findIndex(item => item === this.currentItem);
@@ -82,6 +82,7 @@ export class EmergencyOrderRequestComponent implements OnInit {
   }
 
   resetForm(): void {
+    this.isSaving=false;
     this.isEdit = false;
     this.currentItem = {};
     this.itemForm.reset();

@@ -30,19 +30,24 @@
                 class="textarea-note"
                 rows="2"></textarea>
         </div>
-        <ng-container *ngIf="isEdit; else notEdit">
-            <div class="header-btn">
-                <button type="button" class="btn primaryColor"
-                    (click)="onSave()">حفظ</button>
-                <button type="button" class="btn closeColor"
-                    (click)="resetForm()">إلغاء</button>
-            </div>
-
-        </ng-container>
-        <ng-template #notEdit>
-            <button type="button" class="btn primaryColor"
-                (click)="addDiabetesReading()">إضافة</button>
-        </ng-template>
+        <div class="header-btn">
+            <ng-container *ngIf="isSaving; else notSaving">
+                <div
+                    class="btn primaryColor"><app-loading-image></app-loading-image></div>
+            </ng-container>
+            <ng-template #notSaving>
+                <ng-container *ngIf="isEdit; else notEdit">
+                    <button type="button" class="btn primaryColor"
+                        (click)="onSave()">حفظ</button>
+                    <button type="button" class="btn closeColor"
+                        (click)="resetForm()">إلغاء</button>
+                </ng-container>
+                <ng-template #notEdit>
+                    <button type="button" class="btn primaryColor"
+                        (click)="addDiabetesReading()">إضافة</button>
+                </ng-template>
+            </ng-template>
+        </div>
     </div>
 </form>
 <div class="errorDiv">
