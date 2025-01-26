@@ -31,7 +31,13 @@
                             (click)=" onViewDetails(record)">
                             <i class="bi bi-eye"></i>
                         </button>
-
+                        <div
+                        *ngIf="record.prescription"
+                        class="table-btn"
+                        id="icon-check"
+                    >
+                        <i class="bi bi-check-circle"></i>
+                    </div>
                     </td>
                 </tr>
             </tbody>

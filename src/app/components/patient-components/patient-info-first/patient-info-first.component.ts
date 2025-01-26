@@ -10,6 +10,7 @@ import { Patient } from '../../../interfaces/patient.interface';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs';
 import { AllergyService } from '../../../services/allergy.service';
+import { LoadingImageComponent } from "../../shared/loading-image/loading-image.component";
 
 @Component({
   selector: 'app-patient-info-first',
@@ -19,7 +20,8 @@ import { AllergyService } from '../../../services/allergy.service';
     MultiSelectDropdownComponent,
     FormsModule,
     CommonModule,
-  ],
+    LoadingImageComponent
+],
   templateUrl: './patient-info-first.component.html',
   styleUrls: ['./patient-info-first.component.css'],
 })
@@ -32,9 +34,10 @@ export class PatientInfoFirstComponent implements OnInit {
   selectedFileName: string | null = null;
   selectedMedicine: string | string[] = [];
   selectedChDisease: string | string[] = [];
-  selectedBloodType: string | string[] = [];
+  selectedBloodType: string = '';
   selectedAllergy: string | string[] = [];
   errorMessage = signal<string>('');
+  isLoading=false;
 
   private readonly patientService = inject(PatientService);
   private readonly medicineService = inject(MedicineService);
@@ -123,10 +126,11 @@ export class PatientInfoFirstComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.selectedBloodType.length==0) {
+    if (this.selectedBloodType=='' && this.patient!.bloodType=='') {
       this.errorMessage.set('يرجى إختيار زمرة الدم');
       return;
     }
+    this.isLoading=true;
     if (this.patient) {
       if (this.vaccineStatus == 1) {
         this.patient.takeVac = true;
@@ -138,6 +142,7 @@ export class PatientInfoFirstComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
+            this.isLoading=false;
             this.save.emit(this.patient as Patient);
           },
           error: (err) => {

@@ -300,6 +300,9 @@ main{
     }
 }
 
+#icon-check{
+    background-color: green;
+}
 .In-valid{
     color: red;
     margin-top: -20px;

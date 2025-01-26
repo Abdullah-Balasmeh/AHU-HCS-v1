@@ -17,7 +17,7 @@ export class AddAllergyComponent {
   isEdit = false;
   allergies: Allergy[] = [];
   currentAllergy: Allergy = { allergyId: 0, name: '' };
-
+  isSaving=false;
   constructor(private readonly allergyService: AllergyService) {}
 
   ngOnInit() {
@@ -43,9 +43,10 @@ export class AddAllergyComponent {
       alert('الرجاء إدخال اسم حساسية صالح.');
       return;
     }
-
+    this.isSaving=true;
     this.allergyService.addAllergy(this.currentAllergy).subscribe({
       next: (newAllergy) => {
+        this.isSaving=false;
         alert('تم إضافة الحساسية بنجاح');
         this.allergies.push(newAllergy);
         this.resetForm();
@@ -62,9 +63,10 @@ export class AddAllergyComponent {
       alert('الرجاء إدخال اسم حساسية صالح.');
       return;
     }
-
+    this.isSaving=true;
     this.allergyService.updateAllergy(this.currentAllergy.allergyId!, this.currentAllergy).subscribe({
       next: () => {
+        this.isSaving=false;
         alert('تم تعديل الحساسية بنجاح');
         const index = this.allergies.findIndex(a => a.allergyId === this.currentAllergy.allergyId);
         if (index > -1) {

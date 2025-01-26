@@ -19,15 +19,21 @@
                 />
         </div>
         <div class="header-btn">
-            <ng-container *ngIf="isEdit; else notEdit">
-                <button type="button" class="btn primaryColor"
-                    (click)="onSave()">حفظ</button>
-                <button type="button" class="btn closeColor"
-                    (click)="resetForm()">إلغاء</button>
+            <ng-container *ngIf="isSaving; else notSaving">
+                <div
+                    class="btn primaryColor"><app-loading-image></app-loading-image></div>
             </ng-container>
-            <ng-template #notEdit>
-                <button type="button" class="btn primaryColor"
-                    (click)="onAdd()">إضافة</button>
+            <ng-template #notSaving>
+                <ng-container *ngIf="isEdit; else notEdit">
+                    <button type="button" class="btn primaryColor"
+                        (click)="onSave()">حفظ</button>
+                    <button type="button" class="btn closeColor"
+                        (click)="resetForm()">إلغاء</button>
+                </ng-container>
+                <ng-template #notEdit>
+                    <button type="button" class="btn primaryColor"
+                        (click)="onAdd()">إضافة</button>
+                </ng-template>
             </ng-template>
         </div>
     </div>

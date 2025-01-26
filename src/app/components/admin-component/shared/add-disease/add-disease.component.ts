@@ -17,7 +17,7 @@ export class AddDiseaseComponent {
   isEdit = false;
   diseases: Diseases[] = [];
   currentDisease: Diseases = { diseaseId: 0, name: '' }; // Holds the disease being edited or added
-
+  isSaving=false;
   constructor(private readonly diseaseService: DiseaseService) {}
 
   ngOnInit() {
@@ -44,9 +44,10 @@ export class AddDiseaseComponent {
       alert('الرجاء إدخال اسم مرض صالح.');
       return;
     }
-
+    this.isSaving=true;
     this.diseaseService.addDisease(this.currentDisease).subscribe({
       next: (newDisease) => {
+        this.isSaving=false;
         alert('تم إضافة المرض بنجاح');
         this.diseases.push(newDisease);
         this.resetForm();
@@ -63,9 +64,10 @@ export class AddDiseaseComponent {
       alert('الرجاء إدخال اسم مرض صالح.');
       return;
     }
-
+    this.isSaving=true;
     this.diseaseService.updateDisease(this.currentDisease.diseaseId!, this.currentDisease).subscribe({
       next: () => {
+        this.isSaving=false;
         alert('تم تعديل المرض بنجاح');
         const index = this.diseases.findIndex(d => d.diseaseId === this.currentDisease.diseaseId);
         if (index > -1) {

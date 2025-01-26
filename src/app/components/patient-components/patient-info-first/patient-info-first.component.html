@@ -89,6 +89,13 @@
 <!-- Save Button -->
 <div class="footer-btn">
     <p class="In-valid" *ngIf="errorMessage()">{{ errorMessage() }}</p>
-    <button type="button" class="btn primaryColor"
-        (click)="onSubmit()">حفظ</button>
+    <ng-container *ngIf="isLoading; else notLoading">
+        <div
+            class="btn primaryColor"><app-loading-image></app-loading-image></div>
+    </ng-container>
+    <ng-template #notLoading>
+        <button type="button" class="btn primaryColor"
+            (click)="onSubmit()">حفظ</button>
+    </ng-template>
 </div>
+

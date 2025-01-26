@@ -17,7 +17,7 @@ export class AddProcedureComponent {
   isEdit = false;
   procedures: Procedures[] = [];
   currentProcedure: Procedures = { proceduresId: 0, name: '' };
-
+  isSaving=false;
   constructor(private readonly procedureService: ProcedureService) {}
 
   ngOnInit() {
@@ -43,9 +43,10 @@ export class AddProcedureComponent {
       alert('الرجاء إدخال اسم إجراء صالح.');
       return;
     }
-
+    this.isSaving=true;
     this.procedureService.addProcedure(this.currentProcedure).subscribe({
       next: (newProcedure) => {
+        this.isSaving=false;
         alert('تم إضافة الإجراء بنجاح');
         this.procedures.push(newProcedure);
         this.resetForm();
@@ -62,9 +63,10 @@ export class AddProcedureComponent {
       alert('الرجاء إدخال اسم إجراء صالح.');
       return;
     }
-
+    this.isSaving=true;
     this.procedureService.updateProcedure(this.currentProcedure.proceduresId!, this.currentProcedure).subscribe({
       next: () => {
+        this.isSaving=false;
         alert('تم تعديل الإجراء بنجاح');
         const index = this.procedures.findIndex(p => p.proceduresId === this.currentProcedure.proceduresId);
         if (index > -1) {

@@ -17,7 +17,7 @@ export class AddMedicineComponent {
   isEdit = false;
   medicines: Medicine[] = [];
   currentMedicine: Medicine = { medicineId: 0, name: '', dose: '' };
-
+  isSaving=false;
   constructor(private readonly medicineService: MedicineService) {}
 
   ngOnInit() {
@@ -43,12 +43,14 @@ export class AddMedicineComponent {
       alert('يرجى إدخال اسم العلاج');
       return;
     }
+    this.isSaving=true;
 const newMedicine= this.currentMedicine={
     ...this.currentMedicine,
     dose: this.currentMedicine.dose ?? '',
   }
     this.medicineService.addMedicine(newMedicine).subscribe({
       next: (newMedicine) => {
+        this.isSaving=false;
         this.medicines.push(newMedicine);
         alert('تم إضافة العلاج بنجاح');
         this.resetForm();
@@ -56,6 +58,7 @@ const newMedicine= this.currentMedicine={
       error: (err) => {
         console.error('Error adding medicine', err);
         alert('فشل في إضافة العلاج. يرجى التحقق من النموذج والمحاولة مرة أخرى.');
+        this.isSaving=false;
       },
     });
   }
@@ -66,9 +69,10 @@ const newMedicine= this.currentMedicine={
       alert('يرجى إدخال اسم العلاج');
       return;
     }
-
+    this.isSaving=true;
     this.medicineService.updateMedicine(this.currentMedicine.medicineId!, this.currentMedicine).subscribe({
       next: () => {
+        this.isSaving=false;
         alert('تم تعديل العلاج بنجاح');
         const index = this.medicines.findIndex(m => m.medicineId === this.currentMedicine.medicineId);
         if (index > -1) this.medicines[index] = { ...this.currentMedicine };
@@ -77,6 +81,7 @@ const newMedicine= this.currentMedicine={
       error: (err) => {
         console.error('Error updating medicine', err);
         alert('فشل تحديث العلاج. يرجى المحاولة مرة أخرى لاحقًا.');
+        this.isSaving=false;
       },
     });
   }
@@ -95,6 +100,7 @@ const newMedicine= this.currentMedicine={
         error: (err) => {
           console.error('Error deleting medicine', err);
           alert('فشل حذف العلاج. يرجى المحاولة مرة أخرى لاحقًا.');
+          this.isSaving=false;
         },
       });
     }
