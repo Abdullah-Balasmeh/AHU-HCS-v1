@@ -47,7 +47,7 @@
                             type="text"
                             id="exam-1-in"
                             maxlength="3"
-                            [value]="medicalProcedures.bpUpValue "
+                            [value]="medicalProcedures.bpUpValue || '' "
                             (input)="onNumberInput($event)"
                             readonly />
                         <span>:BP-Up</span>
@@ -60,7 +60,7 @@
                             type="text"
                             id="exam-1-p"
                             maxlength="3"
-                            [value]="medicalProcedures.bpDownValue"
+                            [value]="medicalProcedures.bpDownValue || ''"
                             (input)="onNumberInput($event)"
                             readonly />
                         <span>:BP-Down</span>
@@ -73,7 +73,7 @@
                             type="text"
                             id="exam-2-in"
                             maxlength="4"
-                            [value]="medicalProcedures.tempValue"
+                            [value]="medicalProcedures.tempValue || '' "
                             (input)="onNumberInput($event)"
                             readonly />
                         <span>:Temp</span>
@@ -86,7 +86,7 @@
                             type="text"
                             id="exam-3-in"
                             maxlength="3"
-                            [value]="medicalProcedures.pulseValue"
+                            [value]="medicalProcedures.pulseValue || ''"
                             (input)="onNumberInput($event)"
                             readonly />
                         <span>:Pulse</span>
@@ -99,7 +99,7 @@
                             type="text"
                             id="exam-4-in"
                             maxlength="3"
-                            [value]="medicalProcedures.respValue"
+                            [value]="medicalProcedures.respValue || ''"
                             (input)="onNumberInput($event)"
                             readonly />
                         <span>:Resp</span>

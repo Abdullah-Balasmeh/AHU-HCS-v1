@@ -105,7 +105,7 @@
                             maxlength="3"
                             name="resp"
                             autocomplete="off"
-                            [(ngModel)]="medicalProcedures.respValue"
+                            [(ngModel)]="medicalProcedures.respValue "
                             (input)="onNumberInput($event)"/>
                         <span>:Resp</span>
                     </label>
@@ -130,8 +130,8 @@
                 <span>{{medicalProcedures.procedures}}</span>
             </div>
         </ng-template> -->
-            <p *ngIf="errorMessage"></p>
         <div class="footer-btn">
+            <p class="In-valid" *ngIf="errorMessage">{{errorMessage}}</p>
                 <ng-container *ngIf="saving; else notSaving">
                     <div class="btn primaryColor">
                         <app-loading-image></app-loading-image>

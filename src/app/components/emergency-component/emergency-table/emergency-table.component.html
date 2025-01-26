@@ -60,12 +60,13 @@
         </app-emergency-tab>
         <div>
             <app-patient-info-display *ngIf="selectedTab === 'patient-info'"
-            [patient]="selectedRecord?.patient"></app-patient-info-display>
+            [patient]="selectedRecord.patient"></app-patient-info-display>
             <app-emergency-procedure
+            (close)="closeAll()"
                 *ngIf="selectedTab === 'emergency-procedure'"
                 [medicalProcedures]="selectedRecord!.medicalProcedures!"
                 [medicalRecordId]="selectedRecord!.medicalRecordId!"
-                [patientType]="selectedRecord?.patientType!"
+                [patientType]="selectedRecord.patientType!"
             ></app-emergency-procedure>
         </div>
     </div>

@@ -125,12 +125,16 @@ export class EmployeeRegistComponent {
                 {
                   this.isLoading.set(false);
                   alert('رقم الموظف بالفعل موجود');
+                  this.registEmpForm.reset();
+                  this.errorMessage.set('');
+                  this.selectedRoles = [];
                   this.isExist=true;
+                  this.dropdown.reset();
                   return;
                 }
             },
           });
-          if(this.isExist)
+          if(!this.isExist)
             {
               this.userService.addUser(request).pipe(takeUntil(this.destroy$)).subscribe({
                 next: () => {
@@ -144,7 +148,7 @@ export class EmployeeRegistComponent {
                 },
                 error: () => {
                   this.isLoading.set(false);
-                  alert('رقم الموظف بالفعل موجود');
+                  
                 },
               });
             }

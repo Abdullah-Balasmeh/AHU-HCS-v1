@@ -77,7 +77,10 @@ input[type="file"] {
     margin-top: auto; /* Push it to the bottom */
     width: 50%;
 }
-
+.In-valid{
+    justify-self: center; /* Center horizontally */
+    align-self: center;
+}
 .btn {
     width: 100%;
     padding: 10px 20px;

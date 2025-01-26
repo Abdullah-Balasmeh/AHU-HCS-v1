@@ -1,6 +1,6 @@
 import { ChDiseaseService } from './../../../services/ch-disease.service';
 import { MedicineService } from './../../../services/medicine.service';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DropdownListComponent } from '../../shared/dropdown-list/dropdown-list.component';
@@ -30,13 +30,19 @@ export class PatientInfoFirstComponent implements OnInit {
   private readonly destroy$ = new Subject<void>();
   vaccineStatus: number = 0;
   selectedFileName: string | null = null;
+  selectedMedicine: string | string[] = [];
+  selectedChDisease: string | string[] = [];
+  selectedBloodType: string | string[] = [];
+  selectedAllergy: string | string[] = [];
+  errorMessage = signal<string>('');
+
   private readonly patientService = inject(PatientService);
-  private readonly medicineService =inject(MedicineService);
-  private readonly chDiseaseService =inject(ChDiseaseService);
-  private readonly allergyService =inject(AllergyService);
+  private readonly medicineService = inject(MedicineService);
+  private readonly chDiseaseService = inject(ChDiseaseService);
+  private readonly allergyService = inject(AllergyService);
   medicines: string[] = [];
   chDiseases: string[] = [];
-  allergy:string[]=[];
+  allergy: string[] = [];
   ngOnInit(): void {
     this.getAllDisease();
     this.getAllMedicines();
@@ -81,7 +87,7 @@ export class PatientInfoFirstComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         if (this.patient) {
-          this.patient.vacData = reader.result as string; 
+          this.patient.vacData = reader.result as string;
         }
       };
       reader.readAsDataURL(file);
@@ -91,35 +97,42 @@ export class PatientInfoFirstComponent implements OnInit {
   onBloodTypeChange(selected: string): void {
     if (this.patient) {
       this.patient.bloodType = selected;
+      this.selectedBloodType = selected;
     }
   }
 
   onAllergyChange(selected: string[]): void {
     if (this.patient) {
       this.patient.allergy = [...selected];
+      this.selectedAllergy = selected;
     }
   }
 
   onChronicDiseasesChange(selected: string[]): void {
     if (this.patient) {
       this.patient.chDisease = [...selected];
+      this.selectedChDisease = selected;
     }
   }
 
   onMedicationsChange(selected: string[]): void {
     if (this.patient) {
       this.patient.medicine = [...selected];
+      this.selectedMedicine = selected;
     }
   }
 
   onSubmit(): void {
+    if (this.selectedBloodType.length==0) {
+      this.errorMessage.set('يرجى إختيار زمرة الدم');
+      return;
+    }
     if (this.patient) {
-      if(this.vaccineStatus==1)
-        {
-          this.patient.takeVac = true;
-        }else{
-          this.patient.takeVac = false;
-        }
+      if (this.vaccineStatus == 1) {
+        this.patient.takeVac = true;
+      } else {
+        this.patient.takeVac = false;
+      }
       this.patientService
         .updatePatient(this.patient.patientId!, this.patient)
         .pipe(takeUntil(this.destroy$))

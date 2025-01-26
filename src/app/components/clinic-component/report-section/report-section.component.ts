@@ -94,7 +94,7 @@ onSave()
       this.reportsService.addReport(this.report).subscribe({
         next:()=>{
           this.isLoading=false;
-          alert('success save');
+          alert('تم الحفظ بنجاح');
           this.reportForm.reset();
           this.selectedReport='';
           this.selectedClinic='';

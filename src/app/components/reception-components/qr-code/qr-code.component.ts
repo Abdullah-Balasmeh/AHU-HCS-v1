@@ -26,7 +26,7 @@ export class QrCodeComponent implements OnInit, OnDestroy {
 
   private updateQRCode(): void {
     const date = new Date();
-    const baseUrl = 'https://www.youtube.com/'; // Base URL
+    const baseUrl = 'https://www.ahu.edu.jo/'; // Base URL
     const dynamicContent = date.getTime(); // Dynamic part (current timestamp in milliseconds)
     const fullUrl = `${baseUrl}?t=${dynamicContent}`; // Combine URL with dynamic part
 

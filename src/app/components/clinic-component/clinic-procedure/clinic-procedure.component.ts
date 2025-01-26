@@ -17,7 +17,18 @@ import { LoadingImageComponent } from "../../shared/loading-image/loading-image.
 })
 export class ClinicProcedureComponent implements OnInit {
 
-  @Input() medicalProcedures: MedicalProcedures = {};
+  @Input() medicalProcedures: MedicalProcedures = {
+    bpUpValue: '',
+    bpDownValue: '',
+    tempValue: '',
+    pulseValue: '',
+    respValue: '',
+    bpState: false,
+    tempState: false,
+    pulseState: false,
+    respState: false,
+    procedures: [],
+  };
   @Input() patientType: string ='';
   @Input() medicalRecordId: number = 0;
 
@@ -66,9 +77,9 @@ export class ClinicProcedureComponent implements OnInit {
   onSubmit(): void {
     this.saving = true;
     this.errorMessage='';
-    if (!this.BPChecked || !this.TempChecked ||
-      !this.RespChecked || !this.PulseChecked ||
-      !this.selectedProcedures
+    if (!this.BPChecked && !this.TempChecked &&
+      !this.RespChecked && !this.PulseChecked &&
+      this.selectedProcedures.length==0
     ) {
       this.errorMessage = 'يرجى أختيار على الأقل فحص واحد';
       this.saving = false;

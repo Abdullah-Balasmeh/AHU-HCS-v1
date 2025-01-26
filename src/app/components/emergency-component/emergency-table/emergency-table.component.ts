@@ -23,7 +23,27 @@ export class EmergencyTableComponent {
   @Input() isFemale=false;
   isLoading:boolean=false;
   records: MedicalRecord[] = [];
-  selectedRecord?: MedicalRecord | null; 
+  selectedRecord: MedicalRecord= {
+    enterDate:'',
+    medicalRecordId:0,
+    patient:{},
+    patientType:'',
+    userId:'',
+    leaveDate:'',
+    medicalProcedures:{
+      bpUpValue: '',
+      bpDownValue: '',
+      tempValue: '',
+      pulseValue: '',
+      respValue: '',
+      bpState: false,
+      tempState: false,
+      pulseState: false,
+      respState: false,
+      procedures: [],
+    },
+    prescription:{}
+  }; 
   patientId:string='';
   selectedTab: string='patient-info';
   showTable: boolean = true;

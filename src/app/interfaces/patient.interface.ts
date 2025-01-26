@@ -72,15 +72,15 @@ export interface MedicalProcedures {
     medicalProceduresId?: number;
     nurseId?: string;
     doctorId?: string;
-    bpState?: boolean;
-    bpUpValue?: string;
-    bpDownValue?: string;
-    tempState?: boolean;
-    tempValue?: string;
-    pulseState?: boolean;
-    pulseValue?: string;
-    respState?: boolean;
-    respValue?: string;
-    procedures?: string[];
+    bpState: boolean;
+    bpUpValue: string;
+    bpDownValue: string;
+    tempState: boolean;
+    tempValue: string;
+    pulseState: boolean;
+    pulseValue: string;
+    respState: boolean;
+    respValue: string;
+    procedures: string[];
     medicalRecord?: string;
 }
