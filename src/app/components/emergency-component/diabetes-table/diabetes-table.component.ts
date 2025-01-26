@@ -22,8 +22,8 @@ constructor(private readonly diabtetesRecordService : DiabtetesRecordService){}
   isEdit = false;
   isLoading = false;
   diabetesForm = new FormGroup({
-    FBS: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), this.rangeValidator(70, 100),]),
-    RBS: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), this.rangeValidator(70, 140),]),
+    FBS: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/),]),
+    RBS: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/),]),
     note: new FormControl(''),
   });
 
